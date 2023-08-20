@@ -6,41 +6,42 @@ import ResponsiveAppBar from './components/layout/ResponsiveAppBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 // pages
-import HomePage from './components/pages/HomePage';
-import MenuPage from './components/pages/MenuPage';
-import TestePage from './components/pages/TestePage'
+import HomePage from './components/pages/homePage';
+import MenuPage from './components/pages/menuPage';
+import TestePage from './components/pages/testePage'
 import React from 'react';
 
 function App() {
   const { data: dataFromBackend, loading } = useFetch('http://localhost:5000/api/test');
-  const pages = ['home', 'menu', 'teste']
 
-
+  // the key is the page name, and the value is the component
   const pageComponents = {
-    home: HomePage,
-    menu: MenuPage,
-    teste: TestePage,
-    // Add more entries as needed for other pages
+    Home: HomePage,
+    Menu: MenuPage,
+    Teste: TestePage,
   };
+
+  const PAGES = Object.keys(pageComponents);
 
   return (
     <div className="App">
-      <ResponsiveAppBar app_name={'OESK'} pages={pages} settings={['Profile', 'Account', 'Dashboard', 'Logout']} />
+      <ResponsiveAppBar project_name={'OESK'} pages={PAGES} settings={['Profile', 'Account', 'Dashboard', 'Logout']} />
       <main>
         <Router>
           <Routes>
-            {pages.map((page) => (
+            {PAGES.map((page) => (
               <Route key={page} path={`/${page}`} element={React.createElement(pageComponents[page])} />
             ))}
           </Routes>
 
         </Router>
-        {/* {dataFromBackend.message} */}
         <br />
-        <Button>Ola Test</Button>
-        <Button variant="contained">Contained</Button>
+        <br />
+        <br />
+        <br />
+        <br />
+        {dataFromBackend.message}
 
-        BasicButtons
 
       </main>
     </div>
