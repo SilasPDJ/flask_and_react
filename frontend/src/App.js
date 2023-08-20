@@ -11,8 +11,8 @@ function App() {
 
   return (
     <div className="App">
-      <ResponsiveAppBar />
-      <main className="App-header">
+      <ResponsiveAppBar pages={['main']} settings={['Profile', 'Account', 'Dashboard', 'Logout']} />
+      <main>
         {/* {dataFromBackend.message} */}
         <br />
         <Button>Ola Test</Button>
