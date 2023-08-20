@@ -12,7 +12,6 @@ import MySQLdb.cursors
 import re
 
 
-
 # from backend.config import DevConfig
 
 load_dotenv()
@@ -46,7 +45,8 @@ def execute_query(query, *args, as_df=False):
         cursor.execute(query, *args)
         result = cursor.fetchall()
         if as_df:
-            columns = [desc[0] for desc in cursor.description]  # Obtendo os nomes das colunas
+            # Obtendo os nomes das colunas
+            columns = [desc[0] for desc in cursor.description]
             df = pd.DataFrame(result, columns=columns)
             return df
         else:

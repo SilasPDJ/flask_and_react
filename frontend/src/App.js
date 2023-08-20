@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import useFetch from './hooks/useFetch';
 import Button from '@mui/material/Button';
+import ResponsiveAppBar from './components/layout/ResponsiveAppBar';
 
 
 function App() {
@@ -10,7 +11,8 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <ResponsiveAppBar />
+      <main className="App-header">
         {/* {dataFromBackend.message} */}
         <br />
         <Button>Ola Test</Button>
@@ -18,7 +20,7 @@ function App() {
 
         BasicButtons
 
-      </header>
+      </main>
     </div>
   );
 }
