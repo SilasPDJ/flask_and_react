@@ -60,6 +60,13 @@ def clients_compt():
     return json_response
 
 
+@app.route("/api/cadastro_empresas")
+def cadastro_empresas():
+    query = execute_query("SELECT * FROM main_empresas", as_df=True)
+    json_response = query.to_json(orient='records')
+    return json_response
+
+
 @app.route("/api/test")
 def test():
     data = {"message": "Test endpoint working!"}

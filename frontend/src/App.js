@@ -19,11 +19,10 @@ import React from 'react';
 function App() {
   const testBackend = useFetch('test');
   // const clientsCompt = Array.from(Object.values(useFetch('clients_compt')));
-  const clientsCompt = Array.from(useFetch('clients_compt'));
   // the key is the page name, and the value is the component
   const pageComponents = {
     Home: HomePage,
-    Client: ClientsPage,
+    "Clients Register": ClientsPage,
     Menu: MenuPage,
     Teste: TestePage,
   };
@@ -31,7 +30,7 @@ function App() {
   const PAGES = Object.keys(pageComponents);
 
 
-  clientsCompt.forEach((e) => console.log(e))
+
 
   return (
     <div className="App">
