@@ -27,7 +27,7 @@ const showEmpresasInputs = (data) => {
     let input_type = getInputType(value)
 
     return (
-      <div className={styles.inputContainer} key={input_id}>
+      <div className={styles.inputsContainer} key={input_id}>
         <label onClick={handleLabelClick} htmlFor={input_id}>{key}</label>
         {key === 'id' ? (
           <input type={input_type} id={input_id} defaultValue={value} disabled />

@@ -5,12 +5,18 @@
 }
 
 .clientColumn {
-    flex-basis: calc(100% / 3 - 10px);
     /* Three columns on smaller screens */
     display: flex;
+    flex: 1;
     flex-direction: column;
     margin-right: 1em;
+    /* Add a vertical line between columns */
+
+    border: 1px solid #fff;
+    border-bottom: none;
     /* Adjust as needed */
+    padding-right: 1em;
+    /* Add some space to the right of each column */
     margin-bottom: 10px;
 }
 
@@ -23,25 +29,22 @@
     }
 }
 
-.inputContainer {
+.inputsContainer {
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
+    align-items: center;
 }
 
-
-.inputContainer input {
-    max-width: 20em;
+.inputsContainer input {
+    margin: 0;
+    max-width: 30em;
+    /* width: 20em; */
     padding: 5px;
-    /* Add some padding for better visual appearance */
-    /* Add a border for a subtle outline */
     border-radius: 5px;
-    /* Round the corners */
     transition: 0.3s ease;
-    /* Add a transition effect for interaction */
 }
 
-.inputContainer input:focus {
+.inputsContainer input:focus {
     background-color: rgb(234, 250, 142);
-    /* Change the border color when the input is focused */
 }
