@@ -13,7 +13,7 @@ const handleLabelClick = (event) => {
 
 const getInputType = (value) => {
   if (typeof (value) == 'boolean') {
-    return 'boolean'
+    return 'checkbox'
   }
   return 'text'
 

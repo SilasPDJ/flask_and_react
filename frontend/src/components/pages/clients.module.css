@@ -15,7 +15,6 @@
     border: 1px solid #fff;
     border-bottom: none;
     /* Adjust as needed */
-    padding-right: 1em;
     /* Add some space to the right of each column */
     margin-bottom: 10px;
 }
@@ -37,8 +36,8 @@
 }
 
 .inputsContainer input {
-    margin: 0;
-    max-width: 30em;
+    width: 90%;
+
     /* width: 20em; */
     padding: 5px;
     border-radius: 5px;
