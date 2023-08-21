@@ -53,13 +53,11 @@ def execute_query(query, *args, as_df=False):
             return result
 
 
-# Members API Route
-@app.route("/members")
-def members():
-    # return {"members": ["Member1", "Member2", "Member3"]}
+@app.route("/api/clients_compt")
+def clients_compt():
     query = execute_query("SELECT * FROM clients_compts", as_df=True)
-    dict_query = query.to_dict(orient='records')
-    return dict_query
+    json_response = query.to_json(orient='records')
+    return json_response
 
 
 @app.route("/api/test")

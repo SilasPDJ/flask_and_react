@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from 'react';
 
+const BASE_URL = 'http://localhost:5000/api/';
+
 export default function useFetch(url) {
+
   /**
- * Custom React hook for making data fetch requests.
- * @param {string} url - The URL to fetch data from.
- * @returns {object} An object containing the fetched data and loading status.
- */
-  const [data, setData] = useState({});
+   * Custom React hook for making data fetch requests.
+   * @param {string} url - The URL to fetch data from.
+   * @returns {Array} An array containing the fetched data.
+   */
+  
+  const makeUrl = (endpoint) => new URL(endpoint, BASE_URL).toString();
+
+  let mainUrl = makeUrl(url);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(url);
-        const data = await response.json();
-        setData(data);
+        const response = await fetch(mainUrl);
+        const responseData = await response.json();
+        setData(responseData);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -25,5 +32,5 @@ export default function useFetch(url) {
     fetchData();
   }, [url]);
 
-  return { data, loading };
+  return data;
 }

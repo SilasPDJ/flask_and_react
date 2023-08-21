@@ -9,19 +9,29 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/pages/homePage';
 import MenuPage from './components/pages/menuPage';
 import TestePage from './components/pages/testePage'
+import ClientsPage from './components/pages/clientsPage';
 import React from 'react';
 
-function App() {
-  const { data: dataFromBackend, loading } = useFetch('http://localhost:5000/api/test');
 
+
+
+
+function App() {
+  const testBackend = useFetch('test');
+  // const clientsCompt = Array.from(Object.values(useFetch('clients_compt')));
+  const clientsCompt = Array.from(useFetch('clients_compt'));
   // the key is the page name, and the value is the component
   const pageComponents = {
     Home: HomePage,
+    Client: ClientsPage,
     Menu: MenuPage,
     Teste: TestePage,
   };
 
   const PAGES = Object.keys(pageComponents);
+
+
+  clientsCompt.forEach((e) => console.log(e))
 
   return (
     <div className="App">
@@ -40,8 +50,8 @@ function App() {
         <br />
         <br />
         <br />
-        {dataFromBackend.message}
-
+        {testBackend.message}
+        {/* {clientsCompt} */}
 
       </main>
     </div>
