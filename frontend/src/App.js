@@ -22,7 +22,7 @@ function App() {
   // the key is the page name, and the value is the component
   const pageComponents = {
     Home: HomePage,
-    "Clients Register": ClientsPage,
+    "Clients_Register": ClientsPage,
     Menu: MenuPage,
     Teste: TestePage,
   };
