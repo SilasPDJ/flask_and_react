@@ -1,4 +1,3 @@
-from flask import Flask
 from flask import jsonify
 from flask import Flask, render_template, request, redirect, url_for, session
 import pandas as pd
@@ -73,6 +72,21 @@ def cadastro_empresas():
     query = execute_query("SELECT * FROM main_empresas", as_df=True)
     json_response = query.to_json(orient='records')
     return json_response
+
+
+@app.route("/api/trying_to_get_data_from_form", methods=['POST'])
+def retrieve_data():
+    data = request.json.get('data') if request.json else None  # Get the 'data' from the JSON body
+    print('hello')
+    print(data)
+    return jsonify({"message": "Data received and printed."})
+
+
+@app.route("/api/update_clients", methods=['POST'])
+def updatingClientValues():
+    print(request.json)
+    print()
+    pass
 
 
 @app.route("/api/test")

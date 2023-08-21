@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
+
 import useFetch from './hooks/useFetch';
+import postData from './hooks/postData';
 import Button from '@mui/material/Button';
 import ResponsiveAppBar from './components/layout/ResponsiveAppBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -10,10 +12,7 @@ import HomePage from './components/pages/homePage';
 import MenuPage from './components/pages/menuPage';
 import TestePage from './components/pages/testePage'
 import ClientsPage from './components/pages/clientsPage';
-import React from 'react';
-
-
-
+import React, { useEffect, useState } from 'react';
 
 
 function App() {
@@ -30,10 +29,8 @@ function App() {
   const PAGES = Object.keys(pageComponents);
 
 
-
-
   return (
-    <div className="App">
+    < div className="App" >
       <ResponsiveAppBar project_name={'OESK'} pages={PAGES} settings={['Profile', 'Account', 'Dashboard', 'Logout']} />
       <main>
         <Router>
@@ -53,7 +50,7 @@ function App() {
         {/* {clientsCompt} */}
 
       </main>
-    </div>
+    </div >
   );
 }
 

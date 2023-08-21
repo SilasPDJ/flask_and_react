@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 
 const BASE_URL = 'http://localhost:5000/api/';
 
-export default function useFetch(url) {
+export default function useFetch(url, options) {
 
   /**
    * Custom React hook for making data fetch requests.
    * @param {string} url - The URL to fetch data from.
    * @returns {Array} An array containing the fetched data.
    */
-  
+
   const makeUrl = (endpoint) => new URL(endpoint, BASE_URL).toString();
 
   let mainUrl = makeUrl(url);
@@ -30,7 +30,7 @@ export default function useFetch(url) {
     }
 
     fetchData();
-  }, [url]);
+  }, [url, options]);
 
   return data;
 }

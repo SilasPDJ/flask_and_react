@@ -25,15 +25,11 @@ const showEmpresasInputs = (data) => {
   const jsxElements = Object.entries(data).map(([key, value]) => {
     let input_id = `${data['id']}_${key}`
     let input_type = getInputType(value)
-    if (typeof (value) == 'boolean') {
-      console.log(value)
-    }
-
     return (
       <div className={styles.inputsContainer} key={input_id}>
         <label onClick={handleLabelClick} htmlFor={input_id}>{key}</label>
         {input_type === 'checkbox' ? (
-          <CheckboxComponent id={key} defaultValue={value} label="STATUS ATIVO"/>
+          <CheckboxComponent id={key} defaultValue={value} label="STATUS ATIVO" />
         ) : (
           <input
             type={input_type}
@@ -54,10 +50,11 @@ export default function ClientsPage() {
   const Empresas = Array.from(useFetch('cadastro_empresas'));
 
   const jsxElements = Empresas.map((clientData, index) => (
-    <div key={index} className={styles.clientColumn}>
+    <form key={index} className={styles.clientColumn}>
       {showEmpresasInputs(clientData)}
-      <hr />
-    </div>
+
+      <input type="submit" value="Enviar" />
+    </form>
   ));
 
   return (
