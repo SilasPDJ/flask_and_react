@@ -13,7 +13,7 @@ const handleLabelClick = (event) => {
 
 const getInputType = (value) => {
   if (typeof (value) == 'boolean') {
-    return 'checkbox'
+    return 'boolean'
   }
   return 'text'
 
@@ -26,14 +26,16 @@ const showEmpresasInputs = (data) => {
     let input_id = `${data['id']}_${key}`
     let input_type = getInputType(value)
 
-    return <div className={styles.inputContainer}>
-      <label onClick={handleLabelClick} htmlFor={input_id}>{key}</label>
-      {key === 'id' ? (
-        <input type={input_type} id={input_id} defaultValue={value} disabled />
-      ) : (
-        <input type={input_type} id={input_id} defaultValue={value} />
-      )}
-    </div>
+    return (
+      <div className={styles.inputContainer} key={input_id}>
+        <label onClick={handleLabelClick} htmlFor={input_id}>{key}</label>
+        {key === 'id' ? (
+          <input type={input_type} id={input_id} defaultValue={value} disabled />
+        ) : (
+          <input type={input_type} id={input_id} defaultValue={value} />
+        )}
+      </div>
+    );
   });
   return jsxElements;
 }
@@ -42,16 +44,15 @@ export default function ClientsPage() {
   const Empresas = Array.from(useFetch('cadastro_empresas'));
 
   const jsxElements = Empresas.map((clientData, index) => (
-    <div key={index} className={styles.clientContainer}>
-      <div className={styles.clientColumn}>
-        {showEmpresasInputs(clientData)}
-      </div>
+    <div key={index} className={styles.clientColumn}>
+      {showEmpresasInputs(clientData)}
       <hr />
     </div>
   ));
 
-
   return (
-    <div >{jsxElements}</div>
+    <div className={styles.clientContainer}>
+      {jsxElements}
+    </div>
   );
 }
