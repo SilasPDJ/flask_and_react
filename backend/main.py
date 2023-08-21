@@ -6,6 +6,8 @@ from flask_restx import Api, Resource
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
+from utils.db import MYSQL_TYPE_TO_PYTHON
+
 
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
@@ -28,6 +30,7 @@ app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT'))
 
 api = Api(app, doc='/docs')
 
+
 mysql = MySQL(app)
 CORS(app)  # Isso habilitará o CORS para todas as rotas
 
@@ -44,10 +47,15 @@ def execute_query(query, *args, as_df=False):
     with mysql.connection.cursor() as cursor:
         cursor.execute(query, *args)
         result = cursor.fetchall()
+
+        columns_types = [MYSQL_TYPE_TO_PYTHON[column[1]] for column in cursor.description]
+
         if as_df:
             # Obtendo os nomes das colunas
             columns = [desc[0] for desc in cursor.description]
             df = pd.DataFrame(result, columns=columns)
+            for col, col_type in zip(df.columns, columns_types):
+                df[col] = df[col].astype(col_type)
             return df
         else:
             return result
