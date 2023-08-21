@@ -29,6 +29,19 @@
     margin-bottom: 10px;
 }
 
+
 .inputContainer input {
     max-width: 20em;
+    padding: 5px;
+    /* Add some padding for better visual appearance */
+    /* Add a border for a subtle outline */
+    border-radius: 5px;
+    /* Round the corners */
+    transition: 0.3s ease;
+    /* Add a transition effect for interaction */
+}
+
+.inputContainer input:focus {
+    background-color: rgb(234, 250, 142);
+    /* Change the border color when the input is focused */
 }

@@ -2,12 +2,21 @@ import React from 'react';
 import styles from './clients.module.css';
 import useFetch from '../../hooks/useFetch';
 
-const callbackfn = (data) => {
 
+// Copy input's value
+const handleLabelClick = (event) => {
+  const input = event.target.nextElementSibling;
+  input.select();
+  document.execCommand('copy');
+};
+
+
+const showEmpresasInputs = (data) => {
+  // create the inputs callback
   const jsxElements = Object.entries(data).map(([key, value]) => {
     let input_id = `${data['id']}_${key}`
     return <div key={key} className={styles.inputContainer}>
-      <label htmlFor={input_id}>{key}</label>
+      <label onClick={handleLabelClick} htmlFor={input_id}>{key}</label>
       {key === 'id' ? (
         <input type="text" id={input_id} defaultValue={value} disabled />
       ) : (
@@ -24,7 +33,7 @@ export default function ClientsPage() {
   const jsxElements = Empresas.map((clientData, index) => (
     <div>
       <div key={index} className={styles.clientColumn}>
-        {callbackfn(clientData)}
+        {showEmpresasInputs(clientData)}
       </div>
       <hr />
     </div>
