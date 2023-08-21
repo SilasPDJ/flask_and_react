@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './clients.module.css';
 import useFetch from '../../hooks/useFetch';
-
+import CheckboxComponent from '../layout/Checkbox';
 
 // Copy input's value
 const handleLabelClick = (event) => {
@@ -25,15 +25,25 @@ const showEmpresasInputs = (data) => {
   const jsxElements = Object.entries(data).map(([key, value]) => {
     let input_id = `${data['id']}_${key}`
     let input_type = getInputType(value)
+    if (typeof (value) == 'boolean') {
+      console.log(value)
+    }
 
     return (
       <div className={styles.inputsContainer} key={input_id}>
         <label onClick={handleLabelClick} htmlFor={input_id}>{key}</label>
-        {key === 'id' ? (
-          <input type={input_type} id={input_id} defaultValue={value} disabled />
+        {input_type === 'checkbox' ? (
+          <CheckboxComponent id={key} defaultValue={value} label="STATUS ATIVO"/>
         ) : (
-          <input type={input_type} id={input_id} defaultValue={value} />
-        )}
+          <input
+            type={input_type}
+            id={input_id}
+            name={input_id}
+            defaultValue={value}
+            disabled={key === 'id'}
+          />
+        )
+        }
       </div>
     );
   });
