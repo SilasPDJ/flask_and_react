@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 from flask_cors import CORS
 
 from utils.db import MySQLInterface
+from utils.models import OrmTables
+
 
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
@@ -43,10 +45,25 @@ def clients_compt():
 
 @app.route("/api/cadastro_empresas")
 def cadastro_empresas():
-    query = db.select_query("SELECT * FROM main_empresas", as_df=True)
+    table_name ='main_empresas'
+    query = db.select_query(f"SELECT * FROM {table_name}", as_df=True)
     json_response = query.to_json(orient='records')
     return json_response
 
+# por padrão chamar fields_properties quando for do input
+@app.route('/api/cadastro_empresas/fields_properties')
+def cadastro_empresas_fields():
+    table_name = 'main_empresas'
+    orm = OrmTables.MainEmpresas
+    columns = orm.__table__.columns
+    columns_python_types = [col.type.python_type for col in columns]
+    columns_max_length = [col.type.length if hasattr(col.type, 'length') else -1 for col in columns]
+
+    return {
+        # "columns": columns,
+        # "columns_python_types": columns_python_types,
+        "columns_max_length": columns_max_length
+    }
 
 @app.route("/api/empresas", methods=['POST', 'GET', 'DELETE'])
 def updatingClientValues():
@@ -54,7 +71,7 @@ def updatingClientValues():
 
     if request.method == 'POST':
         db.update_row_with_dict(table_name=table_name, updated_data=request.json['data'], )
-        db.select_query()
+        # db.select_query()
         print(request.json)
         # TODO pegar quando teve erro e retornar a mensagem de erro
 

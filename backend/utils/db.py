@@ -121,7 +121,7 @@ if __name__ == '__main__':
     engine = create_engine(database_url)
     teste = MySQLInterface(engine.connect())
     models_obj = OrmTables().get_classes()
-    cols_length = [col.type.length if hasattr(col.type, 'length') else -1 for col in list(models_obj.values())[0].__table__.columns]
+    # cols_length = [col.type.length if hasattr(col.type, 'length') else -1 for col in list(models_obj.values())[0].__table__.columns]
 
     print(models_obj)
 

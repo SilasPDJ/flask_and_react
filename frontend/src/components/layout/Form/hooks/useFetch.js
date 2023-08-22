@@ -32,5 +32,5 @@ export default function useFetch(url, options) {
     fetchData();
   }, [url, options]);
 
-  return data;
+  return [data, setData];
 }

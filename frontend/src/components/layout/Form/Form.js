@@ -21,13 +21,9 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
    * @param {string} apiUrlPostUpdate - A URL da API para [POST] enviar os dados atualizados das empresas.
    * @returns {JSX.Element} Componente de formulário.
    */
-  const empresasData = useFetch(urlGetData)
 
-  const [dadosPorParametro, setDadosPorParametro] = useState(empresasData);
-
-  useEffect(() => {
-    setDadosPorParametro(empresasData);
-  }, [empresasData]);
+  const [dadosPorParametro, setDadosPorParametro] = useFetch(urlGetData);
+  const [dataFieldsProperties, setDataFeildsProperties] = useFetch(`${urlGetData}/fields_properties`)
 
 
   // Handlers 
@@ -74,6 +70,7 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
               value={dadosPorParametro[clientIndex][key] || ''}
               onChange={(e) => handleInputChange(clientIndex, key, e.target.value)}
               disabled={key === 'id'}
+              maxLength={10}
             />
           )}
         </div>
