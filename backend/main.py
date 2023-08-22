@@ -29,7 +29,6 @@ app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT'))
 
 api = Api(app, doc='/docs')
 
-
 mysql = MySQL(app)
 CORS(app)  # Isso habilitará o CORS para todas as rotas
 

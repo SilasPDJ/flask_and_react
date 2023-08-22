@@ -1,8 +1,10 @@
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy import Boolean, Column, ForeignKey
 from sqlalchemy import Integer, String, Numeric, Date
+from sqlalchemy.orm import Mapper, class_mapper
 
 Base = declarative_base()
+
 
 class MainEmpresas(Base):
     __tablename__ = 'main_empresas'
@@ -25,6 +27,7 @@ class MainEmpresas(Base):
 
     def __repr__(self):
         return f"<MainEmpresas(cnpj='{self.cnpj}', razao_social='{self.razao_social}')>"
+
 
 class ClientsCompts(Base):
     __tablename__ = 'clients_compts'
