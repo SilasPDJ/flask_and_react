@@ -66,9 +66,13 @@ def execute_data_manipulation(query, *args):
     :param query: The SQL query to execute.
     :param args: Optional parameters to be passed to the query.
     """
-    with mysql.connection.cursor() as cursor:
-        cursor.execute(query, *args)
-        mysql.connection.commit()  # Commit the transaction
+    try:
+        with mysql.connection.cursor() as cursor:
+            cursor.execute(query, args)
+        mysql.connection.commit()
+    except Exception as e:
+        print("Error:", e)
+        mysql.connection.rollback()
 
 
 def update_row_with_dict(table_name: str, updated_data: dict) -> bool:
@@ -85,7 +89,7 @@ def update_row_with_dict(table_name: str, updated_data: dict) -> bool:
     values.append(id_value)  # Add the id_value to the arguments
 
     # Execute the update query
-    if execute_data_manipulation(query, values):
+    if execute_data_manipulation(query, *values):
         return True
     print()
 
@@ -110,6 +114,7 @@ def updatingClientValues():
     if request.method == 'POST':
         update_row_with_dict(table_name=table_name, updated_data=request.json['data'], )
         print(request.json)
+        # TODO pegar quando teve erro e retornar a mensagem de erro
 
     return {'message': 'sucesso'}
 
