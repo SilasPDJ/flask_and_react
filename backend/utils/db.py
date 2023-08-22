@@ -1,37 +1,36 @@
 import pandas as pd
 import flask_mysqldb
-from utils.models import MainEmpresas, ClientsCompts
-
+from utils.models import OrmTables
 
 # Python types corresponding to MySQL FIELD_TYPE constants
 MYSQL_TYPE_TO_PYTHON = {
-    0: float,     # DECIMAL
-    1: bool,      # TINY
-    2: int,       # SHORT
-    3: int,       # LONG
-    4: float,     # FLOAT
-    5: float,     # DOUBLE
-    6: None,      # NULL
-    7: str,       # TIMESTAMP
-    8: int,       # LONGLONG
-    9: int,       # INT24
-    10: str,      # DATE
-    11: str,      # TIME
-    12: str,      # DATETIME
-    13: int,      # YEAR
-    15: str,      # VARCHAR
-    16: int,      # BIT
-    245: str,     # JSON
-    246: float,   # NEWDECIMAL
-    247: str,     # ENUM
-    248: str,     # SET
-    249: bytes,   # TINY_BLOB
-    250: bytes,   # MEDIUM_BLOB
-    251: bytes,   # LONG_BLOB
-    252: bytes,   # BLOB
-    253: str,     # VAR_STRING
-    254: str,     # STRING
-    255: bytes,   # GEOMETRY
+    0: float,  # DECIMAL
+    1: bool,  # TINY
+    2: int,  # SHORT
+    3: int,  # LONG
+    4: float,  # FLOAT
+    5: float,  # DOUBLE
+    6: None,  # NULL
+    7: str,  # TIMESTAMP
+    8: int,  # LONGLONG
+    9: int,  # INT24
+    10: str,  # DATE
+    11: str,  # TIME
+    12: str,  # DATETIME
+    13: int,  # YEAR
+    15: str,  # VARCHAR
+    16: int,  # BIT
+    245: str,  # JSON
+    246: float,  # NEWDECIMAL
+    247: str,  # ENUM
+    248: str,  # SET
+    249: bytes,  # TINY_BLOB
+    250: bytes,  # MEDIUM_BLOB
+    251: bytes,  # LONG_BLOB
+    252: bytes,  # BLOB
+    253: str,  # VAR_STRING
+    254: str,  # STRING
+    255: bytes,  # GEOMETRY
 }
 
 
@@ -60,7 +59,10 @@ class MySQLInterface:
                 columns = [desc[0] for desc in cursor.description]
                 df = pd.DataFrame(result, columns=columns)
                 for col, col_type in zip(df.columns, columns_types):
-                    df[col] = df[col].astype(col_type)
+                    try:
+                        df[col] = df[col].astype(col_type)
+                    except (pd.errors.IntCastingNaNError, Exception) as e:
+                        print(e)
                 return df
             else:
                 return result
@@ -97,3 +99,30 @@ class MySQLInterface:
         if self.execute_data_manipulation(query, *values):
             return True
         print()
+
+
+if __name__ == '__main__':
+    import os
+    import pymysql
+    from dotenv import load_dotenv
+    from sqlalchemy import create_engine
+
+    load_dotenv()
+    # Obtenha os valores das variáveis de ambiente
+    MYSQL_HOST = os.getenv('MYSQL_HOST')
+    MYSQL_USER = os.getenv('MYSQL_USER')
+    MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
+    MYSQL_DB = os.getenv('MYSQL_DB')
+    MYSQL_PORT = int(os.getenv('MYSQL_PORT'))
+    # Crie a URL de conexão
+    database_url = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}"
+
+    # Crie a conexão do SQLAlchemy
+    engine = create_engine(database_url)
+    teste = MySQLInterface(engine.connect())
+    models_obj = OrmTables().get_classes()
+    cols_length = [col.type.length if hasattr(col.type, 'length') else -1 for col in list(models_obj.values())[0].__table__.columns]
+
+    print(models_obj)
+
+    print(teste)
