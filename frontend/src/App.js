@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 
-import useFetch from './hooks/useFetch';
-import postData from './hooks/postData';
+import useFetch from './components/layout/Form/hooks/useFetch';
+import postData from './components/layout/Form/hooks/postData';
 import Button from '@mui/material/Button';
 import ResponsiveAppBar from './components/layout/ResponsiveAppBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';

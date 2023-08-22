@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './clients.module.css';
-import useFetch from '../../hooks/useFetch';
+import useFetch from '../layout/Form/hooks/useFetch';
 import Form from '../layout/Form/Form';
 
 
@@ -8,7 +8,12 @@ import Form from '../layout/Form/Form';
 export default function ClientsPage() {
   // Setting Datas 
   const empresasData = useFetch('cadastro_empresas');
-  return Form(empresasData, "empresas")
+
+  return (
+    <>
+      <Form urlGetData="cadastro_empresas" apiUrlPostUpdate="empresas" />
+    </>
+  )
 
 }
 

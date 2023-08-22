@@ -5,8 +5,8 @@ from flask_restx import Api, Resource
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
-from utils.db import MYSQL_TYPE_TO_PYTHON
 
+from utils.db import MySQLInterface
 
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
@@ -33,76 +33,18 @@ api = Api(app, doc='/docs')
 mysql = MySQL(app)
 CORS(app)  # Isso habilitará o CORS para todas as rotas
 
-
-def select_query(query, *args, as_df=False):
-    """
-    Execute a database query and return the results.
-
-    :param query: The SQL query to execute.
-    :param args: Optional parameters to be passed to the query.
-    :param as_df: If True, return the results as a pandas DataFrame. If False, return a list of tuples.
-    :return: The query results. If as_df is True, a DataFrame; otherwise, a list of tuples.
-    """
-    with mysql.connection.cursor() as cursor:
-        cursor.execute(query, *args)
-        result = cursor.fetchall()
-
-        columns_types = [MYSQL_TYPE_TO_PYTHON[column[1]] for column in cursor.description]
-
-        if as_df:
-            # Obtendo os nomes das colunas
-            columns = [desc[0] for desc in cursor.description]
-            df = pd.DataFrame(result, columns=columns)
-            for col, col_type in zip(df.columns, columns_types):
-                df[col] = df[col].astype(col_type)
-            return df
-        else:
-            return result
-
-def execute_data_manipulation(query, *args):
-    """
-    Execute a database query and commit the transaction.
-
-    :param query: The SQL query to execute.
-    :param args: Optional parameters to be passed to the query.
-    """
-    try:
-        with mysql.connection.cursor() as cursor:
-            cursor.execute(query, args)
-        mysql.connection.commit()
-    except Exception as e:
-        print("Error:", e)
-        mysql.connection.rollback()
-
-
-def update_row_with_dict(table_name: str, updated_data: dict) -> bool:
-
-    # Prepare the dictionary of columns and values
-    id_value = updated_data.pop('id')
-    if not id_value:
-        return False
-    columns = ', '.join([f"{column} = %s" for column in updated_data.keys()])
-    values = list(updated_data.values())
-
-    # Create the SQL query with placeholders and arguments
-    query = f"UPDATE {table_name} SET {columns} WHERE id = %s"
-    values.append(id_value)  # Add the id_value to the arguments
-
-    # Execute the update query
-    if execute_data_manipulation(query, *values):
-        return True
-    print()
+db = MySQLInterface(mysql)
 
 @app.route("/api/clients_compt")
 def clients_compt():
-    query = select_query("SELECT * FROM clients_compts", as_df=True)
+    query = db.select_query("SELECT * FROM clients_compts", as_df=True)
     json_response = query.to_json(orient='records')
     return json_response
 
 
 @app.route("/api/cadastro_empresas")
 def cadastro_empresas():
-    query = select_query("SELECT * FROM main_empresas", as_df=True)
+    query = db.select_query("SELECT * FROM main_empresas", as_df=True)
     json_response = query.to_json(orient='records')
     return json_response
 
@@ -112,7 +54,8 @@ def updatingClientValues():
     table_name = 'main_empresas'
 
     if request.method == 'POST':
-        update_row_with_dict(table_name=table_name, updated_data=request.json['data'], )
+        db.update_row_with_dict(table_name=table_name, updated_data=request.json['data'], )
+        db.select_query()
         print(request.json)
         # TODO pegar quando teve erro e retornar a mensagem de erro
 

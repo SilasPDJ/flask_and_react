@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './Form.module.css';
 import CheckboxComponent from './Checkbox';
 import handleDataSubmit from './DataSubmit';
+import useFetch from './hooks/useFetch';
 
 
 const getInputType = (value) => {
@@ -12,12 +13,16 @@ const getInputType = (value) => {
 };
 
 
-export default function Form(empresasData, postToUrl) {
-  /*  
-  * Função cria o formulário e os handlers 
-  * @param (array of objects) empresasData
-  * @param (string) posTourl
-  */
+export default function Form({ urlGetData, apiUrlPostUpdate }) {
+  /**
+   * Componente de formulário dinâmico para exibir e atualizar dados de empresas.
+   *
+   * @param {string} urlGetData - A URL da API para [GET] buscar os dados das empresas.
+   * @param {string} apiUrlPostUpdate - A URL da API para [POST] enviar os dados atualizados das empresas.
+   * @returns {JSX.Element} Componente de formulário.
+   */
+  const empresasData = useFetch(urlGetData)
+
   const [dadosPorParametro, setDadosPorParametro] = useState(empresasData);
 
   useEffect(() => {
@@ -43,7 +48,7 @@ export default function Form(empresasData, postToUrl) {
   const handleSubmit = async (e, clientIndex) => {
     e.preventDefault();
 
-    const responseData = await handleDataSubmit(postToUrl, dadosPorParametro[clientIndex]);
+    const responseData = await handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
     console.log('Response:', responseData);
   };
 
