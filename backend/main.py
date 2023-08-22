@@ -34,7 +34,7 @@ mysql = MySQL(app)
 CORS(app)  # Isso habilitará o CORS para todas as rotas
 
 
-def execute_query(query, *args, as_df=False):
+def select_query(query, *args, as_df=False):
     """
     Execute a database query and return the results.
 
@@ -59,34 +59,59 @@ def execute_query(query, *args, as_df=False):
         else:
             return result
 
+def execute_data_manipulation(query, *args):
+    """
+    Execute a database query and commit the transaction.
+
+    :param query: The SQL query to execute.
+    :param args: Optional parameters to be passed to the query.
+    """
+    with mysql.connection.cursor() as cursor:
+        cursor.execute(query, *args)
+        mysql.connection.commit()  # Commit the transaction
+
+
+def update_row_with_dict(table_name: str, updated_data: dict) -> bool:
+
+    # Prepare the dictionary of columns and values
+    id_value = updated_data.pop('id')
+    if not id_value:
+        return False
+    columns = ', '.join([f"{column} = %s" for column in updated_data.keys()])
+    values = list(updated_data.values())
+
+    # Create the SQL query with placeholders and arguments
+    query = f"UPDATE {table_name} SET {columns} WHERE id = %s"
+    values.append(id_value)  # Add the id_value to the arguments
+
+    # Execute the update query
+    if execute_data_manipulation(query, values):
+        return True
+    print()
 
 @app.route("/api/clients_compt")
 def clients_compt():
-    query = execute_query("SELECT * FROM clients_compts", as_df=True)
+    query = select_query("SELECT * FROM clients_compts", as_df=True)
     json_response = query.to_json(orient='records')
     return json_response
 
 
 @app.route("/api/cadastro_empresas")
 def cadastro_empresas():
-    query = execute_query("SELECT * FROM main_empresas", as_df=True)
+    query = select_query("SELECT * FROM main_empresas", as_df=True)
     json_response = query.to_json(orient='records')
     return json_response
 
 
-@app.route("/api/trying_to_get_data_from_form", methods=['POST'])
-def retrieve_data():
-    data = request.json.get('data') if request.json else None  # Get the 'data' from the JSON body
-    print('hello')
-    print(data)
-    return jsonify({"message": "Data received and printed."})
-
-
-@app.route("/api/update_clients", methods=['POST'])
+@app.route("/api/empresas", methods=['POST', 'GET', 'DELETE'])
 def updatingClientValues():
-    print(request.json)
-    print()
-    pass
+    table_name = 'main_empresas'
+
+    if request.method == 'POST':
+        update_row_with_dict(table_name=table_name, updated_data=request.json['data'], )
+        print(request.json)
+
+    return {'message': 'sucesso'}
 
 
 @app.route("/api/test")

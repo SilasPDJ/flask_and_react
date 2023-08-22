@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './clients.module.css';
 import useFetch from '../../hooks/useFetch';
 import CheckboxComponent from '../layout/Checkbox';
+import handleDataSubmit from '../handlers/DataSubmit';
 
 // Copy input's value
 const handleLabelClick = (event) => {
@@ -49,17 +50,24 @@ const showEmpresasInputs = (data) => {
 export default function ClientsPage() {
   const Empresas = Array.from(useFetch('cadastro_empresas'));
 
-  const jsxElements = Empresas.map((clientData, index) => (
-    <form key={index} className={styles.clientColumn}>
-      {showEmpresasInputs(clientData)}
+  const handleSubmit = async (e, clientData) => {
+    e.preventDefault();
 
-      <input type="submit" value="Enviar" />
-    </form>
-  ));
+    const responseData = await handleDataSubmit('empresas', clientData);
+    console.log('Response:', responseData);
+
+  };
 
   return (
     <div className={styles.clientContainer}>
-      {jsxElements}
+      {Empresas.map((clientData, index) => (
+        <div key={index} className={styles.clientColumn}>
+          <form onSubmit={(e) => handleSubmit(e, clientData)} method='POST'>
+            {showEmpresasInputs(clientData)}
+            <input type="submit" value="Enviar" />
+          </form>
+        </div>
+      ))}
     </div>
   );
 }

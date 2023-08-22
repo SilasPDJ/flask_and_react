@@ -12,8 +12,8 @@ export default function PostDataHandler({ data }) {
     setError(null);
 
     try {
-      const data = await postData('trying_to_get_data_from_form', { data: postDataValue });
-      setResponseData(data);
+      const response = await postData('trying_to_get_data_from_form', { data: postDataValue });
+      setResponseData(response);
     } catch (error) {
       setError(error);
     }
