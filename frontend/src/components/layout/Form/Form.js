@@ -3,7 +3,7 @@ import styles from './Form.module.css';
 import CheckboxComponent from './Checkbox';
 import handleDataSubmit from './DataSubmit';
 import useFetch from './hooks/useFetch';
-
+import { Button } from '@mui/material';
 
 const getInputType = (value) => {
   if (typeof value === 'boolean') {
@@ -25,13 +25,34 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
   const [dadosPorParametro, setDadosPorParametro] = useFetch(urlGetData);
   const [dataFieldsProperties, setDataFeildsProperties] = useFetch(`${urlGetData}/fields_properties`)
 
+
   // Handlers 
+  const handlerAtivarEdicao = (divId, event) => {
+    let buttonCaller = event.target
+
+    let divForm = document.getElementById(divId)
+    let inputs = divForm.querySelectorAll('input')
+    inputs.forEach((input) => {
+      input.disabled = !input.disabled
+    })
+
+    if (inputs[0].disabled) {
+      buttonCaller.textContent = 'EDITAR'
+
+    } else {
+      buttonCaller.textContent = 'PROTEGER'
+    }
+
+  };
+
   const handleLabelClick = (event) => {
     const input = event.target.nextElementSibling;
     input.disabled = false;
     input.select();
     document.execCommand('copy');
+    input.disabled = true;
   };
+
 
   const handleInputChange = (clientIndex, key, value) => {
     setDadosPorParametro((prevClientes) => {
@@ -56,7 +77,7 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
       let input_id = `${clientData['id']}_${key}`;
       let input_type = getInputType(value);
       let inputsMaxLength = dataFieldsProperties['inputs_max_length'][indx]
-      console.log(inputsMaxLength)
+      // console.log(inputsMaxLength)
 
       return (
         <div className={styles.inputsContainer} key={input_id}>
@@ -73,7 +94,8 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
               name={input_id}
               value={dadosPorParametro[clientIndex][key] || ''}
               onChange={(e) => handleInputChange(clientIndex, key, e.target.value)}
-              disabled={key === 'id'}
+              // disabled={key !== 'id'}
+              disabled={true}
               maxLength={inputsMaxLength !== -1 ? inputsMaxLength : undefined}
             // Na minha lógica, inputs sem essa propriedade, recebem -1 
             />
@@ -83,14 +105,20 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
     });
   };
 
+  let getDivFormName = (name) => `form-client-${name}`;
+
   // Component
   return (
     <div className={styles.clientContainer}>
       {dadosPorParametro.map((clientData, index) => (
-        <div key={index} className={styles.clientColumn}>
+        <div id={getDivFormName(index)} key={index} className={styles.clientColumn}>
           <form onSubmit={(e) => handleSubmit(e, index)} method='POST'>
+            <Button variant="contained" color="success" onClick={(event) => handlerAtivarEdicao(getDivFormName(index), event)}>
+              EDITAR
+              {/* TODO: mudar de success p/ warning com usestate? */}
+            </Button>
             {showInputs(clientData, index)}
-            <input type="submit" value="Enviar" />
+            {/* <input type="submit" value="Enviar" /> */}
           </form>
         </div>
       ))}

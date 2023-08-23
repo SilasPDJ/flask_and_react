@@ -14,10 +14,13 @@
 
     border: 1px solid #fff;
     border-bottom: none;
-    /* Adjust as needed */
     /* Add some space to the right of each column */
     margin-bottom: 10px;
+    /* align-items: center; */
+    text-align: center;
+
 }
+
 
 @media (min-width: 768px) {
 

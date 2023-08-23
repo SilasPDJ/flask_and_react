@@ -34,3 +34,7 @@ main {
         transform: rotate(360deg);
     }
 }
+
+input:disabled {
+    background-color: #dee9ff;
+}
