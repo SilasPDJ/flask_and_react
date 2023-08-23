@@ -2,11 +2,11 @@ from flask import Flask
 from utils.models import Base
 
 
-class Decorators:
+class DynamicRoutes:
     def __init__(self, app: Flask):
         self.app = app
 
-    def dynamic_route(self, route_prefix: str, orm: type, *funcs):
+    def call(self, route_prefix: str, orm: type, *funcs):
         def decorator(func):
             self.app.add_url_rule(
                 f'/api/{route_prefix}',
