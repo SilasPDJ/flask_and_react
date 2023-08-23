@@ -50,35 +50,40 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
 
   const handleLabelClick = (event) => {
     const input = event.target.nextElementSibling;
+    const previousDisabledState = input.disabled
     input.disabled = false;
     input.select();
     document.execCommand('copy');
-    input.disabled = true;
+    input.disabled = previousDisabledState;
   };
 
 
   const handleInputChange = (clientIndex, key, value) => {
-    setDadosPorParametro((prevClientes) => {
-      const newClientes = [...prevClientes];
+    setDadosPorParametro(() => {
+      const newClientes = [...dadosPorParametro];
       newClientes[clientIndex][key] = value;
       return newClientes;
     });
-    // const responseData = handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
+    const responseData = handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
 
   };
+  const handleInputBlur = (clientIndex, key, value) => {
+    // const responseData = handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
+  }
 
-  const handleSubmit = async (e, clientIndex) => {
+  /*const handleSubmit = async (e, clientIndex) => {
     const responseData = await handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
     e.preventDefault();
 
     console.log('Response:', responseData);
-  };
+  };*/
 
   // Setting Empresas Inputs
   const showInputs = (clientData, clientIndex) => {
     return Object.entries(clientData).map(([key, value], indx) => {
       let input_id = `${clientData['id']}_${key}`;
       let input_type = getInputType(value);
+      // TODO: check this part
       let inputsMaxLength = dataFieldsProperties['inputs_max_length'][indx]
       // console.log(inputsMaxLength)
 
@@ -89,7 +94,11 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
             {key}
           </label>
           {input_type === 'checkbox' ? (
-            <CheckboxComponent id={key} defaultValue={value} label="STATUS ATIVO" />
+            <CheckboxComponent
+              id={key}
+              // onChange={(e) => handleInputBlur(clientIndex, key, e.target.value)}
+              defaultValue={value}
+              clabel="STATUS ATIVO" />
           ) : (
             <input
               type={input_type}
@@ -97,6 +106,7 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
               name={input_id}
               value={dadosPorParametro[clientIndex][key] || ''}
               onChange={(e) => handleInputChange(clientIndex, key, e.target.value)}
+              onBlur={(e) => handleInputBlur(clientIndex, key, e.target.value)}
               // disabled={key !== 'id'}
               disabled={true}
               maxLength={inputsMaxLength !== -1 ? inputsMaxLength : undefined}
@@ -115,7 +125,9 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
     <div className={styles.clientContainer}>
       {dadosPorParametro.map((clientData, index) => (
         <div id={getDivFormName(index)} key={index} className={styles.clientColumn}>
-          <form onSubmit={(e) => handleSubmit(e, index)} method='POST'>
+          <form
+            // onSubmit={(e) => handleSubmit(e, index)} 
+            method='POST'>
             <Button variant="contained" color="success" onClick={(event) => handlerAtivarEdicao(getDivFormName(index), event)}>
               EDITAR
               {/* TODO: mudar de success p/ warning com usestate? */}

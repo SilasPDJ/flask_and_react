@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-function CheckboxComponent({ id, defaultValue, label, colorType }) {
+function CheckboxComponent({ id, onChange, label, defaultValue, colorType }) {
   colorType = colorType ? colorType : 'success';
 
   const [checked, setChecked] = useState(defaultValue);
   const handleChange = (event) => {
     setChecked(event.target.checked);
+    onChange();
   };
 
   const checkboxStyle = {
