@@ -15,14 +15,14 @@ const getInputType = (value) => {
 
 export default function Form({ urlGetData, apiUrlPostUpdate }) {
   /**
-   * Componente de formulário dinâmico para exibir e atualizar dados de empresas.
+   * Dynamic form component to display and update company data.
    *
-   * @param {string} urlGetData - A URL da API para [GET] buscar os dados das empresas.
-   * @param {string} apiUrlPostUpdate - A URL da API para [POST] enviar os dados atualizados das empresas.
-   * @returns {JSX.Element} Componente de formulário.
+   * @param {string} urlGetData - The API URL for [GET] fetching company data.
+   * @param {string} apiUrlPostUpdate - The API URL for [POST] sending updated company data.
+   * @returns {JSX.Element} Form component.
    */
 
-  const [dadosPorParametro, setDadosPorParametro] = useFetch(urlGetData);
+  const [datasByParameter, setDatasByParameter] = useFetch(urlGetData);
   const [dataFieldsProperties, setDataFeildsProperties] = useFetch(`${urlGetData}/fields_properties`)
 
 
@@ -40,10 +40,10 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
     })
 
     if (inputsToToggle[0].disabled) {
-      buttonCaller.textContent = 'EDITAR'
+      buttonCaller.textContent = 'ALLOW EDITION'
 
     } else {
-      buttonCaller.textContent = 'PROTEGER'
+      buttonCaller.textContent = 'PROTECT EDITION'
     }
 
   };
@@ -59,14 +59,14 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
 
 
   const handleInputChange = (clientIndex, key, value) => {
-    const updatedClients = [...dadosPorParametro]; // Faz uma cópia dos dadosPorParametro
-    const updatedClient = { ...updatedClients[clientIndex] }; // Faz uma cópia do cliente que será atualizado
+    const updatedClients = [...datasByParameter];
+    const updatedClient = { ...updatedClients[clientIndex] };
 
-    updatedClient[key] = value; // Atualiza o valor da chave específica
+    updatedClient[key] = value;
 
-    updatedClients[clientIndex] = updatedClient; // Coloca o cliente atualizado de volta na lista
+    updatedClients[clientIndex] = updatedClient;
 
-    setDadosPorParametro(updatedClients); // Atualiza o estado com a lista de clientes atualizada
+    setDatasByParameter(updatedClients);
 
     const responseData = handleDataSubmit(apiUrlPostUpdate, updatedClient);
 
@@ -130,14 +130,13 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
   // Component
   return (
     <div className={styles.clientContainer}>
-      {dadosPorParametro.map((clientData, index) => (
+      {datasByParameter.map((clientData, index) => (
         <div id={getDivFormName(index)} key={index} className={styles.clientColumn}>
           <form
             // onSubmit={(e) => handleSubmit(e, index)} 
             method='POST'>
             <Button variant="contained" color="success" onClick={(event) => handlerAtivarEdicao(getDivFormName(index), event)}>
-              EDITAR
-              {/* TODO: mudar de success p/ warning com usestate? */}
+              Allow Edition
             </Button>
             {showInputs(clientData, index)}
             {/* <input type="submit" value="Enviar" /> */}
