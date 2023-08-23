@@ -59,15 +59,17 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
 
 
   const handleInputChange = (clientIndex, key, value) => {
-    const updatedClientes = [...dadosPorParametro];
-    updatedClientes[clientIndex][key] = value;
-    setDadosPorParametro(updatedClientes);
+    // const updatedClientes = [...dadosPorParametro];
+    const updateClient = { ...dadosPorParametro[clientIndex] };
 
+    updateClient[key] = value;
+    setDadosPorParametro([updateClient]);
+    console.log(updateClient)
     const responseData = handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
 
   };
   const handleInputBlur = (clientIndex, key, value) => {
-    // const responseData = handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
+    const responseData = handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
   }
 
   /*const handleSubmit = async (e, clientIndex) => {
@@ -103,7 +105,7 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
               type={input_type}
               id={input_id}
               name={input_id}
-              value={dadosPorParametro[clientIndex][key]}
+              value={clientData[key]}
               onChange={(e) => handleInputChange(clientIndex, key, e.target.value)}
               // onBlur={(e) => handleInputBlur(clientIndex, key, e.target.value)}
               // disabled={key !== 'id'}
