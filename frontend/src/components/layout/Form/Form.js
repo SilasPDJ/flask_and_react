@@ -59,13 +59,16 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
 
 
   const handleInputChange = (clientIndex, key, value) => {
-    // const updatedClientes = [...dadosPorParametro];
-    const updateClient = { ...dadosPorParametro[clientIndex] };
+    const updatedClients = [...dadosPorParametro]; // Faz uma cópia dos dadosPorParametro
+    const updatedClient = { ...updatedClients[clientIndex] }; // Faz uma cópia do cliente que será atualizado
 
-    updateClient[key] = value;
-    setDadosPorParametro([updateClient]);
-    console.log(updateClient)
-    const responseData = handleDataSubmit(apiUrlPostUpdate, updateClient);
+    updatedClient[key] = value; // Atualiza o valor da chave específica
+
+    updatedClients[clientIndex] = updatedClient; // Coloca o cliente atualizado de volta na lista
+
+    setDadosPorParametro(updatedClients); // Atualiza o estado com a lista de clientes atualizada
+
+    const responseData = handleDataSubmit(apiUrlPostUpdate, updatedClient);
 
   };
 
