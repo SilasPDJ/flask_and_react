@@ -54,7 +54,7 @@ def cadastro_empresas():
 # por padrão chamar fields_properties quando for do input
 
 @app.route("/api/empresas", methods=['POST', 'GET', 'DELETE'])
-@decorators.dynamic_route('cadastro_empresas', OrmTables.MainEmpresas)
+@decorators.dynamic_route('cadastro_empresas', OrmTables.MainEmpresas, 'fields_properties')
 def updatingClientValues():
     table_name = 'main_empresas'
 
