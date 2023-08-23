@@ -62,7 +62,7 @@ def cadastro_empresas_fields():
     return {
         # "columns": columns,
         # "columns_python_types": columns_python_types,
-        "columns_max_length": columns_max_length
+        "inputs_max_length": [str(col) for col in columns_max_length]
     }
 
 @app.route("/api/empresas", methods=['POST', 'GET', 'DELETE'])

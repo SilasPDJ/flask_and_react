@@ -25,10 +25,10 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
   const [dadosPorParametro, setDadosPorParametro] = useFetch(urlGetData);
   const [dataFieldsProperties, setDataFeildsProperties] = useFetch(`${urlGetData}/fields_properties`)
 
-
   // Handlers 
   const handleLabelClick = (event) => {
     const input = event.target.nextElementSibling;
+    input.disabled = false;
     input.select();
     document.execCommand('copy');
   };
@@ -39,20 +39,24 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
       newClientes[clientIndex][key] = value;
       return newClientes;
     });
+    // const responseData = handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
+
   };
 
   const handleSubmit = async (e, clientIndex) => {
+    const responseData = await handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
     e.preventDefault();
 
-    const responseData = await handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
     console.log('Response:', responseData);
   };
 
   // Setting Empresas Inputs
   const showInputs = (clientData, clientIndex) => {
-    return Object.entries(clientData).map(([key, value]) => {
+    return Object.entries(clientData).map(([key, value], indx) => {
       let input_id = `${clientData['id']}_${key}`;
       let input_type = getInputType(value);
+      let inputsMaxLength = dataFieldsProperties['inputs_max_length'][indx]
+      console.log(inputsMaxLength)
 
       return (
         <div className={styles.inputsContainer} key={input_id}>
@@ -70,7 +74,8 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
               value={dadosPorParametro[clientIndex][key] || ''}
               onChange={(e) => handleInputChange(clientIndex, key, e.target.value)}
               disabled={key === 'id'}
-              maxLength={10}
+              maxLength={inputsMaxLength !== -1 ? inputsMaxLength : undefined}
+            // Na minha lógica, inputs sem essa propriedade, recebem -1 
             />
           )}
         </div>
