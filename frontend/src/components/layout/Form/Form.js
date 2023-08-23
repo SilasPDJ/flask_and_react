@@ -31,12 +31,15 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
     let buttonCaller = event.target
 
     let divForm = document.getElementById(divId)
-    let inputs = divForm.querySelectorAll('input')
-    inputs.forEach((input) => {
+    let _inputs = divForm.querySelectorAll('input')
+    // Use slice to ignore the first input
+    const inputsToToggle = Array.from(_inputs).slice(1);
+
+    inputsToToggle.forEach((input) => {
       input.disabled = !input.disabled
     })
 
-    if (inputs[0].disabled) {
+    if (inputsToToggle[0].disabled) {
       buttonCaller.textContent = 'EDITAR'
 
     } else {
