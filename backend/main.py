@@ -9,11 +9,9 @@ from flask_cors import CORS
 from utils.db import MySQLInterface
 from utils.models import OrmTables
 
-
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
-
 
 # from backend.config import DevConfig
 
@@ -36,6 +34,7 @@ CORS(app)  # Isso habilitará o CORS para todas as rotas
 
 db = MySQLInterface(mysql)
 
+
 @app.route("/api/clients_compt")
 def clients_compt():
     query = db.select_query("SELECT * FROM clients_compts", as_df=True)
@@ -45,10 +44,11 @@ def clients_compt():
 
 @app.route("/api/cadastro_empresas")
 def cadastro_empresas():
-    table_name ='main_empresas'
+    table_name = 'main_empresas'
     query = db.select_query(f"SELECT * FROM {table_name}", as_df=True)
     json_response = query.to_json(orient='records')
     return json_response
+
 
 # por padrão chamar fields_properties quando for do input
 @app.route('/api/cadastro_empresas/fields_properties')
@@ -65,17 +65,19 @@ def cadastro_empresas_fields():
         "inputs_max_length": [str(col) for col in columns_max_length]
     }
 
+
 @app.route("/api/empresas", methods=['POST', 'GET', 'DELETE'])
 def updatingClientValues():
     table_name = 'main_empresas'
 
     if request.method == 'POST':
-        db.update_row_with_dict(table_name=table_name, updated_data=request.json['data'], )
-        # db.select_query()
-        print(request.json)
-        # TODO pegar quando teve erro e retornar a mensagem de erro
-
-    return {'message': 'sucesso'}
+        result = db.update_row_with_dict(table_name=table_name, updated_data=request.json['data'])
+        if result:
+            return {'update_status': 'success'}
+        # print(request.json)
+        else:
+            print(result)
+            return {'update_status': 'failed'}
 
 
 @app.route("/api/test")

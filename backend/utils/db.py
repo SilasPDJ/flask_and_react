@@ -67,7 +67,7 @@ class MySQLInterface:
             else:
                 return result
 
-    def execute_data_manipulation(self, query, *args):
+    def execute_data_manipulation(self, query, *args) -> bool:
         """
         Execute a database query and commit the transaction.
 
@@ -78,10 +78,11 @@ class MySQLInterface:
             with self.mysql.connection.cursor() as cursor:
                 cursor.execute(query, args)
             self.mysql.connection.commit()
+            return True
         except Exception as e:
             print("Error:", e)
             self.mysql.connection.rollback()
-
+            return False
     def update_row_with_dict(self, table_name: str, updated_data: dict) -> bool:
 
         # Prepare the dictionary of columns and values
@@ -96,9 +97,7 @@ class MySQLInterface:
         values.append(id_value)  # Add the id_value to the arguments
 
         # Execute the update query
-        if self.execute_data_manipulation(query, *values):
-            return True
-        print()
+        return self.execute_data_manipulation(query, *values)
 
 
 if __name__ == '__main__':
