@@ -21,6 +21,12 @@ main {
     color: white;
 }
 
+.absolute {
+    padding-bottom: 2em;
+
+    text-align: end;
+}
+
 .App-link {
     color: #61dafb;
 }

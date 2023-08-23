@@ -12,6 +12,7 @@ from utils.models import OrmTables
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
+from utils.decorators import Decorators
 
 # from backend.config import DevConfig
 
@@ -33,7 +34,7 @@ mysql = MySQL(app)
 CORS(app)  # Isso habilitará o CORS para todas as rotas
 
 db = MySQLInterface(mysql)
-
+decorators = Decorators(app)
 
 @app.route("/api/clients_compt")
 def clients_compt():
@@ -51,22 +52,9 @@ def cadastro_empresas():
 
 
 # por padrão chamar fields_properties quando for do input
-@app.route('/api/cadastro_empresas/fields_properties')
-def cadastro_empresas_fields():
-    table_name = 'main_empresas'
-    orm = OrmTables.MainEmpresas
-    columns = orm.__table__.columns
-    columns_python_types = [col.type.python_type for col in columns]
-    columns_max_length = [col.type.length if hasattr(col.type, 'length') else -1 for col in columns]
-
-    return {
-        # "columns": columns,
-        # "columns_python_types": columns_python_types,
-        "inputs_max_length": [str(col) for col in columns_max_length]
-    }
-
 
 @app.route("/api/empresas", methods=['POST', 'GET', 'DELETE'])
+@decorators.dynamic_route('cadastro_empresas', OrmTables.MainEmpresas)
 def updatingClientValues():
     table_name = 'main_empresas'
 
@@ -78,6 +66,7 @@ def updatingClientValues():
         else:
             print(result)
             return {'update_status': 'failed'}
+
 
 
 @app.route("/api/test")

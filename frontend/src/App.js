@@ -12,6 +12,8 @@ import HomePage from './components/pages/homePage';
 import MenuPage from './components/pages/menuPage';
 import TestePage from './components/pages/testePage'
 import ClientsPage from './components/pages/clientsPage';
+import CompetenciasPage from './components/pages/competenciasPage';
+
 import React, { useEffect, useState } from 'react';
 
 
@@ -21,6 +23,7 @@ function App() {
   // the key is the page name, and the value is the component
   const pageComponents = {
     Home: HomePage,
+    Competencias: CompetenciasPage,
     "Clients_Register": ClientsPage,
     Menu: MenuPage,
     Teste: TestePage,

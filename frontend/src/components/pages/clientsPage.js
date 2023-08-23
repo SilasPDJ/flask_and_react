@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './clients.module.css';
 import useFetch from '../layout/Form/hooks/useFetch';
 import Form from '../layout/Form/Form';
+import { Button } from '@mui/material';
 
 
 
@@ -11,6 +12,8 @@ export default function ClientsPage() {
 
   return (
     <>
+      <div className='absolute'><Button variant='contained'>Criar Novo Cliente</Button></div>
+
       <Form urlGetData="cadastro_empresas" apiUrlPostUpdate="empresas" />
     </>
   )
