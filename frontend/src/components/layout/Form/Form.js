@@ -65,12 +65,9 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
     updateClient[key] = value;
     setDadosPorParametro([updateClient]);
     console.log(updateClient)
-    const responseData = handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
+    const responseData = handleDataSubmit(apiUrlPostUpdate, updateClient);
 
   };
-  const handleInputBlur = (clientIndex, key, value) => {
-    const responseData = handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
-  }
 
   /*const handleSubmit = async (e, clientIndex) => {
     const responseData = await handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
@@ -85,7 +82,13 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
       let input_id = `${clientData['id']}_${key}`;
       let input_type = getInputType(value);
       // TODO: check this part
-      let inputsMaxLength = dataFieldsProperties['inputs_max_length'][indx]
+      let inputsMaxLength
+      try {
+        inputsMaxLength = dataFieldsProperties['inputs_max_length'][indx]
+      }
+      catch {
+        inputsMaxLength = 255
+      }
       // console.log(inputsMaxLength)
 
       return (
