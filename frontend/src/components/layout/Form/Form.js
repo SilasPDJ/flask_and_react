@@ -59,11 +59,10 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
 
 
   const handleInputChange = (clientIndex, key, value) => {
-    setDadosPorParametro(() => {
-      const newClientes = [...dadosPorParametro];
-      newClientes[clientIndex][key] = value;
-      return newClientes;
-    });
+    const updatedClientes = [...dadosPorParametro];
+    updatedClientes[clientIndex][key] = value;
+    setDadosPorParametro(updatedClientes);
+
     const responseData = handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
 
   };
@@ -104,9 +103,9 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
               type={input_type}
               id={input_id}
               name={input_id}
-              value={dadosPorParametro[clientIndex][key] || ''}
+              value={dadosPorParametro[clientIndex][key]}
               onChange={(e) => handleInputChange(clientIndex, key, e.target.value)}
-              onBlur={(e) => handleInputBlur(clientIndex, key, e.target.value)}
+              // onBlur={(e) => handleInputBlur(clientIndex, key, e.target.value)}
               // disabled={key !== 'id'}
               disabled={true}
               maxLength={inputsMaxLength !== -1 ? inputsMaxLength : undefined}

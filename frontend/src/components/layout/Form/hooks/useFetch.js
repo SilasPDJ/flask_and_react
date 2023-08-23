@@ -20,11 +20,14 @@ export default function useFetch(url, options) {
     async function fetchData() {
       try {
         const response = await fetch(mainUrl);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const responseData = await response.json();
         setData(responseData);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
         setLoading(false);
       }
     }
