@@ -48,7 +48,7 @@ class MySQLInterface:
         :return: The query results. If as_df is True, a DataFrame; otherwise, a list of tuples.
         """
         with self.mysql.connection.cursor() as cursor:
-            cursor.execute(query, *args)
+            cursor.execute(query, args)
             result = cursor.fetchall()
 
             columns_types = [MYSQL_TYPE_TO_PYTHON[column[1]] for column in cursor.description]

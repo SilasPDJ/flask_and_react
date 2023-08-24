@@ -66,7 +66,15 @@ def updatingClientValues():
         else:
             print(result)
             return {'update_status': 'failed'}
+    # TODO unite in cadastro_empresas
 
+@app.route('/api/cadastro_competencias/<compt>', methods=['GET', 'POST'])
+def cadastro_competencias(compt):
+    print(compt)
+    table_name = OrmTables.ClientsCompts.__tablename__
+    query = df = db.select_query(f"SELECT * FROM {table_name} where compt=%s", compt, as_df=True)
+    json_response = query.to_json(orient='records')
+    return json_response
 
 
 @app.route("/api/test")
