@@ -17,6 +17,8 @@ export default function CompetenciasPage() {
   return (
     <>
       competencias page
+      <Form data={comptData} setData={comptSetData} urlGetData="cadastro_competencias" apiUrlPostUpdate="empresas"></Form>
+      {/* Necessário mudar para enviar */}
     </>
   )
 }

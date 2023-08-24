@@ -13,7 +13,7 @@ const getInputType = (value) => {
 };
 
 
-export default function Form({ urlGetData, apiUrlPostUpdate }) {
+export default function Form({ data, setData, urlGetData, apiUrlPostUpdate }) {
   /**
    * Dynamic form component to display and update company data.
    *
@@ -22,7 +22,9 @@ export default function Form({ urlGetData, apiUrlPostUpdate }) {
    * @returns {JSX.Element} Form component.
    */
 
-  const [datasByParameter, setDatasByParameter] = useFetch(urlGetData);
+  // const [datasByParameter, setDatasByParameter] = useFetch(urlGetData);
+  const [datasByParameter, setDatasByParameter] = [data, setData]
+  // TODO improve this part
   const [dataFieldsProperties, setDataFeildsProperties] = useFetch(`${urlGetData}/fields_properties`)
 
 

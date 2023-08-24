@@ -8,13 +8,15 @@ import { Button } from '@mui/material';
 
 export default function ClientsPage() {
   // Setting Datas 
-  const empresasData = useFetch('cadastro_empresas');
+  const urlData = 'cadastro_empresas'
+  const [datasByParameter, setDatasByParameter] = useFetch(urlData)
+
 
   return (
     <>
       <div className='absolute'><Button variant='contained'>Criar Novo Cliente</Button></div>
 
-      <Form urlGetData="cadastro_empresas" apiUrlPostUpdate="empresas" />
+      <Form data={datasByParameter} setData={setDatasByParameter} urlGetData={urlData} apiUrlPostUpdate="empresas" />
     </>
   )
 
