@@ -2,10 +2,21 @@ import { useState, useEffect } from 'react';
 
 const BASE_URL = 'http://localhost:5000/api/';
 
-export default function getDataWithPathParameters(url, ...pathParams) {
-  const makeUrl = (endpoint, pathParams) => new URL(pathParams.join('/'), new URL(endpoint, BASE_URL)).toString();
+export default function useFetchWithParams(url, ...pathParams) {
+  const makeUrl = (url, ...pathParams) => {
+    let fullUrl = new URL(BASE_URL + url);
 
-  let mainUrl = makeUrl(url);
+    if (pathParams.length > 0) {
+      const path = pathParams.join('/');
+      fullUrl.pathname += '/' + path;
+    }
+
+    return fullUrl.toString();
+  };
+
+
+  const mainUrl = makeUrl(url, pathParams);
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +37,7 @@ export default function getDataWithPathParameters(url, ...pathParams) {
     }
 
     fetchData();
-  }, [url, options]);
+  }, [mainUrl]);
 
   return [data, setData];
 }

@@ -1,4 +1,4 @@
-import postData from './hooks/postData';
+import postData from './helpers/postData';
 
 export default async function handleDataSubmit(url, data) {
   try {
