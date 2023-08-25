@@ -40,7 +40,7 @@ export default function Form({ data, setData, urlGetData, apiUrlPostUpdate }) {
     const mainInputs = Array.from(_inputs);
     const inputsToToggle = mainInputs.filter(filterWithoutId);
 
-    console.log(inputsToToggle)
+    // console.log(inputsToToggle)
     inputsToToggle.forEach((input) => {
       input.disabled = !input.disabled
     })
@@ -105,7 +105,7 @@ export default function Form({ data, setData, urlGetData, apiUrlPostUpdate }) {
         result[key] = clientData[key];
         return result;
       }, {});
-    console.log(otherInputs)
+    // console.log(otherInputs)
 
     const htmlOtherInputs = Object.entries(otherInputs).map(([key, value], indx) => {
       let input_id = `${clientData['id']}_${key}`;
@@ -188,7 +188,7 @@ export default function Form({ data, setData, urlGetData, apiUrlPostUpdate }) {
               Allow Edition
             </Button>
             {showInputs(clientData, index)}
-            {/* <input type="submit" value="Enviar" /> */}
+            {/* Call the arg function after creating the inputs */}
           </form>
         </div>
       ))}

@@ -72,8 +72,9 @@ def updatingClientValues():
 def cadastro_competencias(compt):
     print(compt)
     table_name = OrmTables.ClientsCompts.__tablename__
-    query = df = db.select_query(f"SELECT * FROM {table_name} where compt=%s", compt, as_df=True)
-    json_response = query.to_json(orient='records')
+    result = db.select_query(f"SELECT * FROM {table_name} where compt=%s", compt, as_df=True)
+    result = result.drop(columns=['compt'])
+    json_response = result.to_json(orient='records')
     return json_response
 
 

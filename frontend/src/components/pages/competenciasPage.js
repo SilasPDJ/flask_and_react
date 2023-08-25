@@ -7,6 +7,7 @@ import sendingData from '../layout/Form/helpers/postData';
 // import getDataWithQueryParameters from '../layout/Form/hooks/getDataWithQueryParams';
 import useFetchWithParams from '../layout/Form/hooks/useFetchWitParams';
 
+
 export default function CompetenciasPage() {
   // const [datasByParameter, setDatasByParameter] = useFetch('cadastro_competencias');
 
@@ -19,7 +20,7 @@ export default function CompetenciasPage() {
         data={comptData}
         setData={comptSetData}
         urlGetData="cadastro_competencias"
-        apiUrlPostUpdate="empresas">
+        apiUrlPostUpdate="empresasdsadas">
       </Form>
       {/* Necessário mudar para enviar */}
     </>
