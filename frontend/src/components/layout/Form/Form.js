@@ -27,6 +27,7 @@ export default function Form({ data, setData, urlGetData, apiUrlPostUpdate }) {
   // TODO improve this part
   const [dataFieldsProperties, setDataFeildsProperties] = useFetch(`${urlGetData}/fields_properties`)
 
+  const filterWithoutId = (t) => !(t.id.includes('_id') || t.id.includes('id_'));
 
   // Handlers 
   const handlerAtivarEdicao = (divId, event) => {
@@ -37,7 +38,7 @@ export default function Form({ data, setData, urlGetData, apiUrlPostUpdate }) {
     // Use slice to ignore the first input
     // const mainInputs = Array.from(_inputs).slice(1);
     const mainInputs = Array.from(_inputs);
-    const inputsToToggle = mainInputs.filter((t) => !(t.id.includes('_id') || t.id.includes('id_')));
+    const inputsToToggle = mainInputs.filter(filterWithoutId);
 
     console.log(inputsToToggle)
     inputsToToggle.forEach((input) => {
@@ -74,22 +75,44 @@ export default function Form({ data, setData, urlGetData, apiUrlPostUpdate }) {
     setDatasByParameter(updatedClients);
 
     const responseData = handleDataSubmit(apiUrlPostUpdate, updatedClient);
-
   };
-
-  /*const handleSubmit = async (e, clientIndex) => {
-    const responseData = await handleDataSubmit(apiUrlPostUpdate, dadosPorParametro[clientIndex]);
-    e.preventDefault();
-
-    console.log('Response:', responseData);
-  };*/
 
   // Setting Empresas Inputs
   const showInputs = (clientData, clientIndex) => {
-    return Object.entries(clientData).map(([key, value], indx) => {
+    const checkBoxInputs = Object.keys(clientData)
+      .filter(key => getInputType(clientData[key]) === 'checkbox')
+      .reduce((result, key) => {
+        result[key] = clientData[key];
+        return result;
+      }, {});
+
+    // Filtering otherInputs and ordering them
+    const otherInputs = Object.keys(clientData)
+      .filter(key => !checkBoxInputs.hasOwnProperty(key))
+      .sort((a, b) => {
+        const includesIdA = a.includes('_id') || a.includes('id_') || a == 'id';
+        const includesIdB = b.includes('_id') || b.includes('id_') || b == 'id';
+
+        if (includesIdA && !includesIdB) {
+          return 1; // 'a' should come after 'b'
+        } else if (!includesIdA && includesIdB) {
+          return -1; // 'a' should come before 'b'
+        } else {
+          return 0; // Maintain the original order
+        }
+      })
+      .reduce((result, key) => {
+        result[key] = clientData[key];
+        return result;
+      }, {});
+    console.log(otherInputs)
+
+    const htmlOtherInputs = Object.entries(otherInputs).map(([key, value], indx) => {
       let input_id = `${clientData['id']}_${key}`;
       let input_type = getInputType(value);
+
       // TODO: check this part
+
       let inputsMaxLength
       try {
         inputsMaxLength = dataFieldsProperties['inputs_max_length'][indx]
@@ -100,34 +123,55 @@ export default function Form({ data, setData, urlGetData, apiUrlPostUpdate }) {
       // console.log(inputsMaxLength)
 
       return (
-        <div className={styles.inputsContainer} key={input_id}>
+        <div className={styles.inputsForm} key={input_id}>
           {/* Todo: remover o onclick do input_type checkbox */}
           <label onClick={handleLabelClick} htmlFor={input_id}>
             {key}
           </label>
-          {input_type === 'checkbox' ? (
-            <CheckboxComponent
-              id={key}
-              // onChange={(e) => handleInputBlur(clientIndex, key, e.target.value)}
-              defaultValue={value}
-              clabel="STATUS ATIVO" />
-          ) : (
-            <input
-              type={input_type}
-              id={input_id}
-              name={input_id}
-              value={clientData[key]}
-              onChange={(e) => handleInputChange(clientIndex, key, e.target.value)}
-              // onBlur={(e) => handleInputBlur(clientIndex, key, e.target.value)}
-              // disabled={key !== 'id'}
-              disabled={true}
-              maxLength={inputsMaxLength !== -1 ? inputsMaxLength : undefined}
-            // Na minha lógica, inputs sem essa propriedade, recebem -1 
-            />
-          )}
+
+          <input
+            type={input_type}
+            id={input_id}
+            name={input_id}
+            value={clientData[key]}
+            onChange={(e) => handleInputChange(clientIndex, key, e.target.value)}
+            // onBlur={(e) => handleInputBlur(clientIndex, key, e.target.value)}
+            // disabled={key !== 'id'}
+            disabled={true}
+            maxLength={inputsMaxLength !== -1 ? inputsMaxLength : undefined}
+          // Na minha lógica, inputs sem essa propriedade, recebem -1 
+          />
+
         </div>
       );
     });
+
+    // 
+    const htmlCheckbox = Object.entries(checkBoxInputs).map(([key, value], indx) => {
+      let input_id = `${clientData['id']}_${key}`;
+      let input_type = getInputType(value);
+
+      return (
+        <div className={styles.checkboxesForm} key={input_id}>
+          {/* Todo: remover o onclick do input_type checkbox */}
+          <label onClick={handleLabelClick} htmlFor={input_id}>
+            {key}
+          </label>
+          <CheckboxComponent
+            id={key}
+            // onChange={(e) => handleInputBlur(clientIndex, key, e.target.value)}
+            defaultValue={value}
+            clabel="STATUS ATIVO" />
+        </div>
+      )
+    })
+
+    return (
+      <div className={styles.inputsContainer}>
+        {htmlCheckbox}
+        {htmlOtherInputs}
+      </div>
+    )
   };
 
   let getDivFormName = (name) => `form-client-${name}`;
