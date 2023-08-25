@@ -12,12 +12,15 @@ export default function CompetenciasPage() {
 
   // sendingData('cadastro_competencias', { compt: '02-2023' })
   const [comptData, comptSetData] = useFetchWithParams('cadastro_competencias', '2023-07-01')
-  console.log(comptData)
-  console.log('hi')
   return (
     <>
       competencias page
-      <Form data={comptData} setData={comptSetData} urlGetData="cadastro_competencias" apiUrlPostUpdate="empresas"></Form>
+      <Form
+        data={comptData}
+        setData={comptSetData}
+        urlGetData="cadastro_competencias"
+        apiUrlPostUpdate="empresas">
+      </Form>
       {/* Necessário mudar para enviar */}
     </>
   )

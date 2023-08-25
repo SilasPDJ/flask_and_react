@@ -35,8 +35,11 @@ export default function Form({ data, setData, urlGetData, apiUrlPostUpdate }) {
     let divForm = document.getElementById(divId)
     let _inputs = divForm.querySelectorAll('input')
     // Use slice to ignore the first input
-    const inputsToToggle = Array.from(_inputs).slice(1);
+    // const mainInputs = Array.from(_inputs).slice(1);
+    const mainInputs = Array.from(_inputs);
+    const inputsToToggle = mainInputs.filter((t) => !(t.id.includes('_id') || t.id.includes('id_')));
 
+    console.log(inputsToToggle)
     inputsToToggle.forEach((input) => {
       input.disabled = !input.disabled
     })
