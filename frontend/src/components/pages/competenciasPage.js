@@ -6,7 +6,7 @@ import { Button } from '@mui/material';
 import sendingData from '../layout/Form/helpers/postData';
 // import getDataWithQueryParameters from '../layout/Form/hooks/getDataWithQueryParams';
 import useFetchWithParams from '../layout/Form/hooks/useFetchWitParams';
-
+import MultiForm from '../layout/Form/TryingWithStress';
 
 export default function CompetenciasPage() {
   // const [datasByParameter, setDatasByParameter] = useFetch('cadastro_competencias');
@@ -16,12 +16,14 @@ export default function CompetenciasPage() {
   return (
     <>
       competencias page
-      <Form
+      {/* <Form
         data={comptData}
         setData={comptSetData}
         urlGetData="cadastro_competencias"
         apiUrlPostUpdate="empresasdsadas">
-      </Form>
+      </Form> */}
+
+      <MultiForm />
       {/* Necessário mudar para enviar */}
     </>
   )
