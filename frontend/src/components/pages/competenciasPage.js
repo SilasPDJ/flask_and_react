@@ -5,14 +5,20 @@ import Form from '../layout/Form/Form';
 import { Button } from '@mui/material';
 import sendingData from '../layout/Form/helpers/postData';
 // import getDataWithQueryParameters from '../layout/Form/hooks/getDataWithQueryParams';
-import useFetchWithParams from '../layout/Form/hooks/useFetchWitParams';
+import useFetchWithParams from '../layout/Form/hooks/useFetchWitPathParams';
 import MultiForm from '../layout/Form/TryingWithStress';
 
 export default function CompetenciasPage() {
   // const [datasByParameter, setDatasByParameter] = useFetch('cadastro_competencias');
 
   // sendingData('cadastro_competencias', { compt: '02-2023' })
+
+
   const [comptData, comptSetData] = useFetchWithParams('cadastro_competencias', '2023-07-01')
+  // const [test, setTest] = useFetchWithParams
+
+  const tittleArray = comptData.map(element => element['main_empresa_id']);
+
   return (
     <>
       competencias page
@@ -23,7 +29,7 @@ export default function CompetenciasPage() {
         apiUrlPostUpdate="empresasdsadas">
       </Form> */}
 
-      <MultiForm />
+      <MultiForm formDataArray={comptData} setFormDataArray={comptSetData} tittleArray={tittleArray} />
       {/* Necessário mudar para enviar */}
     </>
   )
