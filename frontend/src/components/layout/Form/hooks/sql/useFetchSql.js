@@ -1,21 +1,13 @@
 import { useState, useEffect } from 'react';
 
-const BASE_URL = 'http://localhost:5000/api/';
+const BASE_URL = 'http://localhost:5000/api/sql/';
 
-export default function useFetchWithPathParams(url, ...pathParams) {
-  const makeUrl = (url, ...pathParams) => {
-    let fullUrl = new URL(BASE_URL + url);
+export default function useFetchSql(url, ...queryParams) {
+  // console.log(url)
+  const makeUrl = (endpoint) => new URL(endpoint, BASE_URL).toString();
 
-    if (pathParams.length > 0) {
-      const path = pathParams.join('/');
-      fullUrl.pathname += '/' + path;
-    }
-
-    return fullUrl.toString();
-  };
-
-
-  const mainUrl = makeUrl(url, pathParams);
+  const mainUrl = makeUrl(url);
+  // console.log(mainUrl)
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +15,14 @@ export default function useFetchWithPathParams(url, ...pathParams) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(mainUrl);
+        const response = await fetch(mainUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          // Adjust body according to your needs
+          body: JSON.stringify(queryParams) // Example payload
+        });
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

@@ -5,8 +5,10 @@ import Form from '../layout/Form/Form';
 import { Button } from '@mui/material';
 import sendingData from '../layout/Form/helpers/postData';
 // import getDataWithQueryParameters from '../layout/Form/hooks/getDataWithQueryParams';
-import useFetchWithParams from '../layout/Form/hooks/useFetchWitPathParams';
+import useFetchWithPathParams from '../layout/Form/hooks/useFetchWitPathParams';
 import MultiForm from '../layout/Form/TryingWithStress';
+import useFetchSql from '../layout/Form/hooks/sql/useFetchSql';
+import getSortedDataBasedOnArray from '../helpers/getSortedDataBasedOnArray';
 
 export default function CompetenciasPage() {
   // const [datasByParameter, setDatasByParameter] = useFetch('cadastro_competencias');
@@ -14,10 +16,19 @@ export default function CompetenciasPage() {
   // sendingData('cadastro_competencias', { compt: '02-2023' })
 
 
-  const [comptData, comptSetData] = useFetchWithParams('cadastro_competencias', '2023-07-01')
-  // const [test, setTest] = useFetchWithParams
+  const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', '2023-07-01')
+  const idArray = comptData.map(element => element['main_empresa_id']);
 
-  const tittleArray = comptData.map(element => element['main_empresa_id']);
+  const [clientesNames, _] = useFetchSql('select', 'SELECT ID, RAZAO_SOCIAL FROM main_empresas')
+
+  const razaoSocialData = getSortedDataBasedOnArray(clientesNames, idArray, 'RAZAO_SOCIAL')
+
+  console.log(razaoSocialData)
+  // const razaoSocialArray = razaoSocialData.map(id => razaoSocialData[id].RAZAO_SOCIAL);
+
+
+  // Sort the data array based on the order of IDs in idArray
+
 
   return (
     <>
@@ -29,7 +40,7 @@ export default function CompetenciasPage() {
         apiUrlPostUpdate="empresasdsadas">
       </Form> */}
 
-      <MultiForm formDataArray={comptData} setFormDataArray={comptSetData} tittleArray={tittleArray} />
+      <MultiForm formDataArray={comptData} setFormDataArray={comptSetData} titleArray={razaoSocialData} />
       {/* Necessário mudar para enviar */}
     </>
   )

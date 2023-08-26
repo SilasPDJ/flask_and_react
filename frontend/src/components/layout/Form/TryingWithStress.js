@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { FixedSizeList } from 'react-window';
-import useFetchWithParams from './hooks/useFetchWitPathParams';
+import useFetchWithPathParams from './hooks/useFetchWitPathParams';
 
 
 
-export default function MultiForm({ formDataArray, setFormDataArray, tittleArray }) {
-  console.log(tittleArray)
+export default function MultiForm({ formDataArray, setFormDataArray, titleArray }) {
+  // console.log(tittleArray)
 
   const handleInputChange = useCallback((objectIndex, key, value) => {
     setFormDataArray(prevFormDataArray => {
@@ -18,7 +18,7 @@ export default function MultiForm({ formDataArray, setFormDataArray, tittleArray
   const renderInputs = (object, objectIndex) => {
     return (
       <div key={objectIndex}>
-        <h2>{tittleArray[objectIndex]}</h2>
+        <h2>{titleArray[objectIndex]}</h2>
         {Object.keys(object).map(key => (
           <div key={key}>
             <label>{key}</label>
