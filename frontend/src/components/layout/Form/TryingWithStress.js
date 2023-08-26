@@ -1,55 +1,1066 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { FixedSizeList } from 'react-window';
 
-export default function MultiForm() {
-  const initialFormData1 = [
-    { label: 'Field 1', value: '' },
-    { label: 'Field 2', value: '' },
-    // Add more fields as needed
-  ];
 
-  const initialFormData2 = [
-    { label: 'Field A', value: '' },
-    { label: 'Field B', value: '' },
-    // Add more fields as needed
-  ];
+export default function MultiForm({ }) {
+  const dataArray = [
+    {
+      "id": 1,
+      "razao_social": "ADEILTON",
+      "cnpj": "18949394000194",
+      "cpf": "11111111111111",
+      "codigo_simples": "",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "AASOUZA417//jsx3vc3ws2",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "142.841.004.119",
+      "status_ativo": true
+    },
+    {
+      "id": 2,
+      "razao_social": "Agathadiesel Mecanica e Manutencao de Veiculos LTDA",
+      "cnpj": "12506492000170",
+      "cpf": "18371138822",
+      "codigo_simples": "034336184419",
+      "email": "agathadiesel2010@hotmail.com",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "196875",
+      "ginfess_cod": "16071974",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 3,
+      "razao_social": "Almeida Rocha Gerenciamento Administrativo LTDA",
+      "cnpj": "1841849500013",
+      "cpf": "295573578789",
+      "codigo_simples": "007752807918",
+      "email": "almeidarocha.projetos@gmail.com",
+      "gissonline": "https://tremembe.sigiss.com.br/tremembe/contribuinte/login.php",
+      "giss_login": "Ginfess Cód",
+      "ginfess_cod": "7031//FV3FW3X4",
+      "ginfess_link": "https://tremembe.sigiss.com.br/tremembe/contribuinte/login.php",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 4,
+      "razao_social": "Aluisio Oliveira Gelo",
+      "cnpj": "17305168000108",
+      "cpf": "310301654914",
+      "codigo_simples": "155665717356",
+      "email": "multigelo633@gmail.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 5,
+      "razao_social": "Bipp Informatica e Comercio LTDA",
+      "cnpj": "18676472000124",
+      "cpf": "13165060886",
+      "codigo_simples": "540236597692",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 6,
+      "razao_social": "Camila Bandeira dos Santos Paschalis",
+      "cnpj": "26828786000123",
+      "cpf": "30140584838",
+      "codigo_simples": "859183298762",
+      "email": "camila@novaparis.com.br",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "248143",
+      "ginfess_cod": "caso1416",
+      "ginfess_link": "https://santoandre.ginfes.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 7,
+      "razao_social": "Carmem Silva de Magalhaes Modas",
+      "cnpj": "19104805000103",
+      "cpf": "02513670450",
+      "codigo_simples": "776970243812",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 8,
+      "razao_social": "Castilho Assessoria Documental e Negocios Eireli",
+      "cnpj": "31467471000138",
+      "cpf": "14321951828",
+      "codigo_simples": "296015501496",
+      "email": "castilho35@yahoo.com.br",
+      "gissonline": "https://nfe.prefeitura.sp.gov.br/login.aspx",
+      "giss_login": "Ginfess Cód",
+      "ginfess_cod": "Castilho2022",
+      "ginfess_link": "https://nfe.prefeitura.sp.gov.br/login.aspx",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 9,
+      "razao_social": "Celson C. da Silva Servicos",
+      "cnpj": "21657760000146",
+      "cpf": "12468802888",
+      "codigo_simples": "287721867813",
+      "email": "calistamanutencao@gmail.com",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "234207",
+      "ginfess_cod": "160774",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 10,
+      "razao_social": "Cleison Palacio dos Santos",
+      "cnpj": "24589133000103",
+      "cpf": "27648034867",
+      "codigo_simples": "065320851496",
+      "email": "cleisonps@yahoo.com.br",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 11,
+      "razao_social": "Construtora Peniel Eireli - Me",
+      "cnpj": "26108353000101",
+      "cpf": "-",
+      "codigo_simples": "-",
+      "email": "",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "250067",
+      "ginfess_cod": "eesilva//ivdwevcv35",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "635.922.512.112",
+      "status_ativo": true
+    },
+    {
+      "id": 12,
+      "razao_social": "Controlesis Tecnologia e Desenvolvimento de Software LTDA",
+      "cnpj": "08366958000102",
+      "cpf": "13165060886",
+      "codigo_simples": "630743708905",
+      "email": "isaias@controlesis.com.br",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "168632",
+      "ginfess_cod": "168632DYB16265",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 13,
+      "razao_social": "DESINFECT MAIS LIMPEZA HIGIENIZACAO E DESINFECCAO ESTRUTURAL E VEICULAR EIRELI",
+      "cnpj": "38283275000152",
+      "cpf": "04752859807",
+      "codigo_simples": "776085178933",
+      "email": "walmarsinelli23@gmail.com",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "285274",
+      "ginfess_cod": "285274UCF83268",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 14,
+      "razao_social": "Damark Modas LTDA",
+      "cnpj": "06967292000112",
+      "cpf": "65517822800",
+      "codigo_simples": "579289483465",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 15,
+      "razao_social": "Daniel Roberto Rodrigues Nantes Santos Hoffen Consultoria em Tecnologia da Informacao",
+      "cnpj": "32104301000151",
+      "cpf": "42985863830",
+      "codigo_simples": "835107368077",
+      "email": "daniel.nantes@outlook.com.br",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "256865",
+      "ginfess_cod": "Daniel@429",
+      "ginfess_link": "https://santoandre.ginfes.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 16,
+      "razao_social": "E30 COMPARAÇAO EM NEGOCIOS EIRELI",
+      "cnpj": "38455880000163",
+      "cpf": "32008907899",
+      "codigo_simples": "685578972991",
+      "email": "e30comparacaoemnegocios@gmail.com",
+      "gissonline": "https://bragancapaulista.giap.com.br/apex/pmbp/f?p=994:101",
+      "giss_login": "Ginfess Cód",
+      "ginfess_cod": "092467//99284418",
+      "ginfess_link": "https://bragancapaulista.giap.com.br/apex/pmbp/f?p=994:101",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 17,
+      "razao_social": "Equinhos Informatica LTDA",
+      "cnpj": "10687422000130",
+      "cpf": "98734717820",
+      "codigo_simples": "190531653512",
+      "email": " comercial@ewsolucoes.com.br",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "185620",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 18,
+      "razao_social": "Exatitec Calibracoes e Servicos Eireli",
+      "cnpj": "30368291000136",
+      "cpf": "41462293832",
+      "codigo_simples": "518656305761",
+      "email": "brunoluiz@exatitec.com.br",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "252658",
+      "ginfess_cod": "EXATITEC006",
+      "ginfess_link": "https://santoandre.ginfes.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 19,
+      "razao_social": "Ezequias E. da Silva Servicos",
+      "cnpj": "21544404000116",
+      "cpf": "07854401861",
+      "codigo_simples": "776970982178",
+      "email": "silvaezequiaselias@gmail.com",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "234210",
+      "ginfess_cod": "234210GDP51365",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 20,
+      "razao_social": "Hnj Alimentos LTDA",
+      "cnpj": "18045747000121",
+      "cpf": "05709153842",
+      "codigo_simples": "458829101984",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 21,
+      "razao_social": "J.a Titanio Serralheria e Esquadria LTDA",
+      "cnpj": "17109813000117",
+      "cpf": "28782042802",
+      "codigo_simples": "397390331709",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 22,
+      "razao_social": "Jessica Barreto Tavares",
+      "cnpj": "33831924000199",
+      "cpf": "39485359810",
+      "codigo_simples": "108318937472",
+      "email": "jessiquinhabarreto@hotmail.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 23,
+      "razao_social": "Joelma de Araujo Rodrigues - Comercio de Moveis",
+      "cnpj": "26839750000145",
+      "cpf": "09021806495",
+      "codigo_simples": "417280896036",
+      "email": "neftalimoveis@gmail.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 24,
+      "razao_social": "Josivan Manuel Barcelo",
+      "cnpj": "34628456000112",
+      "cpf": "32132821895",
+      "codigo_simples": "511168979051",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": false
+    },
+    {
+      "id": 25,
+      "razao_social": "Kennedy Comercio de Ferramentas, Parafusos e Servicos de Usinagem LTDA",
+      "cnpj": "01531427000189",
+      "cpf": "16609193800",
+      "codigo_simples": "055601912450",
+      "email": "kennedy.usina@yahoo.com.br",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "127571",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 26,
+      "razao_social": "Leusivan Pereira Rodrigues",
+      "cnpj": "34341986000185",
+      "cpf": "38689292829",
+      "codigo_simples": "601675657503",
+      "email": "lourivanrodrigues@outlook.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 27,
+      "razao_social": "Lourivan Aparecido Rodrigues",
+      "cnpj": "34341806000165",
+      "cpf": "28841667850",
+      "codigo_simples": "972154218148",
+      "email": "lourivanrodrigues@outlook.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 28,
+      "razao_social": "M Monteiro Intermediacao de Negocios Eireli",
+      "cnpj": "31391348000180",
+      "cpf": "42311340816",
+      "codigo_simples": "962170246009",
+      "email": "murillo.monteiro@cury.net",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "266113",
+      "ginfess_cod": "266113TSG15623",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": false
+    },
+    {
+      "id": 29,
+      "razao_social": "MICHELE SENA DE JESUS",
+      "cnpj": "35405385000151",
+      "cpf": "04417170550",
+      "codigo_simples": "812642767225",
+      "email": "michellysenna16@outlook.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 30,
+      "razao_social": "Magna de Jesus Pereira da Silva",
+      "cnpj": "14289908000171",
+      "cpf": "04378883635",
+      "codigo_simples": "520268606525",
+      "email": "mdasilva_2006@yahoo.com.br",
+      "gissonline": "não há",
+      "giss_login": "não há",
+      "ginfess_cod": "não há",
+      "ginfess_link": "não há",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 31,
+      "razao_social": "Mara de Sousa Prescinoto",
+      "cnpj": "34424058000184",
+      "cpf": "11974846806",
+      "codigo_simples": "845897599721",
+      "email": "maraprescinoto@gmail.com",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "110079",
+      "ginfess_cod": "09571300",
+      "ginfess_link": "https://saocaetano.ginfes.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 32,
+      "razao_social": "Marcos Bueno Kong",
+      "cnpj": "07573563000118",
+      "cpf": "26850622897",
+      "codigo_simples": "-",
+      "email": "marcoskong.alvino@gmail.com",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "85868",
+      "ginfess_cod": "160774",
+      "ginfess_link": "https://saocaetano.ginfes.com.br/",
+      "ha_procuracao_ecac": "sim",
+      "status_ativo": true
+    },
+    {
+      "id": 33,
+      "razao_social": "Marilene Jesus de Paula",
+      "cnpj": "22125687000124",
+      "cpf": "28398974826",
+      "codigo_simples": "405684148724",
+      "email": "familiadepaula@hotmail.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 34,
+      "razao_social": "Marli Gomes de Oliveira Me",
+      "cnpj": "19934662000167",
+      "cpf": "-",
+      "codigo_simples": "-",
+      "email": "",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "221783",
+      "ginfess_cod": "mgbarbara//6mmmma8cu2",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "635.745.230.115",
+      "status_ativo": true
+    },
+    {
+      "id": 35,
+      "razao_social": "Newcom Mara",
+      "cnpj": "23509593000111",
+      "cpf": "-",
+      "codigo_simples": "-",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "043092//3ybyam35bi",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "636.337.748.118",
+      "status_ativo": true
+    },
+    {
+      "id": 36,
+      "razao_social": "Oesk Contabil",
+      "cnpj": "19470379000121",
+      "cpf": "19261159885",
+      "codigo_simples": "-",
+      "email": "oesk39@hotmail.com",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "258967",
+      "ginfess_cod": "160774",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "sim",
+      "status_ativo": true
+    },
+    {
+      "id": 37,
+      "razao_social": "REPOD REPRESENTACAO EIRELI",
+      "cnpj": "37788359000185",
+      "cpf": "29887014826",
+      "codigo_simples": "455527923854",
+      "email": "renata.podboy@repod.com.br",
+      "gissonline": "https://nfe.prefeitura.sp.gov.br/login.aspx",
+      "giss_login": "Ginfess Cód",
+      "ginfess_cod": "Repold2020",
+      "ginfess_link": "https://nfe.prefeitura.sp.gov.br/login.aspx",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 38,
+      "razao_social": "Reciclar Mara",
+      "cnpj": "55765119000147",
+      "cpf": "-",
+      "codigo_simples": "-",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "043092//3ybyam35bi",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "636.091.039,110",
+      "status_ativo": true
+    },
+    {
+      "id": 39,
+      "razao_social": "Remmiel Modas LTDA",
+      "cnpj": "20328199000199",
+      "cpf": "69691045400",
+      "codigo_simples": "535244130854",
+      "email": "remmielmodas@gmail.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 40,
+      "razao_social": "Rosangela Cardoso & Almeida Assessoria em Administracao Civil LTDA",
+      "cnpj": "34034055000134",
+      "cpf": "10441181805",
+      "codigo_simples": "027795647454",
+      "email": "carosange@uol.com.br",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "78387",
+      "ginfess_cod": "09950000",
+      "ginfess_link": "https://diadema.ginfes.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 41,
+      "razao_social": "S. J. da Silva Dedetizadora",
+      "cnpj": "07657514000163",
+      "cpf": "14044717826",
+      "codigo_simples": "655704242050",
+      "email": "sjdedetizadora@bol.com.br",
+      "gissonline": "Ginfess Cód",
+      "giss_login": "07657514000163",
+      "ginfess_cod": "63244755",
+      "ginfess_link": "https://sumare.sigissweb.com/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 42,
+      "razao_social": "SOUZA MARQUES SERVICOS EIRELI",
+      "cnpj": "38928258000125",
+      "cpf": "26507325805",
+      "codigo_simples": "132394923879",
+      "email": "cycloservicos@outlook.com",
+      "gissonline": "https://nfse.americana.sp.gov.br/senhaweb/login.aspx",
+      "giss_login": "Ginfess Cód",
+      "ginfess_cod": "Vensol9635",
+      "ginfess_link": "https://nfse.americana.sp.gov.br/senhaweb/login.aspx",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 43,
+      "razao_social": "Smart Surf Modas 777 LTDA",
+      "cnpj": "07083804000140",
+      "cpf": "-",
+      "codigo_simples": "-",
+      "email": "cleodemiranda20@gmail.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "sim",
+      "status_ativo": true
+    },
+    {
+      "id": 44,
+      "razao_social": "Trade Valor Gestao Empresarial Eireli",
+      "cnpj": "31974493000194",
+      "cpf": "61422886115",
+      "codigo_simples": "892359499720",
+      "email": "arthur.fraga@gmail.com",
+      "gissonline": "https://app.siappa.com.br/issqn_itupeva/servlet/com.issqnwebev3v2.login",
+      "giss_login": "Ginfess Cód",
+      "ginfess_cod": "31974493000194",
+      "ginfess_link": "https://app.siappa.com.br/issqn_itupeva/servlet/com.issqnwebev3v2.login",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 45,
+      "razao_social": "Vensol Multi Servicos LTDA",
+      "cnpj": "21776608000182",
+      "cpf": "26507325805",
+      "codigo_simples": "186423570397",
+      "email": "cycloservicos@outlook.com",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "234432",
+      "ginfess_cod": "234432XVB21321",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 46,
+      "razao_social": "Wagner Duque",
+      "cnpj": "25068730000155",
+      "cpf": "19235972809",
+      "codigo_simples": "798550374520",
+      "email": "duque.wagner7@gmail.com",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "246709",
+      "ginfess_cod": "MHP102030",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 47,
+      "razao_social": "Washington Luiz Nascimento Santos",
+      "cnpj": "34556737000107",
+      "cpf": "17472850802",
+      "codigo_simples": "867477905766",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 48,
+      "razao_social": "Moratti Geradores BARBARA",
+      "cnpj": "-",
+      "cpf": "",
+      "codigo_simples": "",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "221783",
+      "ginfess_cod": "mgbarbara//6mmmma8cu2",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "635.709.767.118",
+      "status_ativo": true
+    },
+    {
+      "id": 49,
+      "razao_social": "Suzana Palacio dos Santos",
+      "cnpj": "26495707000100",
+      "cpf": "28431989840",
+      "codigo_simples": "884065112508",
+      "email": "cleisonps@yahoo.com.br",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "",
+      "status_ativo": true
+    },
+    {
+      "id": 50,
+      "razao_social": "D. D. L. MODA FEMININA EIRELI",
+      "cnpj": "27126356000122",
+      "cpf": "10874842867",
+      "codigo_simples": "-",
+      "email": "ddlcontrole@gmail.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "sim",
+      "status_ativo": true
+    },
+    {
+      "id": 51,
+      "razao_social": "MARCO SANTOS SILVA",
+      "cnpj": "20108695000137",
+      "cpf": "38106070883",
+      "codigo_simples": "704663141471",
+      "email": "marcossantos4846@gmail.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 52,
+      "razao_social": "RICARDO SOUSA DE MACEDO",
+      "cnpj": "33265332000157",
+      "cpf": "35754588801",
+      "codigo_simples": "090902687554",
+      "email": "ricardosousamacedo@hotmail.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 53,
+      "razao_social": "GABRIEL PINHEIRO SAMPAIO",
+      "cnpj": "40122869000123",
+      "cpf": "46713462812",
+      "codigo_simples": "-",
+      "email": "financeiro@descolanguage.com.br",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "301245",
+      "ginfess_cod": "301245BAL55581",
+      "ginfess_link": "https://santoandre.ginfes.com.br/",
+      "ha_procuracao_ecac": "sim",
+      "status_ativo": true
+    },
+    {
+      "id": 54,
+      "razao_social": "GIVALDO COSTA DOS SANTOS",
+      "cnpj": "27067946000121",
+      "cpf": "67033091591",
+      "codigo_simples": "002779586146",
+      "email": "sjdedetizadorafrq3@gmail.com",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "253047",
+      "ginfess_cod": "253047BFJ65588",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 55,
+      "razao_social": "BRUNA BUENO GONCALVES DOURADO TAVARES",
+      "cnpj": "33644218000138",
+      "cpf": "38363665843",
+      "codigo_simples": "013489144574",
+      "email": "bruna.dourado@hotmail.com",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "296061",
+      "ginfess_cod": "296061QQJ67411",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 56,
+      "razao_social": "Anderson G2M2 SERVICOS LTDA",
+      "cnpj": "45863808000130",
+      "cpf": "14335345844",
+      "codigo_simples": "527756371174",
+      "email": "g2m2serv@gmail.com",
+      "gissonline": "",
+      "giss_login": "306239",
+      "ginfess_cod": "306239VDP44423",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 57,
+      "razao_social": "EXATITEC INSTRUMENTACAO LTDA",
+      "cnpj": "45841961000167",
+      "cpf": "41462293832",
+      "codigo_simples": "155665759506",
+      "email": "brunoluiz@exatitec.com.br",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "316494",
+      "ginfess_cod": "316494PAV34613",
+      "ginfess_link": "https://santoandre.ginfes.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 58,
+      "razao_social": "Denise Dell Servicos e Treinamentos",
+      "cnpj": "27600513000190",
+      "cpf": "22531550801",
+      "codigo_simples": "-",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "sim",
+      "status_ativo": true
+    },
+    {
+      "id": 59,
+      "razao_social": "JORGE MIRANDA CERQUEIRA",
+      "cnpj": "46652289000124",
+      "cpf": "40876780591",
+      "codigo_simples": "821820298973",
+      "email": "jorge.mi.randa@icloud.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 60,
+      "razao_social": "ERIBERTO JOSE DA SILVA",
+      "cnpj": "20501186000170",
+      "cpf": "26866085870",
+      "codigo_simples": "460519234002",
+      "email": "ejcargas@gmail.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 61,
+      "razao_social": "M2M DIGITAL SMART BILLBOARDS LTDA",
+      "cnpj": "46266653000118",
+      "cpf": "04752859807",
+      "codigo_simples": "765295447719",
+      "email": "walmarsinelli23@gmail.com",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "307578",
+      "ginfess_cod": "307578QYQ23118",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 62,
+      "razao_social": "ENIO Alvarez LTDA",
+      "cnpj": "47578149000116",
+      "cpf": "91577110897",
+      "codigo_simples": "029407256495",
+      "email": "enio.alvarez@uol.com.br",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "311990",
+      "ginfess_cod": "311990GWY53416",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 63,
+      "razao_social": "ZIONCOPY MARKETING DIGITAL LTDA",
+      "cnpj": "47968744000168",
+      "cpf": "15519698821",
+      "codigo_simples": "315983841320",
+      "email": "israel@vedaman.com.br",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "325025",
+      "ginfess_cod": "ZION325025",
+      "ginfess_link": "https://santoandre.ginfes.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 64,
+      "razao_social": "ISABELA BATISTA SIQUEIRA",
+      "cnpj": "17362628000130",
+      "cpf": "37171154807",
+      "codigo_simples": "-",
+      "email": "isabela_siqueira2011@hotmail.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "sim",
+      "status_ativo": true
+    },
+    {
+      "id": 65,
+      "razao_social": "DANILO PORPHIRIO VENSOL",
+      "cnpj": "20367544000101",
+      "cpf": "36164110840",
+      "codigo_simples": "110814990443",
+      "email": "friocompany@gmail.com",
+      "gissonline": "",
+      "giss_login": "228854",
+      "ginfess_cod": "228854XMS62447",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 79,
+      "razao_social": "GABRIEL CELLMARECHAL LTDA",
+      "cnpj": "49791875000148",
+      "cpf": "47340515852",
+      "codigo_simples": "756195887940",
+      "email": "cellmarechal1400@gmail.com",
+      "gissonline": "https://portal.gissonline.com.br/login/index.html",
+      "giss_login": "321897",
+      "ginfess_cod": "321897GLT88561",
+      "ginfess_link": "https://nfse.isssbc.com.br/",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 81,
+      "razao_social": "CRISTIANO - GAETANI CONSULTORIA EMPRESARIAL E ORGANIZACIONAL LTDA",
+      "cnpj": "49561425000169",
+      "cpf": "25001609801",
+      "codigo_simples": "106706510925",
+      "email": "crisgaetani@gmail.com",
+      "gissonline": "https://nfe.prefeitura.sp.gov.br/login.aspx",
+      "giss_login": "Ginfess Cód",
+      "ginfess_cod": "Emilia2401@",
+      "ginfess_link": "https://nfe.prefeitura.sp.gov.br/login.aspx",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 83,
+      "razao_social": "MICHAEL ANSELMO ROMEIRO SIMOES",
+      "cnpj": "32451444000130",
+      "cpf": "37932393817",
+      "codigo_simples": "553522637058",
+      "email": "divinopasso1@gmail.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 84,
+      "razao_social": "FRANCIS PODBOY",
+      "cnpj": "50045100000102",
+      "cpf": "24981314850",
+      "codigo_simples": "521958331095",
+      "email": "renata.podboy@repod.com.br",
+      "gissonline": "https://nfe.prefeitura.sp.gov.br/login.aspx",
+      "giss_login": "Ginfess Cód",
+      "ginfess_cod": "Francis@23",
+      "ginfess_link": "https://nfe.prefeitura.sp.gov.br/login.aspx",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 85,
+      "razao_social": "RM MATERIAIS REBECA NOGUEIRA",
+      "cnpj": "09556202000199",
+      "cpf": "",
+      "codigo_simples": "",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "RNNOGUEIRA276//c2ky7jwj34",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "120.734.507.119",
+      "status_ativo": true
+    },
+    {
+      "id": 86,
+      "razao_social": "MARCIA VIEIRA BOIA",
+      "cnpj": "38238403000146",
+      "cpf": "19437914818",
+      "codigo_simples": "633240507313",
+      "email": "marciavieiraboia@gmail.com",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    },
+    {
+      "id": 87,
+      "razao_social": "Razze Mara",
+      "cnpj": "21860831000103",
+      "cpf": "-",
+      "codigo_simples": "-",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "043092//3ybyam35bi",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "636.540.701.113",
+      "status_ativo": true
+    },
+    {
+      "id": 88,
+      "razao_social": "BARBARA TAMIRIS FERREIRA DE JESUS",
+      "cnpj": "13313097000113",
+      "cpf": "37173461804",
+      "codigo_simples": "616651268246",
+      "email": "",
+      "gissonline": "",
+      "giss_login": "",
+      "ginfess_cod": "",
+      "ginfess_link": "",
+      "ha_procuracao_ecac": "não",
+      "status_ativo": true
+    }
 
-  const [formData1, setFormData1] = useState(initialFormData1);
-  const [formData2, setFormData2] = useState(initialFormData2);
+  ]
 
-  const handleInputChange = (index, value, setter) => {
-    setter(prevFormData => {
-      const updatedFormData = [...prevFormData];
-      updatedFormData[index].value = value;
-      console.log(prevFormData)
-      return updatedFormData;
+
+  const [formDataArray, setFormDataArray] = useState(dataArray);
+
+  const handleInputChange = useCallback((objectIndex, key, value) => {
+    setFormDataArray(prevFormDataArray => {
+      const updatedFormDataArray = [...prevFormDataArray];
+      updatedFormDataArray[objectIndex][key] = value;
+      return updatedFormDataArray;
     });
+  }, []);
+
+  const renderInputs = (object, objectIndex) => {
+    return (
+      <div key={objectIndex}>
+        <h2>Object {objectIndex + 1}</h2>
+        {Object.keys(object).map(key => (
+          <div key={key}>
+            <label>{key}</label>
+            <input
+              type="text"
+              value={object[key]}
+              onChange={e => handleInputChange(objectIndex, key, e.target.value)}
+            />
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
     <div>
-      <h2>Form 1</h2>
-      {formData1.map((field, index) => (
-        <div key={index}>
-          <label>{field.label}</label>
-          <input
-            type="text"
-            value={field.value}
-            onChange={e => handleInputChange(index, e.target.value, setFormData1)}
-          />
-        </div>
-      ))}
-
-      <h2>Form 2</h2>
-      {formData2.map((field, index) => (
-        <div key={index}>
-          <label>{field.label}</label>
-          <input
-            type="text"
-            value={field.value}
-            onChange={e => handleInputChange(index, e.target.value, setFormData2)}
-          />
-        </div>
-      ))}
+      {formDataArray.map(renderInputs)}
     </div>
   );
 }

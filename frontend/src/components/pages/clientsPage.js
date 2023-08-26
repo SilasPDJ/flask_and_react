@@ -10,6 +10,7 @@ export default function ClientsPage() {
   // Setting Datas 
   const urlData = 'cadastro_empresas'
   const [datasByParameter, setDatasByParameter] = useFetch(urlData)
+  console.log(datasByParameter)
 
 
   return (
