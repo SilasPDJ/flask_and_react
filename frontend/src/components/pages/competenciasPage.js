@@ -19,9 +19,9 @@ export default function CompetenciasPage() {
   const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', '2023-07-01')
   const idArray = comptData.map(element => element['main_empresa_id']);
 
-  const [clientesNames, _] = useFetchSql('select', 'SELECT ID, RAZAO_SOCIAL FROM main_empresas')
+  const [ArrayRazaoSocialwithID, _] = useFetchSql('select', 'SELECT ID, RAZAO_SOCIAL FROM main_empresas')
 
-  const razaoSocialData = getSortedDataBasedOnArray(clientesNames, idArray, 'RAZAO_SOCIAL')
+  const razaoSocialData = getSortedDataBasedOnArray(ArrayRazaoSocialwithID, idArray, 'RAZAO_SOCIAL')
 
   console.log(razaoSocialData)
   // const razaoSocialArray = razaoSocialData.map(id => razaoSocialData[id].RAZAO_SOCIAL);
