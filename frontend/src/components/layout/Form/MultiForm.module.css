@@ -1,0 +1,66 @@
+/* clients.module.css */
+.clientContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.clientColumn {
+    /* Three columns on smaller screens */
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin-right: 1em;
+    /* Add a vertical line between columns */
+
+    border: 1px solid #fff;
+    border-bottom: none;
+    /* Add some space to the right of each column */
+    margin-bottom: 10px;
+    /* align-items: center; */
+    text-align: center;
+
+}
+
+
+@media (min-width: 768px) {
+
+    /* For screens with width 768px and above */
+    .clientColumn {
+        flex-basis: calc(100% / 6 - 10px);
+        /* Six columns on larger screens */
+    }
+}
+
+.inputsContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    /* align-items: center; */
+    /* background-color: ; */
+}
+
+.inputsContainer input {
+    width: 90%;
+
+    /* width: 20em; */
+    padding: 5px;
+    border-radius: 5px;
+    transition: 0.3s ease;
+}
+
+.inputsContainer input:focus {
+    background-color: rgb(234, 250, 142);
+}
+
+.inputsContainer input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+/* clients.module.css */
+.checkboxesForm {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* To vertically center align label and checkbox */
+}

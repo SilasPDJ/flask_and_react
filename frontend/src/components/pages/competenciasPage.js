@@ -6,7 +6,7 @@ import { Button } from '@mui/material';
 import sendingData from '../layout/Form/helpers/postData';
 // import getDataWithQueryParameters from '../layout/Form/hooks/getDataWithQueryParams';
 import useFetchWithPathParams from '../layout/Form/hooks/useFetchWitPathParams';
-import MultiForm from '../layout/Form/TryingWithStress';
+import MultiForm from '../layout/Form/MultiForm';
 import useFetchQuery from '../layout/Form/hooks/sql/useFetchQuery';
 import getSortedDataBasedOnArray from '../helpers/getSortedDataBasedOnArray';
 
@@ -24,7 +24,6 @@ export default function CompetenciasPage() {
 
   const razaoSocialData = getSortedDataBasedOnArray(ArrayRazaoSocialwithID, idArray, 'RAZAO_SOCIAL')
 
-  console.log(razaoSocialData)
   // const razaoSocialArray = razaoSocialData.map(id => razaoSocialData[id].RAZAO_SOCIAL);
 
 

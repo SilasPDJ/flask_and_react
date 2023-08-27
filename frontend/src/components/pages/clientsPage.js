@@ -3,7 +3,7 @@ import styles from './clients.module.css';
 import useFetch from '../layout/Form/hooks/useFetch';
 import Form from '../layout/Form/Form';
 import { Button } from '@mui/material';
-import MultiForm from '../layout/Form/TryingWithStress';
+import MultiForm from '../layout/Form/MultiForm';
 
 
 export default function ClientsPage() {

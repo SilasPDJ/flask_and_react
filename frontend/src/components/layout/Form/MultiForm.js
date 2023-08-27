@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { FixedSizeList } from 'react-window';
 import useFetchWithPathParams from './hooks/useFetchWitPathParams';
-
+import styles from "./MultiForm.module.css";
 
 
 export default function MultiForm({ formDataArray, setFormDataArray, titleArray }) {
