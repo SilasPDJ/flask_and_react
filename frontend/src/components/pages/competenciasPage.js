@@ -7,7 +7,7 @@ import sendingData from '../layout/Form/helpers/postData';
 // import getDataWithQueryParameters from '../layout/Form/hooks/getDataWithQueryParams';
 import useFetchWithPathParams from '../layout/Form/hooks/useFetchWitPathParams';
 import MultiForm from '../layout/Form/TryingWithStress';
-import useFetchSql from '../layout/Form/hooks/sql/useFetchSql';
+import useFetchQuery from '../layout/Form/hooks/sql/useFetchQuery';
 import getSortedDataBasedOnArray from '../helpers/getSortedDataBasedOnArray';
 
 export default function CompetenciasPage() {
@@ -19,7 +19,8 @@ export default function CompetenciasPage() {
   const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', '2023-07-01')
   const idArray = comptData.map(element => element['main_empresa_id']);
 
-  const [ArrayRazaoSocialwithID, _] = useFetchSql('select', 'SELECT ID, RAZAO_SOCIAL FROM main_empresas')
+  const [ArrayRazaoSocialwithID, _] = useFetchQuery('select', 'SELECT ID, RAZAO_SOCIAL FROM main_empresas')
+  // THIS ALLOWS only SELECT
 
   const razaoSocialData = getSortedDataBasedOnArray(ArrayRazaoSocialwithID, idArray, 'RAZAO_SOCIAL')
 

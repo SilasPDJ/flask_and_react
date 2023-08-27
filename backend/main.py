@@ -13,7 +13,7 @@ from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
 from utils.decorators import DynamicRoutes
-
+import json
 # from backend.config import DevConfig
 
 load_dotenv()
@@ -78,10 +78,25 @@ def cadastro_competencias(compt):
     return json_response
 
 
+@app.route('/api/sql/select', methods=['POST', 'GET'])
+def select():
+    # o argumento precisa ser string
+    if request.method == 'POST' and request.json:
+        result = db.select_query(*request.json, as_df=True)
+        json_response = result.to_json(orient='records')
+        # values_tolist = result.values.tolist()
+
+        # json_response = flattened_list = [item for sublist in values_tolist for item in sublist]
+        return json_response
+    else:
+        return {'status': 'error'}
+
+
 @app.route("/api/test")
 def test():
     data = {"message": "Test endpoint working!"}
     return jsonify(data)
+
 
 
 if __name__ == '__main__':
