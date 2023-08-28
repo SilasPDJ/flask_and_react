@@ -11,6 +11,7 @@ import getSortedDataBasedOnArray from '../helpers/getSortedDataBasedOnArray';
 export default function ClientsPage() {
   // Setting Datas 
   const urlData = 'cadastro_empresas'
+  const urlUpdate = 'update_empresas'
   const [empresasData, setEmpresasData] = useFetch(urlData)
 
   // THIS ALLOWS only SELECT
@@ -21,7 +22,7 @@ export default function ClientsPage() {
     <>
       <div className='absolute'><Button variant='contained'>Criar Novo Cliente</Button></div>
 
-      <MultiForm formDataArray={empresasData} setFormDataArray={setEmpresasData} titleArray={razaoSocialData} />
+      <MultiForm formDataArray={empresasData} setFormDataArray={setEmpresasData} titleArray={razaoSocialData} apiUrlPostUpdate={urlUpdate} />
     </>
   )
 

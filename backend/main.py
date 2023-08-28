@@ -44,6 +44,7 @@ def clients_compt():
 
 
 @app.route("/api/cadastro_empresas")
+@dynamic_routes.call('cadastro_empresas', OrmTables.MainEmpresas, 'fields_properties')
 def cadastro_empresas():
     table_name = 'main_empresas'
     query = db.select_query(f"SELECT * FROM {table_name}", as_df=True)
@@ -53,13 +54,12 @@ def cadastro_empresas():
 
 # por padrão chamar fields_properties quando for do input
 
-@app.route("/api/empresas", methods=['POST', 'GET', 'DELETE'])
-@dynamic_routes.call('cadastro_empresas', OrmTables.MainEmpresas, 'fields_properties')
+@app.route("/api/update_empresas", methods=['POST', 'GET', 'DELETE'])
 def updatingClientValues():
     table_name = 'main_empresas'
 
     if request.method == 'POST':
-        result = db.update_row_with_dict(table_name=table_name, updated_data=request.json['data'])
+        result = db.update_row_with_dict(table_name=table_name, updated_data=request.json)
         if result:
             return {'update_status': 'success'}
         # print(request.json)
