@@ -1,66 +1,71 @@
 /* clients.module.css */
+
+/* Container for client columns */
 .clientContainer {
     display: flex;
     flex-wrap: wrap;
+    gap: 1em;
+    /* Space between columns */
 }
 
+/* Each client column */
 .clientColumn {
-    /* Three columns on smaller screens */
     display: flex;
-    flex: 1;
     flex-direction: column;
-    margin-right: 1em;
-    /* Add a vertical line between columns */
-
+    flex: 1;
     border: 1px solid #fff;
     border-bottom: none;
-    /* Add some space to the right of each column */
     margin-bottom: 10px;
-    /* align-items: center; */
     text-align: center;
-
+    /* background-color: #f9f9f9; */
+    padding: 1em;
+    /* Add padding for space around content */
 }
 
-
+/* Media query for larger screens */
 @media (min-width: 768px) {
-
-    /* For screens with width 768px and above */
     .clientColumn {
-        flex-basis: calc(100% / 6 - 10px);
-        /* Six columns on larger screens */
+        flex-basis: calc(100% / 6 - 20px);
+        /* Adjusted for margin-right and left */
     }
 }
 
+/* Container for inputs */
 .inputsContainer {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
-    /* align-items: center; */
-    /* background-color: ; */
+    gap: 10px;
+    /* Space between input elements */
+    align-items: center;
 }
 
+/* Input fields */
 .inputsContainer input {
     width: 90%;
-
-    /* width: 20em; */
-    padding: 5px;
+    max-width: 300px;
+    /* Limit input width */
+    padding: 10px;
     border-radius: 5px;
-    transition: 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
 .inputsContainer input:focus {
     background-color: rgb(234, 250, 142);
 }
 
-.inputsContainer input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-}
-
-/* clients.module.css */
+/* Checkboxes form */
 .checkboxesForm {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* To vertically center align label and checkbox */
+}
+
+/* Client title */
+.clientTitle span {
+    font-size: 20px;
+    /* Adjust font size as needed */
+    font-weight: bold;
+    /* Make the title bold */
+    margin-bottom: 0.5em;
+    /* Add some spacing between title and input */
 }

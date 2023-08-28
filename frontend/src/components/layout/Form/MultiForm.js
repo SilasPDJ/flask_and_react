@@ -5,7 +5,6 @@ import { Button } from '@mui/material';
 // import useFetchWithPathParams from './hooks/useFetchWitPathParams';
 import handleDataSubmit from './DataSubmit';
 
-
 export default function MultiForm({ formDataArray, setFormDataArray, titleArray, apiUrlPostUpdate }) {
   const filterWithoutId = (t) => !(t.id.includes('_id') || t.id.includes('id_'));
 
@@ -69,7 +68,9 @@ export default function MultiForm({ formDataArray, setFormDataArray, titleArray,
 
     return (
       <div id={getDivFormName(index)} key={index} className={styles.clientColumn}>
-        <h4>{titleArray[objectIndex]}</h4>
+        <div className={styles.clientTitle}>
+          <span>{titleArray[objectIndex]}</span>
+        </div>
         <form
           // onSubmit={(e) => handleSubmit(e, index)} 
           method='POST'>
@@ -77,7 +78,7 @@ export default function MultiForm({ formDataArray, setFormDataArray, titleArray,
             Allow Edition
           </Button>
           {Object.keys(object).map(key => (
-            <div key={key}>
+            <div key={key} className={styles.inputsContainer}>
               <label onClick={handleLabelClick} htmlFor={getInputId(object['id'], key)}>
                 {key}
               </label>
