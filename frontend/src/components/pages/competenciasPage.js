@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './competencias.module.css'
 import useFetch from '../layout/Form/hooks/useFetch';
-import Form from '../layout/Form/Form';
 import { Button } from '@mui/material';
 import sendingData from '../layout/Form/helpers/postData';
 // import getDataWithQueryParameters from '../layout/Form/hooks/getDataWithQueryParams';
@@ -14,21 +13,13 @@ export default function CompetenciasPage() {
   // const [datasByParameter, setDatasByParameter] = useFetch('cadastro_competencias');
 
   // sendingData('cadastro_competencias', { compt: '02-2023' })
+  const urlUpdate = 'update_competencias'
 
 
-  const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', '2023-07-01')
-  const idArray = comptData.map(element => element['main_empresa_id']);
+  const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', '2023-07-01');
 
-  const [ArrayRazaoSocialwithID, _] = useFetchQuery('select', 'SELECT ID, RAZAO_SOCIAL FROM main_empresas')
-  // THIS ALLOWS only SELECT
-
-  const razaoSocialData = getSortedDataBasedOnArray(ArrayRazaoSocialwithID, idArray, 'RAZAO_SOCIAL')
-  // TODO forget ID Array & make the query directly
-  // const razaoSocialArray = razaoSocialData.map(id => razaoSocialData[id].RAZAO_SOCIAL);
-
-
-  // Sort the data array based on the order of IDs in idArray
-
+  const razaoSocialData = comptData.map(element => element['razao_social']);
+  const ignoredKeys = ['razao_social']
 
   return (
     <>
@@ -40,7 +31,7 @@ export default function CompetenciasPage() {
         apiUrlPostUpdate="empresasdsadas">
       </Form> */}
 
-      <MultiForm formDataArray={comptData} setFormDataArray={comptSetData} titleArray={razaoSocialData} />
+      <MultiForm formDataArray={comptData} setFormDataArray={comptSetData} ignoredKeysArray={ignoredKeys} titleArray={razaoSocialData} apiUrlPostUpdate={urlUpdate} />
       {/* Necessário mudar para enviar */}
     </>
   )

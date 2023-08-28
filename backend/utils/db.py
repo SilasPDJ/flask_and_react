@@ -1,6 +1,6 @@
 import pandas as pd
 import flask_mysqldb
-from utils.models import OrmTables
+from utils.models import OrmTables, Base
 
 # Python types corresponding to MySQL FIELD_TYPE constants
 MYSQL_TYPE_TO_PYTHON = {
@@ -83,7 +83,12 @@ class MySQLInterface:
             print("Error:", e)
             self.mysql.connection.rollback()
             return False
-    def update_row_with_dict(self, table_name: str, updated_data: dict) -> bool:
+
+    def update_row_in_table_with_dict(self, table: Base, data_dict: dict) -> bool:
+        table_name = table.__tablename__
+
+        # check if key is in table to avoid errors
+        updated_data = {key: value for key, value in data_dict.items() if hasattr(table, key)}
 
         # Prepare the dictionary of columns and values
         id_value = updated_data.pop('id')

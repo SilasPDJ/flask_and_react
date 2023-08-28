@@ -56,10 +56,11 @@ def cadastro_empresas():
 
 @app.route("/api/update_empresas", methods=['POST', 'GET', 'DELETE'])
 def updatingClientValues():
-    table_name = 'main_empresas'
+    table = OrmTables.MainEmpresas
+    # table_name = table.__tablename__
 
     if request.method == 'POST':
-        result = db.update_row_with_dict(table_name=table_name, updated_data=request.json)
+        result = db.update_row_in_table_with_dict(table=table, data_dict=request.json)
         if result:
             return {'update_status': 'success'}
         # print(request.json)
@@ -72,10 +73,30 @@ def updatingClientValues():
 def cadastro_competencias(compt):
     print(compt)
     table_name = OrmTables.ClientsCompts.__tablename__
-    result = db.select_query(f"SELECT * FROM {table_name} where compt=%s", compt, as_df=True)
+    query = f"""SELECT e.razao_social, cc.* FROM {table_name} cc
+    INNER JOIN main_empresas e ON cc.main_empresa_id = e.id
+    WHERE cc.compt = %s"""
+    result = db.select_query(query, compt, as_df=True)
+
     result = result.drop(columns=['compt'])
     json_response = result.to_json(orient='records')
     return json_response
+
+
+@app.route("/api/update_competencias", methods=['POST', 'GET', 'DELETE'])
+def updatadingCompetencias():
+    table = OrmTables.ClientsCompts
+    if request.method == 'POST':
+        result = db.update_row_in_table_with_dict(table=table, data_dict=request.json)
+
+
+        if result:
+            return {'update_status': 'success'}
+        # print(request.json)
+        else:
+            print(result)
+            return {'update_status': 'failed'}
+    # TODO unite in cadastro_empresas
 
 
 @app.route('/api/sql/select', methods=['POST', 'GET'])

@@ -5,7 +5,9 @@ import { Button } from '@mui/material';
 // import useFetchWithPathParams from './hooks/useFetchWitPathParams';
 import handleDataSubmit from './DataSubmit';
 
-export default function MultiForm({ formDataArray, setFormDataArray, titleArray, apiUrlPostUpdate }) {
+export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeysArray, titleArray, apiUrlPostUpdate }) {
+  const ignoredKeys = ignoredKeysArray || [''];
+
   const filterWithoutId = (t) => !(t.id.includes('_id') || t.id.includes('id_'));
 
   // const [dataFieldsProperties, setDataFeildsProperties] = useFetch(`${urlGetData}/fields_properties`)
@@ -77,21 +79,22 @@ export default function MultiForm({ formDataArray, setFormDataArray, titleArray,
           <Button variant="contained" color="success" onClick={(event) => handlerAtivarEdicao(getDivFormName(index), event)}>
             Allow Edition
           </Button>
-          {Object.keys(object).map(key => (
-            <div key={key} className={styles.inputsContainer}>
-              <label onClick={handleLabelClick} htmlFor={getInputId(object['id'], key)}>
-                {key}
-              </label>
-              <input
-                type="text"
-                id={getInputId(object['id'], key)}
-                name={getInputId(object['id'], key)}
-                value={object[key]}
-                onChange={e => handleInputChange(objectIndex, key, e.target.value)}
-                disabled={true}
-              />
-            </div>
-          ))}
+          {Object.keys(object).filter(key => !ignoredKeys.includes(key))
+            .map(key => (
+              <div key={key} className={styles.inputsContainer}>
+                <label onClick={handleLabelClick} htmlFor={getInputId(object['id'], key)}>
+                  {key}
+                </label>
+                <input
+                  type="text"
+                  id={getInputId(object['id'], key)}
+                  name={getInputId(object['id'], key)}
+                  value={object[key]}
+                  onChange={e => handleInputChange(objectIndex, key, e.target.value)}
+                  disabled={true}
+                />
+              </div>
+            ))}
         </form>
 
       </div>
