@@ -23,7 +23,7 @@ export default function CompetenciasPage() {
   // THIS ALLOWS only SELECT
 
   const razaoSocialData = getSortedDataBasedOnArray(ArrayRazaoSocialwithID, idArray, 'RAZAO_SOCIAL')
-
+  // TODO forget ID Array & make the query directly
   // const razaoSocialArray = razaoSocialData.map(id => razaoSocialData[id].RAZAO_SOCIAL);
 
 
