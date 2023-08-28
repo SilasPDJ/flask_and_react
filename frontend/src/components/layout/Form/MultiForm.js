@@ -51,12 +51,12 @@ export default function MultiForm({ formDataArray, setFormDataArray, titleArray,
 
   const handleLabelClick = (event) => {
     const input = event.target.nextElementSibling;
+    const previousDisabledState = input.disabled
+    input.disabled = !previousDisabledState;
+    input.select();
     navigator.clipboard.writeText(input.value);
-    // const previousDisabledState = input.disabled
-    // input.disabled = false;
-    // input.select();
     // document.execCommand('copy');
-    // input.disabled = previousDisabledState;
+    input.disabled = previousDisabledState;
   };
 
   // -----
