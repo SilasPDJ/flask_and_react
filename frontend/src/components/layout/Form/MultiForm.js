@@ -8,7 +8,7 @@ import { Button } from '@mui/material';
 export default function MultiForm({ formDataArray, setFormDataArray, titleArray }) {
   const filterWithoutId = (t) => !(t.id.includes('_id') || t.id.includes('id_'));
 
-  // Handlers 
+  // Handlers  ----------
   const handlerAtivarEdicao = (divId, event) => {
     let buttonCaller = event.target
 
@@ -41,6 +41,18 @@ export default function MultiForm({ formDataArray, setFormDataArray, titleArray 
     });
   }, []);
 
+  const handleLabelClick = (event) => {
+    const input = event.target.nextElementSibling;
+    navigator.clipboard.writeText(input.value);
+    // const previousDisabledState = input.disabled
+    // input.disabled = false;
+    // input.select();
+    // document.execCommand('copy');
+    // input.disabled = previousDisabledState;
+  };
+
+  // -----
+
   const renderInputs = (object, objectIndex) => {
     const index = objectIndex;
     const getDivFormName = (name) => `form-client-${name}`;
@@ -58,16 +70,17 @@ export default function MultiForm({ formDataArray, setFormDataArray, titleArray 
           </Button>
           {Object.keys(object).map(key => (
             <div key={key}>
-              <label>{key}
-                <input
-                  type="text"
-                  id={getInputId(object['id'], key)}
-                  name={getInputId(object['id'], key)}
-                  value={object[key]}
-                  onChange={e => handleInputChange(objectIndex, key, e.target.value)}
-                  disabled={true}
-                />
+              <label onClick={handleLabelClick} htmlFor={getInputId(object['id'], key)}>
+                {key}
               </label>
+              <input
+                type="text"
+                id={getInputId(object['id'], key)}
+                name={getInputId(object['id'], key)}
+                value={object[key]}
+                onChange={e => handleInputChange(objectIndex, key, e.target.value)}
+                disabled={true}
+              />
             </div>
           ))}
         </form>
