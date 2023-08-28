@@ -3,10 +3,14 @@ import styles from "./MultiForm.module.css";
 import useFetch from './hooks/useFetch';
 import { Button } from '@mui/material';
 // import useFetchWithPathParams from './hooks/useFetchWitPathParams';
+import handleDataSubmit from './DataSubmit';
 
 
-export default function MultiForm({ formDataArray, setFormDataArray, titleArray }) {
+export default function MultiForm({ formDataArray, setFormDataArray, titleArray, apiUrlPostUpdate }) {
   const filterWithoutId = (t) => !(t.id.includes('_id') || t.id.includes('id_'));
+
+  // const [dataFieldsProperties, setDataFeildsProperties] = useFetch(`${urlGetData}/fields_properties`)
+  // fields properties
 
   // Handlers  ----------
   const handlerAtivarEdicao = (divId, event) => {
@@ -37,8 +41,12 @@ export default function MultiForm({ formDataArray, setFormDataArray, titleArray 
     setFormDataArray(prevFormDataArray => {
       const updatedFormDataArray = [...prevFormDataArray];
       updatedFormDataArray[objectIndex][key] = value;
+      // console.log(updatedFormDataArray)
       return updatedFormDataArray;
     });
+    // submit Data
+    const responseData = handleDataSubmit(apiUrlPostUpdate, formDataArray[objectIndex]);
+
   }, []);
 
   const handleLabelClick = (event) => {
