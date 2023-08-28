@@ -42,12 +42,13 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
     setFormDataArray(prevFormDataArray => {
       const updatedFormDataArray = [...prevFormDataArray];
       updatedFormDataArray[objectIndex][key] = value;
-      // console.log(updatedFormDataArray)
+
+      // Submit Data
+      const responseData = handleDataSubmit(apiUrlPostUpdate, updatedFormDataArray[objectIndex]);
+      console.log(responseData);
+
       return updatedFormDataArray;
     });
-    // submit Data
-    const responseData = handleDataSubmit(apiUrlPostUpdate, formDataArray[objectIndex]);
-
   }, []);
 
   const handleLabelClick = (event) => {

@@ -4,7 +4,6 @@ const BASE_URL = 'http://localhost:5000/api/';
 
 async function postData(url, data) {
   const mainUrl = new URL(url, BASE_URL).toString();
-  console.log(data)
   try {
     const response = await fetch(mainUrl, {
       method: 'POST',
@@ -17,6 +16,7 @@ async function postData(url, data) {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
+    console.log(url)
 
     const responseData = await response.json();
     return responseData;
