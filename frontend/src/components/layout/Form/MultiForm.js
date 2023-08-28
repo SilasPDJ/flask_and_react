@@ -68,12 +68,12 @@ export default function MultiForm({ formDataArray, setFormDataArray, titleArray,
 
     return (
       <div id={getDivFormName(index)} key={index} className={styles.clientColumn}>
-        <div className={styles.clientTitle}>
-          <span>{titleArray[objectIndex]}</span>
-        </div>
         <form
           // onSubmit={(e) => handleSubmit(e, index)} 
           method='POST'>
+          <div className={styles.clientTitle}>
+            <span>{titleArray[objectIndex]}</span>
+          </div>
           <Button variant="contained" color="success" onClick={(event) => handlerAtivarEdicao(getDivFormName(index), event)}>
             Allow Edition
           </Button>
