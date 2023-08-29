@@ -2,8 +2,10 @@ from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy import Boolean, Column, ForeignKey
 from sqlalchemy import Integer, String, Numeric, Date
 from sqlalchemy.orm import Mapper, class_mapper
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 Base = declarative_base()
+
 
 class OrmTables:
     class MainEmpresas(Base):
@@ -28,7 +30,6 @@ class OrmTables:
         def __repr__(self):
             return f"<MainEmpresas(cnpj='{self.cnpj}', razao_social='{self.razao_social}')>"
 
-
     class ClientsCompts(Base):
         __tablename__ = 'clients_compts'
 
@@ -52,6 +53,7 @@ class OrmTables:
 
     @classmethod
     def get_classes(cls) -> dict:
-        classes = [eval(f"OrmTables.{class_name}") for class_name in dir(cls) if isinstance(getattr(cls, class_name), type)][::-1][1:]
-        obj = {_class.__tablename__:_class for _class in classes}
+        classes = [eval(f"OrmTables.{class_name}") for class_name in dir(cls) if
+                   isinstance(getattr(cls, class_name), type)][::-1][1:]
+        obj = {_class.__tablename__: _class for _class in classes}
         return obj

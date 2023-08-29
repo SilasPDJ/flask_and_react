@@ -14,7 +14,7 @@ export default function CompetenciasPage() {
 
   // sendingData('cadastro_competencias', { compt: '02-2023' })
   const urlUpdate = 'update_competencias'
-
+  // TODO settar a competencia automaticamente 
 
   const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', '2023-07-01');
 
@@ -24,12 +24,6 @@ export default function CompetenciasPage() {
   return (
     <>
       competencias page
-      {/* <Form
-        data={comptData}
-        setData={comptSetData}
-        urlGetData="cadastro_competencias"
-        apiUrlPostUpdate="empresasdsadas">
-      </Form> */}
 
       <MultiForm formDataArray={comptData} setFormDataArray={comptSetData} ignoredKeysArray={ignoredKeys} titleArray={razaoSocialData} apiUrlPostUpdate={urlUpdate} />
       {/* Necessário mudar para enviar */}

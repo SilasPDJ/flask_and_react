@@ -84,8 +84,9 @@ class MySQLInterface:
             self.mysql.connection.rollback()
             return False
 
-    def update_row_in_table_with_dict(self, table: Base, data_dict: dict) -> bool:
+    def update_row_in_table_with_dict(self, table: Base, _data_dict: dict) -> bool:
         table_name = table.__tablename__
+        data_dict = self._convert_types_to_sql(_data_dict)
 
         # check if key is in table to avoid errors
         updated_data = {key: value for key, value in data_dict.items() if hasattr(table, key)}
@@ -104,6 +105,14 @@ class MySQLInterface:
         # Execute the update query
         return self.execute_data_manipulation(query, *values)
 
+    def _convert_types_to_sql(self, data_dict: dict) -> dict:
+        """
+        :param data_dict: the dict that you'll be converted to be allowed to be inserted/updated in sql
+        :return: the new_data_dictionary with the required convertions
+        """
+        # Convert bool to tiny int
+        new_data_dict = {key: int(value) if isinstance(value, bool) else value for key, value in data_dict.items()}
+        return new_data_dict
 
 if __name__ == '__main__':
     import os

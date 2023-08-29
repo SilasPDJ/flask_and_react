@@ -81,6 +81,7 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
             Allow Edition
           </Button>
           {Object.keys(object).filter(key => !ignoredKeys.includes(key))
+            .filter(key => typeof object[key] !== 'boolean')
             .map(key => (
               <div key={key} className={styles.inputsContainer}>
                 <label onClick={handleLabelClick} htmlFor={getInputId(object['id'], key)}>

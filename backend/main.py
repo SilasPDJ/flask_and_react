@@ -60,7 +60,7 @@ def updatingClientValues():
     # table_name = table.__tablename__
 
     if request.method == 'POST':
-        result = db.update_row_in_table_with_dict(table=table, data_dict=request.json)
+        result = db.update_row_in_table_with_dict(table=table, _data_dict=request.json)
         if result:
             return {'update_status': 'success'}
         # print(request.json)
@@ -87,8 +87,11 @@ def cadastro_competencias(compt):
 def updatadingCompetencias():
     table = OrmTables.ClientsCompts
     if request.method == 'POST':
-        result = db.update_row_in_table_with_dict(table=table, data_dict=request.json)
+        del request.json['razao_social']
 
+        df = pd.DataFrame.from_dict([request.json])
+
+        result = db.update_row_in_table_with_dict(table=table, _data_dict=request.json)
 
         if result:
             return {'update_status': 'success'}
