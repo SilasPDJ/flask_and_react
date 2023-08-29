@@ -97,6 +97,24 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
                 />
               </div>
             ))}
+          {Object.keys(object).filter(key => !ignoredKeys.includes(key))
+            .filter(key => typeof object[key] === 'boolean')
+            .map(key => (
+              <div key={key} className={styles.checkboxesForm}>
+                <input
+                  type="checkbox"
+                  id={getInputId(object['id'], key)}
+                  name={getInputId(object['id'], key)}
+                  defaultValue={object[key]}
+                  clabel="STATUS ATIVO"
+                  disabled={true}
+
+                />
+                <label htmlFor={getInputId(object['id'], key)}>
+                  {key}
+                </label>
+              </div>
+            ))}
         </form>
 
       </div>
