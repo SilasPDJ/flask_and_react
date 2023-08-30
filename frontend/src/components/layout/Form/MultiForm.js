@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import styles from "./MultiForm.module.css";
-import useFetch from './hooks/useFetch';
-import { Button } from '@mui/material';
+
+import { Button, Checkbox } from '@mui/material';
 // import useFetchWithPathParams from './hooks/useFetchWitPathParams';
 import handleDataSubmit from './DataSubmit';
 
@@ -77,9 +77,37 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
           <div className={styles.clientTitle}>
             <span>{titleArray[objectIndex]}</span>
           </div>
+          <div className={styles.checkboxForm}>
+            {Object.keys(object).filter(key => !ignoredKeys.includes(key))
+              .filter(key => typeof object[key] === 'boolean')
+              .map(key => (
+                <div key={key}>
+                  {/* <input
+                    type="checkbox"
+                    id={getInputId(object['id'], key)}
+                    name={getInputId(object['id'], key)}
+                    defaultValue={object[key]}
+                    clabel="STATUS ATIVO"
+                    disabled={true}
+                  /> */}
+                  <Checkbox
+                    inputProps={{
+                      'id': getInputId(object['id'], key),
+                      'name': getInputId(object['id'], key),
+                      'disabled': true,
+                    }}
+                  color='success'
+                  />
+                  <label htmlFor={getInputId(object['id'], key)}>
+                    {key}
+                  </label>
+                </div>
+              ))}
+          </div>
           <Button variant="contained" color="success" onClick={(event) => handlerAtivarEdicao(getDivFormName(index), event)}>
             Allow Edition
           </Button>
+
           {Object.keys(object).filter(key => !ignoredKeys.includes(key))
             .filter(key => typeof object[key] !== 'boolean')
             .map(key => (
@@ -97,24 +125,7 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
                 />
               </div>
             ))}
-          {Object.keys(object).filter(key => !ignoredKeys.includes(key))
-            .filter(key => typeof object[key] === 'boolean')
-            .map(key => (
-              <div key={key} className={styles.checkboxesForm}>
-                <input
-                  type="checkbox"
-                  id={getInputId(object['id'], key)}
-                  name={getInputId(object['id'], key)}
-                  defaultValue={object[key]}
-                  clabel="STATUS ATIVO"
-                  disabled={true}
 
-                />
-                <label htmlFor={getInputId(object['id'], key)}>
-                  {key}
-                </label>
-              </div>
-            ))}
         </form>
 
       </div>

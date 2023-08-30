@@ -11,12 +11,12 @@
 .clientTitle {
     font-size: 18px;
     font-weight: bold;
-    height: 75px;
+    height: 2em;
     /* Set a fixed height */
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1em;
+    color: rgb(234, 250, 142);
 }
 
 /* Each client column */
@@ -33,13 +33,6 @@
     /* Add padding for space around content */
 }
 
-/* Media query for larger screens */
-@media (min-width: 768px) {
-    .clientColumn {
-        flex-basis: calc(100% / 6 - 20px);
-        /* Adjusted for margin-right and left */
-    }
-}
 
 /* Container for inputs */
 .inputsContainer {
@@ -64,15 +57,50 @@
     background-color: rgb(234, 250, 142);
 }
 
-/* Checkboxes form */
-.checkboxesForm {
+.checkboxForm {
+    margin: .5em;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-wrap: wrap;
 }
 
-.checkboxesForm input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin: 0;
+/* Checkboxes form */
+.checkboxForm>div {
+    width: 100%;
+    /* Two columns per row */
+    display: flex;
+    justify-content: flex-start;
+    /* Adjusted this property */
+    align-items: center;
+    /* margin-bottom: 0.5em; */
+    /* Adjust spacing */
+}
+
+.checkboxForm label {
+    /* margin-right: 1em; */
+    font-size: 16px;
+    /* Adjust label spacing */
+}
+
+.checkboxForm input[type="checkbox"]:checked {
+    border-color: green;
+    /* Change the border color when checked */
+    background-color: green;
+    /* Change the background color when checked */
+}
+
+
+
+/* Media query for larger screens */
+@media (min-width: 768px) {
+    .clientColumn {
+        flex-basis: calc(100% / 6 - 20px);
+        /* Adjusted for margin-right and left */
+    }
+}
+
+@media (min-height: 800px) {
+
+    .checkboxForm>div {
+        width: 50%;
+    }
 }

@@ -6,6 +6,7 @@ import postData from './components/layout/Form/helpers/postData';
 import Button from '@mui/material/Button';
 import ResponsiveAppBar from './components/layout/ResponsiveAppBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 // pages
 import HomePage from './components/pages/homePage';
@@ -18,6 +19,13 @@ import React, { useEffect, useState } from 'react';
 
 
 function App() {
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
+
+
   const testBackend = useFetch('test');
   // const clientsCompt = Array.from(Object.values(useFetch('clients_compt')));
   // the key is the page name, and the value is the component
@@ -33,27 +41,29 @@ function App() {
 
 
   return (
-    < div className="App" >
-      <ResponsiveAppBar project_name={'OESK'} pages={PAGES} settings={['Profile', 'Account', 'Dashboard', 'Logout']} />
-      <main>
-        <Router>
-          <Routes>
-            {PAGES.map((page) => (
-              <Route key={page} path={`/${page}`} element={React.createElement(pageComponents[page])} />
-            ))}
-          </Routes>
+    <ThemeProvider theme={darkTheme}>
+      <div className="App" >
+        <ResponsiveAppBar project_name={'OESK'} pages={PAGES} settings={['Profile', 'Account', 'Dashboard', 'Logout']} />
+        <main>
+          <Router>
+            <Routes>
+              {PAGES.map((page) => (
+                <Route key={page} path={`/${page}`} element={React.createElement(pageComponents[page])} />
+              ))}
+            </Routes>
 
-        </Router>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        {testBackend.message}
-        {/* {clientsCompt} */}
+          </Router>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          {testBackend.message}
+          {/* {clientsCompt} */}
 
-      </main>
-    </div >
+        </main>
+      </div>
+    </ThemeProvider >
   );
 }
 
