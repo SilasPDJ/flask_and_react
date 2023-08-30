@@ -41,7 +41,22 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
   const handleInputChange = useCallback((objectIndex, key, value) => {
     setFormDataArray(prevFormDataArray => {
       const updatedFormDataArray = [...prevFormDataArray];
+
       updatedFormDataArray[objectIndex][key] = value;
+
+      // Submit Data
+      const responseData = handleDataSubmit(apiUrlPostUpdate, updatedFormDataArray[objectIndex]);
+      console.log(responseData);
+
+      return updatedFormDataArray;
+    });
+  }, []);
+
+  const handleCheckboxChange = useCallback((objectIndex, key, checked) => {
+    setFormDataArray(prevFormDataArray => {
+      const updatedFormDataArray = [...prevFormDataArray];
+
+      updatedFormDataArray[objectIndex][key] = checked;
 
       // Submit Data
       const responseData = handleDataSubmit(apiUrlPostUpdate, updatedFormDataArray[objectIndex]);
@@ -91,13 +106,16 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
                     disabled={true}
                   /> */}
                   <Checkbox
+                    checked={formDataArray[index][key]}
                     inputProps={{
                       'id': getInputId(object['id'], key),
                       'name': getInputId(object['id'], key),
                       'disabled': true,
                     }}
-                  color='success'
+                    color='success'
+                    onChange={(event) => handleCheckboxChange(index, key, event.target.checked)}
                   />
+
                   <label htmlFor={getInputId(object['id'], key)}>
                     {key}
                   </label>

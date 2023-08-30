@@ -66,13 +66,10 @@
 /* Checkboxes form */
 .checkboxForm>div {
     width: 100%;
-    /* Two columns per row */
     display: flex;
     justify-content: flex-start;
-    /* Adjusted this property */
     align-items: center;
-    /* margin-bottom: 0.5em; */
-    /* Adjust spacing */
+
 }
 
 .checkboxForm label {
@@ -98,7 +95,7 @@
     }
 }
 
-@media (min-height: 800px) {
+@media (min-height: 768px) {
 
     .checkboxForm>div {
         width: 50%;
