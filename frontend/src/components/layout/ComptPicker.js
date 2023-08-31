@@ -9,26 +9,49 @@ import ModalDiv from './ModalDiv';
 
 dayjs.locale(ptBr); // Set the locale
 
-export default function ComptPicker({ referenceDate }) {
+const getDayJsNewObj = (obj) => {
+  const day = obj.day()
+  const month = obj.month()
+  const year = obj.year();
+  return dayjs(new Date(year, month, day))
+}
+
+export default function ComptPicker({ referenceDate, handleMonthChange, handleYearChange }) {
+  const [currentReferenceDate, setCurrentReferenceDate] = React.useState(referenceDate);
+
+  const handleMonthCalendarChange = (newMonth) => {
+
+    const updatedReferenceDate = getDayJsNewObj(newMonth)
+    setCurrentReferenceDate(updatedReferenceDate);
+    handleMonthChange(updatedReferenceDate)
+  };
+
+  const handleYearCalendarChange = (newYear) => {
+    const updatedReferenceDate = getDayJsNewObj(newYear)
+    setCurrentReferenceDate(updatedReferenceDate);
+    handleYearChange(updatedReferenceDate)
+
+  };
+
   return (
-    <ModalDiv openModalTitle={'Competência'} description="Selecione a competência" fontColor={'white'}>
+    <ModalDiv openModalTitle={'Competência'} closeModalTitle={'Fechar'} description="Selecione a competência" fontColor={'white'}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <hr />
         <MonthCalendar
-          referenceDate={referenceDate}
+          referenceDate={currentReferenceDate}
+          onChange={handleMonthCalendarChange}
+          key={'monthCalendar'}
         />
         <hr />
         <YearCalendar
-
           yearsPerRow={3}
           sx={{
-            // gap: 2,
-            // width: 100
             borderRadius: 2,
             height: 250,
-
           }}
-          referenceDate={referenceDate}
+          referenceDate={currentReferenceDate}
+          onChange={handleYearCalendarChange}
+          key={'yearCalendar'}
         />
         <hr />
       </LocalizationProvider>

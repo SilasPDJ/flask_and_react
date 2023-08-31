@@ -23,11 +23,28 @@ export default function CompetenciasPage() {
   const ignoredKeys = ['razao_social']
   // const [startDate, setStartDate] = useState(new Date());
 
+  const onMonthChange = (compt) => {
+    // setSelectedCompt(newCompt);
+    console.log(compt.month())
+    // comptSetData('cadastro_competencias', newCompt);
+  };
+  const onYearChange = (compt) => {
+    // setSelectedCompt(newCompt);
+    console.log(compt.year())
+    // comptSetData('cadastro_competencias', newCompt);
+
+  }
+
+
   return (
     <>
       <div id={styles.comptDiv}>
 
-        <ComptPicker referenceDate={dayjs(new Date(2023, 0, 1))} />
+        <ComptPicker
+          handleMonthChange={onMonthChange}
+          handleYearChange={onYearChange}
+          referenceDate={dayjs()}
+        />
 
       </div>
       <MultiForm formDataArray={comptData} setFormDataArray={comptSetData} ignoredKeysArray={ignoredKeys} titleArray={razaoSocialData} apiUrlPostUpdate={urlUpdate} />

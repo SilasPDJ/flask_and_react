@@ -6,7 +6,7 @@ import Modal from '@mui/material/Modal';
 
 
 
-export default function ModalDiv({ children, openModalTitle, description, fontColor }) {
+export default function ModalDiv({ children, openModalTitle, closeModalTitle, description, fontColor }) {
   const style = {
     position: 'absolute',
     top: '50%',
@@ -33,7 +33,7 @@ export default function ModalDiv({ children, openModalTitle, description, fontCo
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Button onClick={handleClose}>❌</Button>
+          <Button onClick={handleClose}>{closeModalTitle}❌</Button>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {children}
           </Typography>
