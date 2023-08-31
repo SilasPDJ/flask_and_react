@@ -20,7 +20,7 @@ export default function ComptPicker({ referenceDate }) {
         <hr />
         <YearCalendar
 
-          yearsPerRow={5}
+          yearsPerRow={3}
           sx={{
             // gap: 2,
             // width: 100
