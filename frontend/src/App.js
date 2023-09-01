@@ -26,7 +26,6 @@ function App() {
   });
 
 
-  const testBackend = useFetch('test');
   // const clientsCompt = Array.from(Object.values(useFetch('clients_compt')));
   // the key is the page name, and the value is the component
   const pageComponents = {
@@ -53,12 +52,7 @@ function App() {
             </Routes>
 
           </Router>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          {testBackend.message}
+
           {/* {clientsCompt} */}
 
         </main>

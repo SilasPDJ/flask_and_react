@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 import MultiForm from '../layout/Form/MultiForm';
 import useFetchQuery from '../layout/Form/hooks/sql/useFetchQuery';
 import getSortedDataBasedOnArray from '../helpers/getSortedDataBasedOnArray';
-
+import CreateEmpresa from '../layout/CreateEmpresa';
 
 export default function ClientsPage() {
   // Setting Datas 
@@ -19,8 +19,10 @@ export default function ClientsPage() {
 
   return (
     <>
-      <div className='absolute'><Button variant='contained'>Criar Novo Cliente</Button></div>
-
+      <div className='absolute'>
+        {/* <Button variant='contained'>Criar Novo Cliente</Button> */}
+        <CreateEmpresa />
+      </div>
       <MultiForm formDataArray={empresasData} setFormDataArray={setEmpresasData} titleArray={razaoSocialData} apiUrlPostUpdate={urlUpdate} />
     </>
   )
