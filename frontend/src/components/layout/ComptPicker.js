@@ -7,8 +7,6 @@ import dayjs from 'dayjs';
 import ptBr from 'dayjs/locale/pt-br'; // Import Portuguese locale data
 import ModalDiv from './ModalDiv';
 
-dayjs.locale(ptBr); // Set the locale
-
 const getDayJsNewObj = (obj) => {
   const day = obj.day()
   const month = obj.month()

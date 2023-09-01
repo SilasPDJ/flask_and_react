@@ -8,6 +8,8 @@ import MultiForm from '../layout/Form/MultiForm';
 // import getSortedDataBasedOnArray from '../helpers/getSortedDataBasedOnArray';
 import ComptPicker from '../layout/ComptPicker';
 import dayjs from 'dayjs';
+import ptBr from 'dayjs/locale/pt-br';
+dayjs.locale(ptBr); // Set the locale
 
 
 export default function CompetenciasPage() {
@@ -24,10 +26,14 @@ export default function CompetenciasPage() {
   // const [startDate, setStartDate] = useState(new Date());
 
   const getCompetenciaStr = () => {
-    return competenciaStr
+    const compt = dayjs(competenciaStr)
+    const formattedDate = compt.format('MMMM/YYYY');
+
+    return formattedDate;
   };
 
   const onMonthChange = (compt) => {
+    console.log()
     const newCompt = compt.format('YYYY-MM-01');
     console.log(newCompt)
     setCompetenciaStr(newCompt)
@@ -49,7 +55,7 @@ export default function CompetenciasPage() {
           <ComptPicker
             handleMonthChange={onMonthChange}
             handleYearChange={onYearChange}
-            referensceDate={dayjs()}
+            referensceDate={dayjs(competenciaStr)}
             openModalButtonId={'selectComptBt'}
           />
         </div>
