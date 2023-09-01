@@ -1,0 +1,14 @@
+.form_generated {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+}
+
+.form_generated label,
+.form_generated input {
+    flex: 1;
+    /* Distribute available space evenly between label and input */
+    margin-right: 10px;
+    /* Add some horizontal spacing between label and input */
+}

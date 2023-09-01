@@ -1,12 +1,9 @@
-<div class="form"> <!-- Adjust the action URL accordingly -->
+<div class="form">
+    <!-- Adjust the action URL accordingly -->
     {% for field in form %}
-    <label for="{{ field.id }}">{{ field.label.text }}:</label>
-
-    {{field}}
-
-    {% endfor %}
-
-    <div>
-        <input type="submit" value="Submit">
+    <div class="form-group">
+        {{ field }}
+        <label for="{{ field.id }}">{{ field.label.text }}:</label>
     </div>
+    {% endfor %}
 </div>
