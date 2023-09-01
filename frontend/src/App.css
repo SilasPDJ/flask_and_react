@@ -16,7 +16,7 @@ main {
     /* background-color: #96979c; */
     min-height: 100vh;
     /* justify-content: center; */
-    padding: 3em 1em;
+    padding: 1em;
     font-size: calc(10px + 2vmin);
     color: white;
 }

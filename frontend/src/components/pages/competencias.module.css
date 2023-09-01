@@ -1,7 +1,33 @@
 #comptDiv {
     display: flex;
-    padding-bottom: 2em;
-    /* align-items: center; */
-    /* justify-content: center; */
+    justify-content: space-between;
+    /* Distribute children evenly */
+    align-items: flex-start;
+    /* Align children at the top */
+    padding-bottom: 1em;
+}
 
+#comptDiv p {
+    margin: 0;
+}
+
+.competencia {
+    color: #90caf9;
+    ;
+}
+
+#comptDiv .leftContainer {
+    display: flex;
+    flex-direction: column;
+    /* Stack children vertically */
+    flex: 1;
+    /* Take up available space */
+}
+
+#comptDiv .rightContainer {
+    display: flex;
+    flex-direction: column;
+    /* Stack children vertically */
+    flex: 1;
+    /* Take up available space */
 }

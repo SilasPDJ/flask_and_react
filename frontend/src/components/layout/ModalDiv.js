@@ -6,7 +6,7 @@ import Modal from '@mui/material/Modal';
 
 
 
-export default function ModalDiv({ children, openModalTitle, closeModalTitle, description, fontColor }) {
+export default function ModalDiv({ children, openModalTitle, closeModalTitle, description, openModalButtonId, fontColor }) {
   const style = {
     position: 'absolute',
     top: '50%',
@@ -25,7 +25,7 @@ export default function ModalDiv({ children, openModalTitle, closeModalTitle, de
 
   return (
     <>
-      <Button onClick={handleOpen}>{openModalTitle}</Button>
+      <Button onClick={handleOpen} id={openModalButtonId || undefined}>{openModalTitle}</Button>
       <Modal
         open={open}
         onClose={handleClose}

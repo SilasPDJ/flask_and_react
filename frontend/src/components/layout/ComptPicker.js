@@ -16,7 +16,7 @@ const getDayJsNewObj = (obj) => {
   return dayjs(new Date(year, month, day))
 }
 
-export default function ComptPicker({ referenceDate, handleMonthChange, handleYearChange }) {
+export default function ComptPicker({ referenceDate, handleMonthChange, handleYearChange, openModalButtonId }) {
   const [currentReferenceDate, setCurrentReferenceDate] = React.useState(referenceDate);
 
   const handleMonthCalendarChange = (newMonth) => {
@@ -34,7 +34,7 @@ export default function ComptPicker({ referenceDate, handleMonthChange, handleYe
   };
 
   return (
-    <ModalDiv openModalTitle={'Competência'} closeModalTitle={'Fechar'} description="Selecione a competência" fontColor={'white'}>
+    <ModalDiv openModalTitle={'Selecione a Competência'} closeModalTitle={'Fechar'} description="Selecione a competência" fontColor={'white'} openModalButtonId={openModalButtonId}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <hr />
         <MonthCalendar

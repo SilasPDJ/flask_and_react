@@ -15,36 +15,44 @@ export default function CompetenciasPage() {
 
   // sendingData('cadastro_competencias', { compt: '02-2023' })
   const urlUpdate = 'update_competencias'
-  // TODO settar a competencia automaticamente 
 
-  const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', '2023-07-01');
+  const [competenciaStr, setCompetenciaStr] = useState('2023-07-01')
+  const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', competenciaStr);
 
   const razaoSocialData = comptData.map(element => element['razao_social']);
   const ignoredKeys = ['razao_social']
   // const [startDate, setStartDate] = useState(new Date());
 
-  const onMonthChange = (compt) => {
-    // setSelectedCompt(newCompt);
-    console.log(compt.month())
-    // comptSetData('cadastro_competencias', newCompt);
+  const getCompetenciaStr = () => {
+    return competenciaStr
   };
-  const onYearChange = (compt) => {
-    // setSelectedCompt(newCompt);
-    console.log(compt.year())
-    // comptSetData('cadastro_competencias', newCompt);
 
-  }
+  const onMonthChange = (compt) => {
+    const newCompt = compt.format('YYYY-MM-01');
+    console.log(newCompt)
+    setCompetenciaStr(newCompt)
+  };
+
+  const onYearChange = (compt) => {
+    const newCompt = compt.format('YYYY-MM-01');
+    setCompetenciaStr(newCompt)
+  };
 
 
   return (
     <>
       <div id={styles.comptDiv}>
-
-        <ComptPicker
-          handleMonthChange={onMonthChange}
-          handleYearChange={onYearChange}
-          referenceDate={dayjs()}
-        />
+        <div className={styles.leftContainer}>
+          <p>Competência Selecionada: <span className={styles.competencia}>{getCompetenciaStr()}</span></p>
+        </div>
+        <div className={styles.rightContainer}>
+          <ComptPicker
+            handleMonthChange={onMonthChange}
+            handleYearChange={onYearChange}
+            referensceDate={dayjs()}
+            openModalButtonId={'selectComptBt'}
+          />
+        </div>
 
       </div>
       <MultiForm formDataArray={comptData} setFormDataArray={comptSetData} ignoredKeysArray={ignoredKeys} titleArray={razaoSocialData} apiUrlPostUpdate={urlUpdate} />
