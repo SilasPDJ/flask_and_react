@@ -5,14 +5,15 @@ from flask_restx import Api, Resource
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
 
 from utils.db import MySQLInterface
 from utils.models import OrmTables
+from utils.decorators import DynamicRoutes
+from utils.helpers import Helpers
 
 from flask_mysqldb import MySQL
-import MySQLdb.cursors
-import re
-from utils.decorators import DynamicRoutes
+
 import json
 # from backend.config import DevConfig
 
@@ -27,9 +28,12 @@ app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
 app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
 app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT'))
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{os.getenv("MYSQL_USER")}:{os.getenv("MYSQL_PASSWORD")}@{os.getenv("MYSQL_HOST")}:{os.getenv("MYSQL_PORT")}/{os.getenv("MYSQL_DB")}'
+
 
 api = Api(app, doc='/docs')
 
+db_alc = SQLAlchemy(app)
 mysql = MySQL(app)
 CORS(app)  # Isso habilitará o CORS para todas as rotas
 
@@ -87,10 +91,6 @@ def cadastro_competencias(compt):
 def updatadingCompetencias():
     table = OrmTables.ClientsCompts
     if request.method == 'POST':
-        del request.json['razao_social']
-
-        df = pd.DataFrame.from_dict([request.json])
-
         result = db.update_row_in_table_with_dict(table=table, _data_dict=request.json)
 
         if result:
@@ -115,13 +115,19 @@ def select():
     else:
         return {'status': 'error'}
 
+@app.route('/api/sql/insert/new_client', methods=['POST', 'GET'])
+def insert_new_client():
+    table_empresas = OrmTables.MainEmpresas
 
-@app.route("/api/test")
-def test():
-    data = {"message": "Test endpoint working!"}
-    return jsonify(data)
+    if request.method == 'GET':
+        rendered_form = Helpers.render_form(model=table_empresas)
+        obj = {"html": rendered_form}
+        return jsonify(obj)
 
+        # return jsonify(form)
 
+    elif request.method == 'POST' and request.json:
+        pass
 
 if __name__ == '__main__':
     app.run(debug=True)
