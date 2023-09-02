@@ -9,7 +9,8 @@ export default function FormGenerator({ urlGetForm }) {
 
   return (
     <div className={styles.form_generated}>
-      <form dangerouslySetInnerHTML={{ __html: template['html'] }} />
+      <div 
+      dangerouslySetInnerHTML={{ __html: template['html'] }} />
     </div>
   )
 }

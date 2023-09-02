@@ -117,17 +117,27 @@ def select():
 
 @app.route('/api/sql/insert/new_client', methods=['POST', 'GET'])
 def insert_new_client():
+    """
+    Creates the form for creating a new client
+    :return:
+    """
     table_empresas = OrmTables.MainEmpresas
+    this_url = os.path.join(request.url_root, url_for('insert_new_client')[1:])
 
     if request.method == 'GET':
-        rendered_form = Helpers.render_form(model=table_empresas)
+        rendered_form = Helpers.render_form(model=table_empresas, action_url=this_url)
         obj = {"html": rendered_form}
         return jsonify(obj)
 
-        # return jsonify(form)
+    elif request.method == 'POST':
+        data = request.form
+        obj = OrmTables.MainEmpresas(**data.to_dict())
 
-    elif request.method == 'POST' and request.json:
-        pass
+        with db_alc.session() as session:
+            session.add(obj)
+            session.commit()
+        return redirect(request.referrer)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
