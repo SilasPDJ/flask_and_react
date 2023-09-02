@@ -27,24 +27,18 @@ class Helpers:
 
     def render_forms(self, model: Type[OrmTables], results: List[OrmTables], action_url: str, template_path=''):
         with self.session() as session:
-            BaseModelForm = model_form(model, db_session=session)
-
-        class ComptForm(BaseModelForm):
-            razao_social = StringField('Razao Social')
+            ComptForm = model_form(model, db_session=session, exclude='main_empresas')
 
         forms = []
         for row in results:
-            with self.session() as session:
-                use_form = model_form(model, db_session=session)
-                # form = use_form()
-                form = ComptForm()
-                for field_name, field in form._fields.items():
-                    try:
-                        field.data = getattr(row, field_name, None)
-                    except Exception as e:
-                        print(e)
-                        print()
-                        pass
+            # form = use_form()
+            form = ComptForm()
+            for field_name, field in form._fields.items():
+                try:
+                    field.data = getattr(row, field_name, None)
+                except Exception as e:
+                    print(e)
+                    pass
             forms.append(form)
 
         if not template_path:
