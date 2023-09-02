@@ -116,10 +116,11 @@ def cadastro_competencias_v2(compt):
             .all()
         )
         clients_names = [row.main_empresas.razao_social for row in results]
+        id_fields_complements = [row.main_empresas.id for row in results]
 
     rendered_form = helpers.render_forms(OrmTables.ClientsCompts,
                                          results,
-                                         action_url=this_url)
+                                         action_url=this_url, id_fields_complement=id_fields_complements)
 
     _obj = {"html": rendered_form, "clients_names": clients_names}
     obj = jsonify(_obj)

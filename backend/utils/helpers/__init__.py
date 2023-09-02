@@ -25,12 +25,22 @@ class Helpers:
 
         return rendered_template
 
-    def render_forms(self, model: Type[OrmTables], results: List[OrmTables], action_url: str, template_path=''):
+    def render_forms(self, model: Type[OrmTables], results: List[OrmTables], action_url: str, id_fields_complement=None, template_path=''):
+        """
+        :param model: comes from OrmTables
+        :param results: are the query results TODO make the query here
+        :param action_url: the form action attribute destiny
+        :param id_fields_complement: a list or None, it will full fill the fields.id | defaults => fill with enumerate
+        :param template_path:
+        :return:
+        """
+        if id_fields_complement is None:
+            id_fields_complement = []
         with self.session() as session:
             ComptForm = model_form(model, db_session=session, exclude='main_empresas')
 
         forms = []
-        for row in results:
+        for e, row in enumerate(results):
             # form = use_form()
             form = ComptForm()
             for field_name, field in form._fields.items():
@@ -39,7 +49,16 @@ class Helpers:
                 except Exception as e:
                     print(e)
                     pass
+                if id_fields_complement:
+                    field.id = f"{field.id}_{id_fields_complement[e]}"
+                    field.name = f"{field.name}_{id_fields_complement[e]}"
+                else:
+                    field.id = f"{field.id}_{e}"
+                    field.name = f"{field.name}_{e}"
+
+
             forms.append(form)
+
 
         if not template_path:
             rendered_template = render_template('helpers/many_forms.html', forms=forms, action_url=action_url)
