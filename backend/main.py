@@ -40,8 +40,13 @@ CORS(app)  # Isso habilitará o CORS para todas as rotas
 db = MySQLInterface(mysql)
 dynamic_routes = DynamicRoutes(app)
 
+clients_compts_table = OrmTables.ClientsCompts
+main_empresas_table = OrmTables.MainEmpresas
+helpers = Helpers(db_alc.session)
+
 @app.route("/api/clients_compt")
 def clients_compt():
+    OrmTables.ClientsCompts
     query = db.select_query("SELECT * FROM clients_compts", as_df=True)
     json_response = query.to_json(orient='records')
     return json_response
@@ -85,6 +90,38 @@ def cadastro_competencias(compt):
     result = result.drop(columns=['compt'])
     json_response = result.to_json(orient='records')
     return json_response
+
+@app.route('/api/cadastro_competencias_post', methods=['GET', 'POST'])
+def cadastro_competencias_post():
+    if request.method == 'POST':
+        print(request.form)
+        print(request.form)
+        print(request.form)
+        print(request.form)
+
+@app.route('/api/cadastro_competencias_v2/<compt>', methods=['GET', 'POST'])
+def cadastro_competencias_v2(compt):
+    print(compt)
+    table_name = OrmTables.ClientsCompts.__tablename__
+    this_url = os.path.join(request.url_root, url_for(f'cadastro_competencias_post')[1:])
+
+
+    with db_alc.session() as session:
+        results = (
+            # session.query(main_empresas_table.razao_social, clients_compts_table)
+            session.query(clients_compts_table)
+            .join(main_empresas_table, clients_compts_table.main_empresa_id == main_empresas_table.id)
+            .filter(
+                clients_compts_table.compt == compt)
+            .all()
+        )
+    rendered_form = helpers.render_forms(OrmTables.ClientsCompts,
+                                         results,
+                                         action_url=this_url)
+    _obj = {"html": rendered_form}
+    obj = jsonify(_obj)
+    return obj
+
 
 
 @app.route("/api/update_competencias", methods=['POST', 'GET', 'DELETE'])
