@@ -30,7 +30,6 @@ app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT'))
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{os.getenv("MYSQL_USER")}:{os.getenv("MYSQL_PASSWORD")}@{os.getenv("MYSQL_HOST")}:{os.getenv("MYSQL_PORT")}/{os.getenv("MYSQL_DB")}'
 
-
 api = Api(app, doc='/docs')
 
 db_alc = SQLAlchemy(app)
@@ -78,6 +77,7 @@ def updatingClientValues():
             return {'update_status': 'failed'}
     # TODO unite in cadastro_empresas
 
+# @dynamic_routes
 @app.route('/api/cadastro_competencias/<compt>', methods=['GET', 'POST'])
 def cadastro_competencias(compt):
     print(compt)
@@ -91,20 +91,15 @@ def cadastro_competencias(compt):
     json_response = result.to_json(orient='records')
     return json_response
 
-@app.route('/api/cadastro_competencias_post', methods=['GET', 'POST'])
-def cadastro_competencias_post():
-    if request.method == 'POST':
-        print(request.form)
-        print(request.form)
-        print(request.form)
-        print(request.form)
 
-@app.route('/api/cadastro_competencias_v2/<compt>', methods=['GET', 'POST'])
-def cadastro_competencias_v2(compt):
-    print(compt)
-    table_name = OrmTables.ClientsCompts.__tablename__
-    this_url = os.path.join(request.url_root, url_for(f'cadastro_competencias_post')[1:])
-
+@app.route('/api/cadastro_competencias/<compt>/inputs_properties', methods=['GET', 'POST'])
+def get_comeptencias_properties(compt):
+    """
+    Constructing to the return the compt properties
+    :param compt:
+    :return:
+    """
+    this_url = os.path.join(request.url_root, url_for(f'updatadingCompetencias')[1:])
 
     with db_alc.session() as session:
         results = (
@@ -118,12 +113,13 @@ def cadastro_competencias_v2(compt):
         clients_names = [row.main_empresas.razao_social for row in results]
         id_fields_complements = [row.main_empresas.id for row in results]
 
-    rendered_form = helpers.render_forms(OrmTables.ClientsCompts,
-                                         results,
-                                         action_url=this_url, id_fields_complement=id_fields_complements)
+    inputs_properties_and_labels = helpers.get_inputs_and_label_properties(OrmTables.ClientsCompts,
+                                                            results,
+                                                            action_url=this_url,
+                                                                           id_fields_complement=id_fields_complements)
 
-    _obj = {"html": rendered_form, "clients_names": clients_names}
-    obj = jsonify(_obj)
+    # _obj = {"html": rendered_form, "clients_names": clients_names}
+    obj = jsonify(inputs_properties_and_labels)
     return obj
 
 

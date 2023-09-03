@@ -1,22 +1,19 @@
 {% for form in forms %}
-<form class="form" method="POST" action="{{ action_url }}">
+<form class="auto-submit-form" method="POST" action="{{ action_url }}">
     {{ form.csrf_token }}
-    
+
     {% for field in form if field.type == 'BooleanField' %}
-    <div class="form-group">
+    <div class="inputs-and-labels-constructor">
         {{ field }}
         <label for="{{ field.id }}">{{ field.label.text }}</label>
     </div>
     {% endfor %}
-    
+
     {% for field in form if field.type != 'BooleanField' %}
-    <div class="form-group">
+    <div class="inputs-and-labels-constructor">
         <label for="{{ field.id }}">{{ field.label.text }}:</label>
         {{ field }}
     </div>
     {% endfor %}
-    
-    <input type="submit" value="Submit">
 </form>
-<br>
 {% endfor %}
