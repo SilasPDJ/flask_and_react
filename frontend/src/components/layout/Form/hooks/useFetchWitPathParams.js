@@ -10,12 +10,11 @@ export default function useFetchWithPathParams(url, ...pathParams) {
       const path = pathParams.join('/');
       fullUrl.pathname += '/' + path;
     }
-
     return fullUrl.toString();
   };
 
 
-  const mainUrl = makeUrl(url, pathParams);
+  const mainUrl = makeUrl(url, pathParams).replace(',', '/');
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);

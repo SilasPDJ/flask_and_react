@@ -3,6 +3,7 @@ import styles from './competencias.module.css'
 
 // import getDataWithQueryParameters from '../layout/Form/hooks/getDataWithQueryParams';
 import useFetchWithPathParams from '../layout/Form/hooks/useFetchWitPathParams';
+import useFetch from "../layout/Form/hooks/useFetch";
 import MultiForm from '../layout/Form/MultiForm';
 // import useFetchQuery from '../layout/Form/hooks/sql/useFetchQuery';
 // import getSortedDataBasedOnArray from '../helpers/getSortedDataBasedOnArray';
@@ -20,11 +21,13 @@ export default function CompetenciasPage() {
 
   const [competenciaStr, setCompetenciaStr] = useState('2023-07-01')
   const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', competenciaStr);
-
+  const [comptInputsLabelsProperties, setComptInputsLabelsProperties] = useFetchWithPathParams('cadastro_competencias', competenciaStr.replace(',', ''), 'inputs_properties')
+  // TODO continuar daqui
   const razaoSocialData = comptData.map(element => element['razao_social']);
   const ignoredKeys = ['razao_social']
   // const [startDate, setStartDate] = useState(new Date());
-
+  // TODO... data da competencia no useState setCompetenciaStr?
+  console.log(comptInputsLabelsProperties)
   const getCompetenciaStr = () => {
     const compt = dayjs(competenciaStr)
     const formattedDate = compt.format('MMMM/YYYY');
@@ -44,7 +47,6 @@ export default function CompetenciasPage() {
     setCompetenciaStr(newCompt)
   };
 
-
   return (
     <>
       <div id={styles.comptDiv}>
@@ -61,6 +63,7 @@ export default function CompetenciasPage() {
         </div>
 
       </div>
+      {/* <div className={styles.formContainer} dangerouslySetInnerHTML={{ __html: test['html'] }}></div> */}
       <MultiForm formDataArray={comptData} setFormDataArray={comptSetData} ignoredKeysArray={ignoredKeys} titleArray={razaoSocialData} apiUrlPostUpdate={urlUpdate} />
       {/* Necessário mudar para enviar */}
     </>
