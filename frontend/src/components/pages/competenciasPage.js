@@ -45,6 +45,8 @@ export default function CompetenciasPage() {
     setCompetenciaStr(newCompt)
   };
 
+  const [itemsPerPage, setItemsPerPage] = useState(12);
+
   return (
     <>
       <div id={styles.comptDiv}>
@@ -61,8 +63,16 @@ export default function CompetenciasPage() {
         </div>
 
       </div>
+      <MultiForm
+        formDataArray={comptData}
+        setFormDataArray={comptSetData}
+        ignoredKeysArray={ignoredKeys}
+        titleArray={razaoSocialData}
+        apiUrlPostUpdate={urlUpdate}
+        getPropertiesFrom={'competencias'}
+        itemsPerPage={itemsPerPage}
+      />
       {/* <div className={styles.formContainer} dangerouslySetInnerHTML={{ __html: test['html'] }}></div> */}
-      <MultiForm formDataArray={comptData} setFormDataArray={comptSetData} ignoredKeysArray={ignoredKeys} titleArray={razaoSocialData} apiUrlPostUpdate={urlUpdate} getPropertiesFrom={'competencias'} />
       {/* Necessário mudar para enviar */}
     </>
   )
