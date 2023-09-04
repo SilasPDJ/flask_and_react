@@ -92,38 +92,6 @@ def cadastro_competencias(compt):
     return json_response
 
 
-@app.route('/api/cadastro_competencias/<compt>/inputs_properties', methods=['GET', 'POST'])
-def get_comeptencias_properties(compt):
-    """
-    Constructing to the return the compt properties
-    :param compt:
-    :return:
-    """
-    this_url = os.path.join(request.url_root, url_for(f'updatadingCompetencias')[1:])
-
-    with db_alc.session() as session:
-        results = (
-            # session.query(main_empresas_table.razao_social, clients_compts_table)
-            session.query(clients_compts_table)
-            .join(main_empresas_table, clients_compts_table.main_empresa_id == main_empresas_table.id)
-            .filter(
-                clients_compts_table.compt == compt)
-            .all()
-        )
-        clients_names = [row.main_empresas.razao_social for row in results]
-        id_fields_complements = [row.main_empresas.id for row in results]
-
-    inputs_properties_and_labels = helpers.get_inputs_and_label_properties(OrmTables.ClientsCompts,
-                                                            results,
-                                                            action_url=this_url,
-                                                                           id_fields_complement=id_fields_complements)
-
-    # _obj = {"html": rendered_form, "clients_names": clients_names}
-    obj = jsonify(inputs_properties_and_labels)
-    return obj
-
-
-
 @app.route("/api/update_competencias", methods=['POST', 'GET', 'DELETE'])
 def updatadingCompetencias():
     table = OrmTables.ClientsCompts
@@ -138,6 +106,29 @@ def updatadingCompetencias():
             return {'update_status': 'failed'}
     # TODO unite in cadastro_empresas
 
+
+@app.route('/api/inputs_properties/<model>', methods=['GET', 'POST'])
+def get_inputs_properties(model):
+    """
+    Constructing to the return the inputs properties to pass to JS
+    :param model: empresas vs competencias
+    :return:
+    """
+    this_url = os.path.join(request.url_root, url_for(f'updatadingCompetencias')[1:])
+
+    if model == 'empresas':
+        inputs_properties_and_labels = helpers.get_inputs_and_label_properties(OrmTables.MainEmpresas,
+                                                                               action_url=this_url)
+    elif model == 'competencias':
+        inputs_properties_and_labels = helpers.get_inputs_and_label_properties(OrmTables.ClientsCompts,
+                                                                               action_url=this_url)
+
+    else:
+        inputs_properties_and_labels = {}
+
+    
+    obj = jsonify(inputs_properties_and_labels)
+    return obj
 
 @app.route('/api/sql/select', methods=['POST', 'GET'])
 def select():

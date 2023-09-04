@@ -1,4 +1,4 @@
-{% for form in forms %}
+
 <form class="auto-submit-form" method="POST" action="{{ action_url }}">
     {{ form.csrf_token }}
 
@@ -16,4 +16,3 @@
     </div>
     {% endfor %}
 </form>
-{% endfor %}

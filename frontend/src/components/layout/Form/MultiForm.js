@@ -1,12 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import styles from "./MultiForm.module.css";
+import useFetchWithPathParams from './hooks/useFetchWitPathParams';
 
 import { Button, Checkbox } from '@mui/material';
 // import useFetchWithPathParams from './hooks/useFetchWitPathParams';
 import handleDataSubmit from './DataSubmit';
 
-export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeysArray, titleArray, apiUrlPostUpdate }) {
+export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeysArray, getPropertiesFrom, titleArray, apiUrlPostUpdate }) {
   const ignoredKeys = ignoredKeysArray || [''];
+  const [mainInputsProperties, setMainInputsProperties] = useFetchWithPathParams('inputs_properties', getPropertiesFrom)
+
+  // console.log(inputsProperties)
+
 
   const filterWithoutId = (t) => !(t.id.includes('_id') || t.id.includes('id_'));
 
@@ -45,12 +50,15 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
       updatedFormDataArray[objectIndex][key] = value;
 
       // Submit Data
-      const responseData = handleDataSubmit(apiUrlPostUpdate, updatedFormDataArray[objectIndex]);
-      console.log(responseData);
-
       return updatedFormDataArray;
     });
   }, []);
+  const handleInputBlur = (objectIndex) => {
+    const responseData = handleDataSubmit(apiUrlPostUpdate, formDataArray[objectIndex]);
+    // console.log(responseData);
+
+  }
+
 
   const handleCheckboxChange = useCallback((objectIndex, key, checked) => {
     setFormDataArray(prevFormDataArray => {
@@ -82,6 +90,24 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
     const index = objectIndex;
     const getDivFormName = (name) => `form-client-${name}`;
     const getInputId = (id, key) => `${id}_${key}`;
+
+    const findInputPlusLabelProperties = (key) => mainInputsProperties.find(objeto => objeto.input.id == key);
+
+    const getInputProperties = (properties) => {
+      if (!properties) {
+        // id + main_empresa_id
+        return {
+          "input": {
+            "maxlength": "255",
+            "type": "text"
+          }
+        }
+      }
+      return properties.input;
+
+
+    }
+
     // let input_type = getInputType(value);
 
     return (
@@ -95,16 +121,12 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
           <div className={styles.checkboxForm}>
             {Object.keys(object).filter(key => !ignoredKeys.includes(key))
               .filter(key => typeof object[key] === 'boolean')
-              .map(key => (
-                <div key={key}>
-                  {/* <input
-                    type="checkbox"
-                    id={getInputId(object['id'], key)}
-                    name={getInputId(object['id'], key)}
-                    defaultValue={object[key]}
-                    clabel="STATUS ATIVO"
-                    disabled={true}
-                  /> */}
+              .map(key => {
+                // const properties = findInputPlusLabelProperties(key);
+                // const inputsProperties = getInputProperties(properties);
+
+                // console.log(inputsProperties)
+                return <div key={key}>
                   <Checkbox
                     checked={formDataArray[index][key]}
                     inputProps={{
@@ -120,7 +142,7 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
                     {key}
                   </label>
                 </div>
-              ))}
+              })}
           </div>
           <Button variant="contained" color="success" onClick={(event) => handlerAtivarEdicao(getDivFormName(index), event)}>
             Allow Edition
@@ -128,21 +150,27 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
 
           {Object.keys(object).filter(key => !ignoredKeys.includes(key))
             .filter(key => typeof object[key] !== 'boolean')
-            .map(key => (
-              <div key={key} className={styles.inputsContainer}>
+            .map(key => {
+              const properties = findInputPlusLabelProperties(key);
+              const inputsProperties = getInputProperties(properties);
+              // console.log(inputsProperties)
+
+              return <div key={key} className={styles.inputsContainer}>
                 <label onClick={handleLabelClick} htmlFor={getInputId(object['id'], key)}>
                   {key}
                 </label>
                 <input
-                  type="text"
+                  type={inputsProperties.type}
                   id={getInputId(object['id'], key)}
                   name={getInputId(object['id'], key)}
                   value={object[key]}
+                  maxLength={inputsProperties.maxlength}
                   onChange={e => handleInputChange(objectIndex, key, e.target.value)}
+                  onBlur={e => handleInputBlur(objectIndex)}
                   disabled={true}
                 />
               </div>
-            ))}
+            })}
 
         </form>
 
