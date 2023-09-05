@@ -13,25 +13,33 @@ export default function MultiForm({ formDataArray, setFormDataArray, categoryFil
   const [displayedData, setDisplayedData] = useState([]);
 
   useEffect(() => {
-    // Calculate the start and end indices for the current page
-    const startIndex = currentPage * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-
-    // Slice the formDataArray to get the data for the current page
-    const currentPageData = formDataArray.slice(startIndex, endIndex).filter((e) => {
+    // Create a filtered array based on the categoryFilter
+    const filteredDataArray = formDataArray.filter((e) => {
       // Include filter for "categoryFilter"
       if (categoryFilter && categoryFilter !== "ALL") {
         return e.imposto_a_calcular === categoryFilter;
       }
       return true; // Include all elements when categoryFilter is not applied
     });
-    ;
+
+    // Calculate the start and end indices for the current page
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
+    // Create an array to store the current page's data
+    const currentPageData = filteredDataArray.slice(startIndex, endIndex);
 
     setDisplayedData(currentPageData);
   }, [currentPage, formDataArray, itemsPerPage, categoryFilter]);
 
-
   const filterWithoutId = (t) => !(t.id.includes('_id') || t.id.includes('id_'));
+
+
+  //  Handlers
+  const getObjectIndex = (formDataArray, identifier) => {
+    return formDataArray.findIndex(data => data['id'] === identifier);
+  };
+  // ...
 
   const handlerAtivarEdicao = (divId, event) => {
     let buttonCaller = event.target;
@@ -51,28 +59,38 @@ export default function MultiForm({ formDataArray, setFormDataArray, categoryFil
     }
   };
 
-  const handleInputChange = useCallback((objectIndex, key, value) => {
+
+  const handleInputChange = useCallback((identifier, key, value) => {
     setFormDataArray((prevFormDataArray) => {
       const updatedFormDataArray = [...prevFormDataArray];
-      updatedFormDataArray[objectIndex][key] = value;
+      const objectIndex = getObjectIndex(updatedFormDataArray, identifier);
+      if (objectIndex !== -1) {
+        updatedFormDataArray[objectIndex][key] = value;
+      }
 
       return updatedFormDataArray;
     });
   }, [setFormDataArray]);
 
-  const handleInputBlur = (objectIndex) => {
-    const responseData = handleDataSubmit(apiUrlPostUpdate, formDataArray[objectIndex]);
-    // console.log(responseData);
+  const handleInputBlur = (identifier) => {
+    const objectIndex = getObjectIndex(formDataArray, identifier);
+    if (objectIndex !== -1) {
+      const responseData = handleDataSubmit(apiUrlPostUpdate, formDataArray[objectIndex]);
+      // console.log(responseData);
+    }
   };
 
-  const handleCheckboxChange = useCallback((objectIndex, key, checked) => {
+  const handleCheckboxChange = useCallback((identifier, key, checked) => {
     setFormDataArray((prevFormDataArray) => {
       const updatedFormDataArray = [...prevFormDataArray];
-      updatedFormDataArray[objectIndex][key] = checked;
+      const objectIndex = getObjectIndex(updatedFormDataArray, identifier);
+      if (objectIndex !== -1) {
+        updatedFormDataArray[objectIndex][key] = checked;
 
-      // Submit Data
-      const responseData = handleDataSubmit(apiUrlPostUpdate, updatedFormDataArray[objectIndex]);
-      console.log(responseData);
+        // Submit Data
+        const responseData = handleDataSubmit(apiUrlPostUpdate, updatedFormDataArray[objectIndex]);
+        console.log(responseData);
+      }
 
       return updatedFormDataArray;
     });
@@ -88,6 +106,8 @@ export default function MultiForm({ formDataArray, setFormDataArray, categoryFil
   };
 
   const renderInputs = (object, objectIndex) => {
+    const identifier = object['id'];
+
     const index = currentPage * itemsPerPage + objectIndex; // Calculate the correct index
     const getDivFormName = (name) => `form-client-${name}`;
     const getInputId = (id, key) => `${id}_${key}`;
@@ -106,7 +126,7 @@ export default function MultiForm({ formDataArray, setFormDataArray, categoryFil
     };
 
     return (
-      <div id={getDivFormName(index)} key={index} className={styles.clientColumn}>
+      <div id={getDivFormName(identifier)} key={identifier} className={styles.clientColumn}>
         <form method="POST">
           <div className={styles.clientTitle}>
             <span>{object[formDataTitleKey]}</span>
@@ -119,21 +139,21 @@ export default function MultiForm({ formDataArray, setFormDataArray, categoryFil
                 return (
                   <div key={key}>
                     <Checkbox
-                      checked={formDataArray[index][key]}
+                      checked={formDataArray.find(data => data['id'] === object['id'])[key]}
                       inputProps={{
                         id: getInputId(object['id'], key),
                         name: getInputId(object['id'], key),
                         disabled: true,
                       }}
                       color="success"
-                      onChange={(event) => handleCheckboxChange(index, key, event.target.checked)}
+                      onChange={(event) => handleCheckboxChange(identifier, key, event.target.checked)}
                     />
                     <label htmlFor={getInputId(object['id'], key)}>{key}</label>
                   </div>
                 );
               })}
           </div>
-          <Button variant="contained" color="success" onClick={(event) => handlerAtivarEdicao(getDivFormName(index), event)}>
+          <Button variant="contained" color="success" onClick={(event) => handlerAtivarEdicao(getDivFormName(identifier), event)}>
             Allow Edition
           </Button>
           {Object.keys(object)
@@ -153,8 +173,8 @@ export default function MultiForm({ formDataArray, setFormDataArray, categoryFil
                     name={getInputId(object['id'], key)}
                     value={object[key]}
                     maxLength={inputsProperties.maxlength}
-                    onChange={(e) => handleInputChange(index, key, e.target.value)}
-                    onBlur={() => handleInputBlur(index)}
+                    onChange={(e) => handleInputChange(object['id'], key, e.target.value)} // Use identifier here
+                    onBlur={() => handleInputBlur(object['id'])} // Use identifier here
                     disabled={true}
                   />
                 </div>
