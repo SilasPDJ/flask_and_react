@@ -14,7 +14,6 @@ export default function ClientsPage() {
   const [empresasData, setEmpresasData] = useFetch(urlData)
 
   // THIS ALLOWS only SELECT
-  const razaoSocialData = empresasData.map((d) => d.razao_social)
   // const [dataFieldsProperties, setDataFeildsProperties] = useFetch(`${urlGetData}/fields_properties`)
 
   return (
@@ -23,7 +22,13 @@ export default function ClientsPage() {
         {/* <Button variant='contained'>Criar Novo Cliente</Button> */}
         <CreateEmpresa />
       </div>
-      <MultiForm formDataArray={empresasData} setFormDataArray={setEmpresasData} titleArray={razaoSocialData} apiUrlPostUpdate={urlUpdate} />
+      <MultiForm
+        formDataArray={empresasData}
+        setFormDataArray={setEmpresasData}
+        formDataTitleKey={'razao_social'}
+        apiUrlPostUpdate={urlUpdate}
+        itemsPerPage={100}
+      />
     </>
   )
 

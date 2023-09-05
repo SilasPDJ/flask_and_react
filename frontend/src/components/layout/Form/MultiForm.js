@@ -139,7 +139,7 @@ export default function MultiForm({ formDataArray, setFormDataArray, categoryFil
                 return (
                   <div key={key}>
                     <Checkbox
-                      checked={formDataArray.find(data => data['id'] === object['id'])[key]}
+                      checked={formDataArray.find(data => data['id'] === object['id']) ? formDataArray.find(data => data['id'] === object['id'])[key] : false}
                       inputProps={{
                         id: getInputId(object['id'], key),
                         name: getInputId(object['id'], key),
