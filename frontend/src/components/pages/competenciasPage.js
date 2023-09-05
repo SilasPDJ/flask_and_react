@@ -5,11 +5,13 @@ import styles from './competencias.module.css'
 import useFetchWithPathParams from '../layout/Form/hooks/useFetchWitPathParams';
 import useFetch from "../layout/Form/hooks/useFetch";
 import MultiForm from '../layout/Form/MultiForm';
+import SelectMui from '../layout/Form/SelectMui';
 // import useFetchQuery from '../layout/Form/hooks/sql/useFetchQuery';
 // import getSortedDataBasedOnArray from '../helpers/getSortedDataBasedOnArray';
 import ComptPicker from '../layout/ComptPicker';
 import dayjs from 'dayjs';
 import ptBr from 'dayjs/locale/pt-br';
+
 dayjs.locale(ptBr); // Set the locale
 
 
@@ -34,7 +36,6 @@ export default function CompetenciasPage() {
   };
 
   const onMonthChange = (compt) => {
-    console.log()
     const newCompt = compt.format('YYYY-MM-01');
     console.log(newCompt)
     setCompetenciaStr(newCompt)
@@ -57,8 +58,24 @@ export default function CompetenciasPage() {
           <ComptPicker
             handleMonthChange={onMonthChange}
             handleYearChange={onYearChange}
-            referensceDate={dayjs(competenciaStr)}
+            referenceDate={dayjs(competenciaStr)}
             openModalButtonId={'selectComptBt'}
+          />
+
+          <SelectMui
+            objects={
+              {
+                "TODOS IMPOSTOS": "ALL",
+                "ISS": "ISS",
+                "ICMS": "ICMS",
+                "SEM MOV": "SEM_MOV",
+                "LP": "LP",
+              }
+            }
+            onChange={(e) => {
+              console.log(e)
+            }}
+
           />
         </div>
 
