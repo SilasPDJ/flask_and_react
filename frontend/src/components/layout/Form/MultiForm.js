@@ -6,7 +6,7 @@ import handleDataSubmit from './DataSubmit';
 
 // TODO: id should not be an input?
 
-export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeysArray, getPropertiesFrom, titleArray, apiUrlPostUpdate, itemsPerPage }) {
+export default function MultiForm({ formDataArray, setFormDataArray, categoryFilter, ignoredKeysArray, getPropertiesFrom, formDataTitleKey, apiUrlPostUpdate, itemsPerPage }) {
   const ignoredKeys = ignoredKeysArray || [''];
   const [mainInputsProperties, setMainInputsProperties] = useFetchWithPathParams('inputs_properties', getPropertiesFrom);
   const [currentPage, setCurrentPage] = useState(0);
@@ -18,10 +18,18 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
     const endIndex = startIndex + itemsPerPage;
 
     // Slice the formDataArray to get the data for the current page
-    const currentPageData = formDataArray.slice(startIndex, endIndex);
+    const currentPageData = formDataArray.slice(startIndex, endIndex).filter((e) => {
+      // Include filter for "categoryFilter"
+      if (categoryFilter && categoryFilter !== "ALL") {
+        return e.imposto_a_calcular === categoryFilter;
+      }
+      return true; // Include all elements when categoryFilter is not applied
+    });
+    ;
 
     setDisplayedData(currentPageData);
-  }, [currentPage, formDataArray, itemsPerPage]);
+  }, [currentPage, formDataArray, itemsPerPage, categoryFilter]);
+
 
   const filterWithoutId = (t) => !(t.id.includes('_id') || t.id.includes('id_'));
 
@@ -101,7 +109,7 @@ export default function MultiForm({ formDataArray, setFormDataArray, ignoredKeys
       <div id={getDivFormName(index)} key={index} className={styles.clientColumn}>
         <form method="POST">
           <div className={styles.clientTitle}>
-            <span>{titleArray[index]}</span>
+            <span>{object[formDataTitleKey]}</span>
           </div>
           <div className={styles.checkboxForm}>
             {Object.keys(object)

@@ -24,7 +24,6 @@ export default function CompetenciasPage() {
   const [competenciaStr, setCompetenciaStr] = useState('2023-07-01')
   const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', competenciaStr);
   // TODO continuar daqui
-  const razaoSocialData = comptData.map(element => element['razao_social']);
   const ignoredKeys = ['razao_social']
   // const [startDate, setStartDate] = useState(new Date());
   // TODO... data da competencia no useState setCompetenciaStr?
@@ -47,6 +46,7 @@ export default function CompetenciasPage() {
   };
 
   const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [categoriaImposto, setCategoriaImposto] = useState('ALL');
 
   return (
     <>
@@ -74,6 +74,8 @@ export default function CompetenciasPage() {
             }
             onChange={(e) => {
               console.log(e)
+              console.log(e ? e : "ALL")
+              setCategoriaImposto(e ? e : "ALL")
             }}
 
           />
@@ -83,14 +85,13 @@ export default function CompetenciasPage() {
       <MultiForm
         formDataArray={comptData}
         setFormDataArray={comptSetData}
+        categoryFilter={categoriaImposto}
         ignoredKeysArray={ignoredKeys}
-        titleArray={razaoSocialData}
+        formDataTitleKey={'razao_social'}
         apiUrlPostUpdate={urlUpdate}
         getPropertiesFrom={'competencias'}
         itemsPerPage={itemsPerPage}
       />
-      {/* <div className={styles.formContainer} dangerouslySetInnerHTML={{ __html: test['html'] }}></div> */}
-      {/* Necessário mudar para enviar */}
     </>
   )
 }
