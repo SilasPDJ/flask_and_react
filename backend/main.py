@@ -45,7 +45,7 @@ helpers = Helpers(db_alc.session)
 
 @app.route("/api/clients_compt")
 def clients_compt():
-    OrmTables.ClientsCompts
+    # OrmTables.ClientsCompts
     query = db.select_query("SELECT * FROM clients_compts", as_df=True)
     json_response = query.to_json(orient='records')
     return json_response
@@ -55,8 +55,11 @@ def clients_compt():
 @dynamic_routes.call('cadastro_empresas', OrmTables.MainEmpresas, 'fields_properties')
 def cadastro_empresas():
     table_name = 'main_empresas'
-    query = db.select_query(f"SELECT * FROM {table_name}", as_df=True)
-    json_response = query.to_json(orient='records')
+    query = f"SELECT * FROM {table_name}"
+
+    result = db.select_query(query, as_df=True)
+    # result = helpers.reorder_df_columns_to_the_end(result, 'id')
+    json_response = result.to_json(orient='records')
     return json_response
 
 
@@ -88,6 +91,8 @@ def cadastro_competencias(compt):
     result = db.select_query(query, compt, as_df=True)
 
     result = result.drop(columns=['compt'])
+    result = helpers.reorder_df_columns_to_the_end(result, 'nf_saidas','nf_entradas','id')
+
     json_response = result.to_json(orient='records')
     return json_response
 
@@ -126,7 +131,6 @@ def get_inputs_properties(model):
     else:
         inputs_properties_and_labels = {}
 
-    
     obj = jsonify(inputs_properties_and_labels)
     return obj
 

@@ -6,7 +6,7 @@ from flask import render_template, request, redirect, session
 from typing import Type, List
 from wtforms import StringField
 from flask_wtf import FlaskForm
-
+import pandas as pd
 import re
 
 
@@ -26,7 +26,8 @@ class Helpers:
 
         return rendered_template
 
-    def get_inputs_and_label_properties(self, model: Type[OrmTables], action_url: str, template_path='') -> List[dict[str, dict[str, str]]]:
+    def get_inputs_and_label_properties(self, model: Type[OrmTables], action_url: str, template_path='') -> List[
+        dict[str, dict[str, str]]]:
         """
         :param model: any OrmModels in the parent class
         :param action_url: the backend route form's destiny
@@ -38,7 +39,8 @@ class Helpers:
         rendered = self.render_form(model, action_url, template_path)
         return self._transtorm_html_string_to_inputs_and_labels_properties(rendered)
 
-    def _transtorm_html_string_to_inputs_and_labels_properties(self, html_code: str, without_value=True) -> List[dict[str, dict[str, str]]]:
+    def _transtorm_html_string_to_inputs_and_labels_properties(self, html_code: str, without_value=True) -> List[
+        dict[str, dict[str, str]]]:
 
         # Initialize empty lists for labels and inputs
         labels = []
@@ -76,3 +78,14 @@ class Helpers:
             input_label_pairs.append(input_label_pair)
 
         return input_label_pairs
+
+    @staticmethod
+    def reorder_df_columns_to_the_end(df: pd.DataFrame, *columns_to_move: str) -> pd.DataFrame:
+        """
+        :param df: the dataframe that will be changed
+        :param columns_to_move:
+        :return:
+        """
+        columns_except = [col for col in df.columns if col not in columns_to_move]
+        new_order = columns_except + list(columns_to_move)
+        return df[new_order]
