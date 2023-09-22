@@ -21,10 +21,9 @@ export default function CompetenciasPage() {
   // sendingData('cadastro_competencias', { compt: '02-2023' })
   const urlUpdate = 'update_competencias'
 
-  const [competenciaStr, setCompetenciaStr] = useState('2023-07-01')
+  const [competenciaStr, setCompetenciaStr] = useState('2023-08-01')
   const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', competenciaStr);
-  // TODO continuar daqui
-  const ignoredKeys = ['razao_social']
+  const ignoredKeys = ['razao_social', 'main_empresa_id']
   // const [startDate, setStartDate] = useState(new Date());
   // TODO... data da competencia no useState setCompetenciaStr?
   const getCompetenciaStr = () => {
@@ -45,7 +44,7 @@ export default function CompetenciasPage() {
     setCompetenciaStr(newCompt)
   };
 
-  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [itemsPerPage, setItemsPerPage] = useState(40);
   const [categoriaImposto, setCategoriaImposto] = useState('ALL');
 
   return (
@@ -63,6 +62,7 @@ export default function CompetenciasPage() {
           />
 
           <SelectMui
+            label={"Categoria Cliente"}
             objects={
               {
                 "TODOS IMPOSTOS": "ALL",
