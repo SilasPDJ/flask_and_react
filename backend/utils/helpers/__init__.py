@@ -89,3 +89,14 @@ class Helpers:
         columns_except = [col for col in df.columns if col not in columns_to_move]
         new_order = columns_except + list(columns_to_move)
         return df[new_order]
+
+    @staticmethod
+    def reorder_df_columns_to_the_begning(df: pd.DataFrame, *columns_to_move: str) -> pd.DataFrame:
+        """
+        :param df: the dataframe that will be changed
+        :param columns_to_move:
+        :return:
+        """
+        columns_except = [col for col in df.columns if col not in columns_to_move]
+        new_order = list(columns_to_move) + columns_except
+        return df[new_order]

@@ -43,6 +43,7 @@ clients_compts_table = OrmTables.ClientsCompts
 main_empresas_table = OrmTables.MainEmpresas
 helpers = Helpers(db_alc.session)
 
+
 @app.route("/api/clients_compt")
 def clients_compt():
     # OrmTables.ClientsCompts
@@ -71,7 +72,8 @@ def updatingClientValues():
     # table_name = table.__tablename__
 
     if request.method == 'POST':
-        result = db.update_row_in_table_with_dict(table=table, _data_dict=request.json)
+        result = db.update_row_in_table_with_dict(
+            table=table, _data_dict=request.json)
         if result:
             return {'update_status': 'success'}
         # print(request.json)
@@ -81,6 +83,8 @@ def updatingClientValues():
     # TODO unite in cadastro_empresas
 
 # @dynamic_routes
+
+
 @app.route('/api/cadastro_competencias/<compt>', methods=['GET', 'POST'])
 def cadastro_competencias(compt):
     print(compt)
@@ -91,7 +95,10 @@ def cadastro_competencias(compt):
     result = db.select_query(query, compt, as_df=True)
 
     result = result.drop(columns=['compt'])
-    result = helpers.reorder_df_columns_to_the_end(result, 'nf_saidas','nf_entradas','id')
+    result = helpers.reorder_df_columns_to_the_end(
+        result, 'nf_saidas', 'nf_entradas', 'id')
+    result = helpers.reorder_df_columns_to_the_begning(
+        result, 'declarado', 'pode_declarar', 'envio')
 
     json_response = result.to_json(orient='records')
     return json_response
@@ -101,7 +108,8 @@ def cadastro_competencias(compt):
 def updatadingCompetencias():
     table = OrmTables.ClientsCompts
     if request.method == 'POST':
-        result = db.update_row_in_table_with_dict(table=table, _data_dict=request.json)
+        result = db.update_row_in_table_with_dict(
+            table=table, _data_dict=request.json)
 
         if result:
             return {'update_status': 'success'}
@@ -119,7 +127,8 @@ def get_inputs_properties(model):
     :param model: empresas vs competencias
     :return:
     """
-    this_url = os.path.join(request.url_root, url_for(f'updatadingCompetencias')[1:])
+    this_url = os.path.join(request.url_root, url_for(
+        f'updatadingCompetencias')[1:])
 
     if model == 'empresas':
         inputs_properties_and_labels = helpers.get_inputs_and_label_properties(OrmTables.MainEmpresas,
@@ -134,6 +143,7 @@ def get_inputs_properties(model):
     obj = jsonify(inputs_properties_and_labels)
     return obj
 
+
 @app.route('/api/sql/select', methods=['POST', 'GET'])
 def select():
     # o argumento precisa ser string
@@ -147,6 +157,7 @@ def select():
     else:
         return {'status': 'error'}
 
+
 @app.route('/api/sql/insert/new_client', methods=['POST', 'GET'])
 def insert_new_client():
     """
@@ -157,7 +168,8 @@ def insert_new_client():
     this_url = os.path.join(request.url_root, url_for('insert_new_client')[1:])
 
     if request.method == 'GET':
-        rendered_form = Helpers.render_form(model=table_empresas, action_url=this_url)
+        rendered_form = Helpers.render_form(
+            model=table_empresas, action_url=this_url)
         obj = {"html": rendered_form}
         return jsonify(obj)
 
