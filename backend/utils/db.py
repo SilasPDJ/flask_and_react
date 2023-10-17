@@ -107,7 +107,7 @@ class MySQLInterface:
 
         # Create the SQL query with placeholders and arguments
         if anula_venc_das:
-            query = f"UPDATE {table_name} SET {columns} venc_das=NULL WHERE id = %s"
+            query = f"UPDATE {table_name} SET {columns}, venc_das = NULL WHERE id = %s"
         else:
             query = f"UPDATE {table_name} SET {columns}  WHERE id = %s"
         values.append(id_value)  # Add the id_value to the arguments
