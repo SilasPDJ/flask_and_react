@@ -85,7 +85,6 @@ class MySQLInterface:
             return False
 
     def update_row_in_table_with_dict(self, table: Base, _data_dict: dict) -> bool:
-        # TO.DO esse backend desse frontend ta meio feio
         table_name = table.__tablename__
         data_dict = self._convert_types_to_sql(_data_dict)
 
@@ -93,9 +92,11 @@ class MySQLInterface:
         updated_data = {key: value for key, value in data_dict.items() if hasattr(table, key)}
 
         anula_venc_das = False
-        if 'venc_das' in updated_data and updated_data['venc_das'] == "":
-            del updated_data['venc_das']
-            anula_venc_das = True
+        if 'venc_das' in updated_data:
+            # TO.DO esse backend desse frontend ta meio feio
+            if updated_data['venc_das'] == "" or updated_data['venc_das'] is None:
+                del updated_data['venc_das']
+                anula_venc_das = True
 
         # Prepare the dictionary of columns and values
         id_value = updated_data.pop('id')
