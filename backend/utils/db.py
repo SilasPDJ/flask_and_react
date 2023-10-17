@@ -85,11 +85,17 @@ class MySQLInterface:
             return False
 
     def update_row_in_table_with_dict(self, table: Base, _data_dict: dict) -> bool:
+        # TO.DO esse backend desse frontend ta meio feio
         table_name = table.__tablename__
         data_dict = self._convert_types_to_sql(_data_dict)
 
         # check if key is in table to avoid errors
         updated_data = {key: value for key, value in data_dict.items() if hasattr(table, key)}
+
+        anula_venc_das = False
+        if 'venc_das' in updated_data and updated_data['venc_das'] == "":
+            del updated_data['venc_das']
+            anula_venc_das = True
 
         # Prepare the dictionary of columns and values
         id_value = updated_data.pop('id')
@@ -99,7 +105,10 @@ class MySQLInterface:
         values = list(updated_data.values())
 
         # Create the SQL query with placeholders and arguments
-        query = f"UPDATE {table_name} SET {columns} WHERE id = %s"
+        if anula_venc_das:
+            query = f"UPDATE {table_name} SET {columns} venc_das=NULL WHERE id = %s"
+        else:
+            query = f"UPDATE {table_name} SET {columns}  WHERE id = %s"
         values.append(id_value)  # Add the id_value to the arguments
 
         # Execute the update query
