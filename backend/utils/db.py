@@ -94,7 +94,7 @@ class MySQLInterface:
         anula_venc_das = False
         if 'venc_das' in updated_data:
             # TO.DO esse backend desse frontend ta meio feio
-            if updated_data['venc_das'] == "" or updated_data['venc_das'] is None:
+            if updated_data['venc_das'] == "" or updated_data['venc_das'] == "None":
                 del updated_data['venc_das']
                 anula_venc_das = True
 
