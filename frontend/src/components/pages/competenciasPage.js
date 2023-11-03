@@ -11,7 +11,6 @@ import SelectMui from '../layout/Form/SelectMui';
 import ComptPicker from '../layout/ComptPicker';
 import dayjs from 'dayjs';
 import ptBr from 'dayjs/locale/pt-br';
-
 dayjs.locale(ptBr); // Set the locale
 
 
@@ -21,11 +20,14 @@ export default function CompetenciasPage() {
   // sendingData('cadastro_competencias', { compt: '02-2023' })
   const urlUpdate = 'update_competencias'
 
-  const [competenciaStr, setCompetenciaStr] = useState('2023-08-01')
+  const [competenciaStr, setCompetenciaStr] = useState('2023-09-01')
   const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', competenciaStr);
-  const ignoredKeys = ['razao_social', 'main_empresa_id']
+  const ignoredKeys = ['razao_social',
+    // 'main_empresa_id'
+  ]
   // const [startDate, setStartDate] = useState(new Date());
   // TODO... data da competencia no useState setCompetenciaStr?
+  // TODO... trocar para quando clicar no label, copiar o label, e no input, copiar ao valor do input
   const getCompetenciaStr = () => {
     const compt = dayjs(competenciaStr)
     const formattedDate = compt.format('MMMM/YYYY');

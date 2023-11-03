@@ -11,7 +11,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 // pages
 import HomePage from './components/pages/homePage';
 import MenuPage from './components/pages/menuPage';
-import TestePage from './components/pages/testePage'
+import TestePage from './components/pages/testPage'
 import ClientsPage from './components/pages/clientsPage';
 import CompetenciasPage from './components/pages/competenciasPage';
 
