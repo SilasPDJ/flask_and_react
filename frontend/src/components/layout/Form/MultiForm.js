@@ -6,8 +6,9 @@ import handleDataSubmit from './DataSubmit';
 
 // TODO: id should not be an input?
 
-export default function MultiForm({ formDataArray, setFormDataArray, categoryFilter, ignoredKeysArray, getPropertiesFrom, formDataTitleKey, apiUrlPostUpdate, itemsPerPage }) {
+export default function MultiForm({ formDataArray, setFormDataArray, categoryFilter, ignoredKeysArray, inputsExtrasNaoEditaveisArray, getPropertiesFrom, formDataTitleKey, apiUrlPostUpdate, itemsPerPage }) {
   const ignoredKeys = ignoredKeysArray || [''];
+  const arrayOfExtraInputsNaoEditaveis = inputsExtrasNaoEditaveisArray || [''];
   const [mainInputsProperties, setMainInputsProperties] = useFetchWithPathParams('inputs_properties', getPropertiesFrom);
   const [currentPage, setCurrentPage] = useState(0);
   const [displayedData, setDisplayedData] = useState([]);
@@ -46,8 +47,25 @@ export default function MultiForm({ formDataArray, setFormDataArray, categoryFil
     let divForm = document.getElementById(divId);
     let _inputs = divForm.querySelectorAll('input');
     const mainInputs = Array.from(_inputs);
-    const inputsToToggle = mainInputs.filter(filterWithoutId);
+    const inputsToToggle = mainInputs
+      .filter((el) => {
+        for (const loop of arrayOfExtraInputsNaoEditaveis) {
+          if (el.id.endsWith(loop)) {
+            return false; // Exclude this element
+          }
+        }
+        return true; // Include this element
+      });
+    // .filter(input => {
 
+    //   return true; // Mantenha este input
+    // });
+    for (const term of arrayOfExtraInputsNaoEditaveis) {
+      console.log(term)
+    }
+
+
+    // console.log(inputsToToggle)
     inputsToToggle.forEach((input) => {
       input.disabled = !input.disabled;
     });
@@ -66,11 +84,19 @@ export default function MultiForm({ formDataArray, setFormDataArray, categoryFil
       const objectIndex = getObjectIndex(updatedFormDataArray, identifier);
       if (objectIndex !== -1) {
         updatedFormDataArray[objectIndex][key] = value;
+
+        // Se a chave for 'sem_retencao' ou 'com_retencao', calcule o valor_total
+        if (key === 'sem_retencao' || key === 'com_retencao') {
+          const semRetValue = parseFloat(updatedFormDataArray[objectIndex]['sem_retencao']) || 0;
+          const comRetValue = parseFloat(updatedFormDataArray[objectIndex]['com_retencao']) || 0;
+          updatedFormDataArray[objectIndex]['valor_total'] = semRetValue + comRetValue;
+        }
       }
 
       return updatedFormDataArray;
     });
   }, [setFormDataArray]);
+
 
   const handleInputBlur = (identifier) => {
     const objectIndex = getObjectIndex(formDataArray, identifier);

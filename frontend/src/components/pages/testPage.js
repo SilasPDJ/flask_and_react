@@ -8,8 +8,9 @@ export default function MenuPage() {
     <div>
       <h1>Teste</h1>
       <InputDatalist
-        label={"Search title"}
         list={["ola", "tudo", "bem"]}
+        elId={"testIdSettado"}
+        label={"Search title"}
         handleOnChange={(x) => console.log(x)} multiple={true}
         allowMultiple={true}
       />

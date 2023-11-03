@@ -41,6 +41,6 @@ main {
     }
 }
 
-input:disabled li {
+input:disabled {
     background-color: #dee9ff;
 }

@@ -20,7 +20,7 @@ export default function CompetenciasPage() {
   // sendingData('cadastro_competencias', { compt: '02-2023' })
   const urlUpdate = 'update_competencias'
 
-  const [competenciaStr, setCompetenciaStr] = useState('2023-09-01')
+  const [competenciaStr, setCompetenciaStr] = useState('2023-10-01')
   const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', competenciaStr);
   const ignoredKeys = ['razao_social',
     // 'main_empresa_id'
@@ -89,6 +89,7 @@ export default function CompetenciasPage() {
         setFormDataArray={comptSetData}
         categoryFilter={categoriaImposto}
         ignoredKeysArray={ignoredKeys}
+        inputsExtrasNaoEditaveisArray={["valor_total"]}
         formDataTitleKey={'razao_social'}
         apiUrlPostUpdate={urlUpdate}
         getPropertiesFrom={'competencias'}
