@@ -90,6 +90,7 @@ export default function MultiForm({ formDataArray, setFormDataArray, categoryFil
           const semRetValue = parseFloat(updatedFormDataArray[objectIndex]['sem_retencao']) || 0;
           const comRetValue = parseFloat(updatedFormDataArray[objectIndex]['com_retencao']) || 0;
           updatedFormDataArray[objectIndex]['valor_total'] = semRetValue + comRetValue;
+          updatedFormDataArray[objectIndex]['pode_declarar'] = true;
         }
       }
 
