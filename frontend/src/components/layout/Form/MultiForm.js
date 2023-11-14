@@ -7,8 +7,8 @@ import handleDataSubmit from './DataSubmit';
 // TODO: id should not be an input?
 
 export default function MultiForm({ formDataArray, setFormDataArray, categoryFilter, ignoredKeysArray, inputsExtrasNaoEditaveisArray, getPropertiesFrom, formDataTitleKey, apiUrlPostUpdate, itemsPerPage }) {
-  const ignoredKeys = ignoredKeysArray || [''];
-  const arrayOfExtraInputsNaoEditaveis = inputsExtrasNaoEditaveisArray || [''];
+  const ignoredKeys = ignoredKeysArray || [];
+  const arrayOfExtraInputsNaoEditaveis = inputsExtrasNaoEditaveisArray || [];
   const [mainInputsProperties, setMainInputsProperties] = useFetchWithPathParams('inputs_properties', getPropertiesFrom);
   const [currentPage, setCurrentPage] = useState(0);
   const [displayedData, setDisplayedData] = useState([]);

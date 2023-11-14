@@ -79,6 +79,7 @@ export default function CompetenciasPage() {
               console.log(e ? e : "ALL")
               setCategoriaImposto(e ? e : "ALL")
             }}
+            opcoesPorLinha={3}
 
           />
         </div>
@@ -89,7 +90,7 @@ export default function CompetenciasPage() {
         setFormDataArray={comptSetData}
         categoryFilter={categoriaImposto}
         ignoredKeysArray={ignoredKeys}
-        inputsExtrasNaoEditaveisArray={["valor_total"]}
+        inputsExtrasNaoEditaveisArray={[]}
         formDataTitleKey={'razao_social'}
         apiUrlPostUpdate={urlUpdate}
         getPropertiesFrom={'competencias'}
