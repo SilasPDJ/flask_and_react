@@ -60,10 +60,6 @@ export default function MultiForm({ formDataArray, setFormDataArray, categoryFil
 
     //   return true; // Mantenha este input
     // });
-    for (const term of arrayOfExtraInputsNaoEditaveis) {
-      console.log(term)
-    }
-
 
     // console.log(inputsToToggle)
     inputsToToggle.forEach((input) => {
@@ -156,8 +152,11 @@ export default function MultiForm({ formDataArray, setFormDataArray, categoryFil
       <div id={getDivFormName(identifier)} key={identifier} className={styles.clientColumn}>
         <form method="POST">
           <div className={styles.clientTitle}>
-            <span>{object[formDataTitleKey]}</span>
-          </div>
+            {Array.isArray(formDataTitleKey) ? (
+              <span>{object[formDataTitleKey[0]]} - {object[formDataTitleKey[1]]}</span>
+            ) : (
+              <span>{object[formDataTitleKey]}</span>
+            )}          </div>
           <div className={styles.checkboxForm}>
             {Object.keys(object)
               .filter((key) => !ignoredKeys.includes(key))

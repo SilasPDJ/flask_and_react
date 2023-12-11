@@ -89,7 +89,7 @@ def updatingClientValues():
 def cadastro_competencias(compt):
     print(compt)
     table_name = OrmTables.ClientsCompts.__tablename__
-    query = f"""SELECT e.razao_social, cc.* FROM {table_name} cc
+    query = f"""SELECT e.razao_social, e.cnpj, cc.* FROM {table_name} cc
     INNER JOIN main_empresas e ON cc.main_empresa_id = e.id
     WHERE cc.compt = %s"""
     result = db.select_query(query, compt, as_df=True)

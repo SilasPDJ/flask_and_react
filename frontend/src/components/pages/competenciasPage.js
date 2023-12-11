@@ -25,7 +25,7 @@ export default function CompetenciasPage() {
   const [competenciaStr, setCompetenciaStr] = useState(getCurrentCompt(1))
   const [comptData, comptSetData] = useFetchWithPathParams('cadastro_competencias', competenciaStr);
   const ignoredKeys = ['razao_social',
-    // 'main_empresa_id'
+    'main_empresa_id'
   ]
 
   const getCompetenciaStr = () => {
@@ -90,8 +90,8 @@ export default function CompetenciasPage() {
         setFormDataArray={comptSetData}
         categoryFilter={categoriaImposto}
         ignoredKeysArray={ignoredKeys}
-        inputsExtrasNaoEditaveisArray={[]}
-        formDataTitleKey={'razao_social'}
+        inputsExtrasNaoEditaveisArray={['cnpj']}
+        formDataTitleKey={['main_empresa_id', 'razao_social']}
         apiUrlPostUpdate={urlUpdate}
         getPropertiesFrom={'competencias'}
         itemsPerPage={itemsPerPage}
