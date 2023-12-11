@@ -15,10 +15,19 @@
     /* Set a fixed height */
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     color: rgb(234, 250, 142);
+    margin-bottom: 1em;
 }
 
+.clientTitle span:last-child {
+    margin-left: 20px;
+}
+
+.clientTitle span:first-child {
+    color: #fff;
+
+}
 
 /* Each client column */
 .clientColumn {

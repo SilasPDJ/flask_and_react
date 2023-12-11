@@ -153,7 +153,10 @@ export default function MultiForm({ formDataArray, setFormDataArray, categoryFil
         <form method="POST">
           <div className={styles.clientTitle}>
             {Array.isArray(formDataTitleKey) ? (
-              <span>{object[formDataTitleKey[0]]} - {object[formDataTitleKey[1]]}</span>
+              <>
+                <span>{object[formDataTitleKey[0]]}&nbsp;</span>
+                <span>{object[formDataTitleKey[1]]}</span>
+              </>
             ) : (
               <span>{object[formDataTitleKey]}</span>
             )}          </div>
