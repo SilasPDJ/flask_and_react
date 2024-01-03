@@ -7,6 +7,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
 from models import ClientsCompts, MainEmpresas
+from utils.compt_utils import get_compt, ate_atual_compt, compt_to_date_obj
 
 load_dotenv()
 
@@ -53,28 +54,44 @@ class MainEmpresasView(ModelView):
 
 
 from flask import request
+from flask_admin.contrib.mongoengine.filters import BaseMongoEngineFilter
+
+
+class CustomEqualFilter(BaseMongoEngineFilter):
+
+    def apply(self, query, value):
+        print(self.column)
+        if value is None:
+            return query
+        return query.filter(self.column == value)
+
+    def operation(self):
+        return 'equals'
+
+
 
 class ClientsComptsView(ModelView):
-    def get_query(self):
-        selected_compt = request.args.get('flt0_0')
-        print(selected_compt)
 
-        if selected_compt:
-            return self.session.query(self.model).filter_by(compt=selected_compt)
-        else:
-            return self.session.query(self.model)
+    dates = list(ate_atual_compt(get_compt(), get_compt(-12)))
+
+    dates = [compt_to_date_obj(d) for d in dates]
+
+    dates = [f"{d.strftime('%Y-%m-%d')}" for d in dates]
 
     column_filters = [
-        FilterEqual(column=ClientsCompts.compt, name='Compt', options=[('2023-01-01', '2023-01-01'), ('2023-02-01', '2023-02-01')]),
+        CustomEqualFilter(column=ClientsCompts.compt, name='Compt', options=[
+            (date, date) for date in sorted(dates, reverse=True)
+        ], )
     ]
 
     column_list = ['main_empresas.razao_social', 'declarado', 'nf_saidas', 'nf_entradas', 'sem_retencao', 'com_retencao',
-                   'valor_total', 'anexo', 'envio', 'imposto_a_calcular', 'compt', 'pode_declarar', 'venc_das']
+                   'valor_total', 'anexo', 'envio', 'imposto_a_calcular', 'compt', 'pode_declarar']
 
     column_labels = {
         'main_empresas.razao_social': 'Razão Social',
     }
 
+    can_set_page_size = True
 
 
 # admin.add_view(ModelView(User, db.session))
