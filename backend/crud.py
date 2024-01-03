@@ -2,6 +2,9 @@ import os
 from dotenv import load_dotenv
 from flask import Flask
 from flask_admin.contrib.mongoengine.filters import FilterEqual
+from flask_admin.model.fields import InlineFormField
+from flask_wtf import FlaskForm
+from wtforms import StringField
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
@@ -69,9 +72,7 @@ class CustomEqualFilter(BaseMongoEngineFilter):
         return 'equals'
 
 
-
 class ClientsComptsView(ModelView):
-
     dates = list(ate_atual_compt(get_compt(), get_compt(-12)))
 
     dates = [compt_to_date_obj(d) for d in dates]
@@ -84,14 +85,22 @@ class ClientsComptsView(ModelView):
         ], )
     ]
 
-    column_list = ['main_empresas.razao_social', 'declarado', 'nf_saidas', 'nf_entradas', 'sem_retencao', 'com_retencao',
+    column_list = ['main_empresas.razao_social', 'declarado', 'nf_saidas', 'nf_entradas', 'sem_retencao',
+                   'com_retencao',
                    'valor_total', 'anexo', 'envio', 'imposto_a_calcular', 'compt', 'pode_declarar']
 
     column_labels = {
         'main_empresas.razao_social': 'Razão Social',
     }
 
-    can_set_page_size = True
+    # forms
+    form_excluded_columns = ['main_empresas', 'valor_total']
+
+    def on_model_change(self, form, model, is_created):
+        # Calculate valor_total based on sem_retencao and com_retencao
+        model.valor_total = model.sem_retencao + model.com_retencao
+        db.session.commit()
+        return super(ClientsComptsView, self).on_model_change(form, model, is_created)
 
 
 # admin.add_view(ModelView(User, db.session))
