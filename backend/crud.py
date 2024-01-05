@@ -1,16 +1,14 @@
 import os
+from typing import List
+
 from dotenv import load_dotenv
 from flask import Flask
-from flask_admin.contrib.mongoengine.filters import FilterEqual
-from flask_admin.model.fields import InlineFormField
-from flask_wtf import FlaskForm
-from wtforms import StringField
 from flask_sqlalchemy import SQLAlchemy
-from flask_admin import Admin
+from flask_admin import Admin, expose
 from flask_admin.contrib.sqla import ModelView
 
 from models import ClientsCompts, MainEmpresas
-from utils.compt_utils import get_compt, ate_atual_compt, compt_to_date_obj
+from utils.compt_utils import get_compt, ate_atual_compt, compt_to_date_obj, get_dates_sequence
 
 load_dotenv()
 
@@ -73,21 +71,19 @@ class CustomEqualFilter(BaseMongoEngineFilter):
 
 
 class ClientsComptsView(ModelView):
-    dates = list(ate_atual_compt(get_compt(), get_compt(-12)))
-
-    dates = [compt_to_date_obj(d) for d in dates]
-
-    dates = [f"{d.strftime('%Y-%m-%d')}" for d in dates]
+    can_create = False
+    can_delete = False
+    page_size = 100
 
     column_filters = [
         CustomEqualFilter(column=ClientsCompts.compt, name='Compt', options=[
-            (date, date) for date in sorted(dates, reverse=True)
+            (date, date) for date in sorted(get_dates_sequence(), reverse=True)
         ], )
     ]
 
     column_list = ['main_empresas.razao_social', 'declarado', 'nf_saidas', 'nf_entradas', 'sem_retencao',
                    'com_retencao',
-                   'valor_total', 'anexo', 'envio', 'imposto_a_calcular', 'compt', 'pode_declarar']
+                   'valor_total', 'anexo', 'envio', 'imposto_a_calcular', 'pode_declarar']
 
     column_labels = {
         'main_empresas.razao_social': 'Razão Social',
@@ -96,11 +92,46 @@ class ClientsComptsView(ModelView):
     # forms
     form_excluded_columns = ['main_empresas', 'valor_total']
 
+    edit_template = 'forms/clients-compts.html'
+
+    def get_query(self):
+        return super().get_query().join(MainEmpresas).order_by(ClientsCompts.imposto_a_calcular,
+                                                               MainEmpresas.razao_social,
+                                                               )
+
     def on_model_change(self, form, model, is_created):
         # Calculate valor_total based on sem_retencao and com_retencao
         model.valor_total = model.sem_retencao + model.com_retencao
+        model.pode_declarar = True
+
         db.session.commit()
         return super(ClientsComptsView, self).on_model_change(form, model, is_created)
+
+    def render(self, template, **kwargs):
+        # Add main_empresas_razao_social to the template context
+        razao_social = self._get_main_empresas()
+        if razao_social:
+            kwargs['main_empresas_razao_social'] = razao_social
+            kwargs['main_empresas'] = razao_social
+        return super(ClientsComptsView, self).render(template, **kwargs)
+
+    def get_url(self, endpoint, **kwargs):
+        if not kwargs.get("flt1_0") or "flt1_0" not in request.args:
+            kwargs['flt1_0'] = get_dates_sequence(1)[0]
+        else:
+            return super().get_url(endpoint, **kwargs)
+
+    def _get_main_empresas(self):
+        # Implement the logic to get main_empresas.razao_social here
+        # For example, if it's a column in the model, you can retrieve it like this:
+        _client_id = request.args.get('id')
+        is_there_id = _client_id is not None
+        if is_there_id:
+            model = self.get_one(_client_id)
+
+            # return getattr(getattr(model, 'main_empresas'), 'razao_social', None)
+            return getattr(model, 'main_empresas')
+        return
 
 
 # admin.add_view(ModelView(User, db.session))

@@ -25,7 +25,8 @@ class MainEmpresas(db.Model):
     clients_compts = db.relationship("ClientsCompts", back_populates="main_empresas")
 
     def __repr__(self):
-        return f"<MainEmpresas(cnpj='{self.cnpj}', razao_social='{self.razao_social}')>"
+        # return f"<MainEmpresas(cnpj='{self.cnpj}', razao_social='{self.razao_social}')>"
+        return f"{self.cnpj} - {self.razao_social}"
 
 
 class ClientsCompts(db.Model):
